@@ -1,11 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform, View } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Text } from '@/components/Text';
+import { Button } from '@/components/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/Card';
 
 export default function TabTwoScreen() {
   return (
@@ -15,7 +18,35 @@ export default function TabTwoScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore</ThemedText>
       </ThemedView>
+      <Button><Text>asdsadas</Text></Button>
+      <Text>Algun textitt</Text>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
+
+
+
+      <View className="flex gap-2">
+        <Text className="font-semibold text-xl text-primary">Card</Text>
+        <Card>
+          <CardHeader>
+            <CardTitle>Accelerate UI</CardTitle>
+            <CardDescription>Enter a new development experience</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Text className="text-base text-primary">
+              Sleek, easy to use components to build your next app faster.
+            </Text>
+          </CardContent>
+          <CardFooter>
+            <Text className="text-sm text-muted-foreground">
+              Inspired by shadcn/ui
+            </Text>
+          </CardFooter>
+        </Card>
+      </View>
+
+
+
+
       <Collapsible title="File-based routing">
         <ThemedText>
           This app has two screens:{' '}
