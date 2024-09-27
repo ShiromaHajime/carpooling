@@ -42,7 +42,7 @@ export default function AccountLayout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#ccc',
+          backgroundColor: '#014e41',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -50,7 +50,7 @@ export default function AccountLayout() {
         },
       }}>
       <Stack.Screen name="welcome" options={{ headerShown: true, title: "Welcome" }} />
-      <Stack.Screen name="register" options={{ headerShown: true, title: "Register" }} />
+      <Stack.Screen name="register" options={{ headerShown: true, title: "Registro" }} />
       <Stack.Screen name="login" options={{ headerShown: false, title: "Login" }} />
     </Stack>
   );
