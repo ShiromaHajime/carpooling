@@ -1,91 +1,81 @@
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { Pressable } from "react-native";
-import { TextClassContext } from "./Text";
-import { cn } from "../lib/utils";
+import { type VariantProps, cva } from 'class-variance-authority';
+import { Text, TouchableOpacity } from 'react-native';
+
+import { cn } from '../lib/utils';
 
 const buttonVariants = cva(
-  "group flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
+  'flex flex-row items-center justify-center rounded-md',
   {
     variants: {
       variant: {
-        default: "bg-primary web:hover:opacity-90 active:opacity-90",
-        destructive: "bg-destructive web:hover:opacity-90 active:opacity-90",
-        outline:
-          "border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent",
-        secondary: "bg-secondary web:hover:opacity-80 active:opacity-80",
-        ghost:
-          "web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent",
-        link: "web:underline-offset-4 web:hover:underline web:focus:underline ",
+        default: 'bg-primary',
+        secondary: 'bg-secondary',
+        destructive: 'bg-destructive',
+        ghost: 'bg-slate-700',
+        link: 'text-primary underline-offset-4',
       },
       size: {
-        default: "h-10 px-4 py-2 native:h-12 native:px-5 native:py-3",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8 native:h-14",
-        icon: "h-10 w-10",
+        default: 'h-10 px-4',
+        sm: 'h-8 px-2',
+        lg: 'h-12 px-8',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
-  },
+  }
 );
 
-const buttonTextVariants = cva(
-  "web:whitespace-nowrap text-sm native:text-base font-medium text-foreground web:transition-colors",
-  {
-    variants: {
-      variant: {
-        default: "text-primary-foreground",
-        destructive: "text-destructive-foreground",
-        outline: "group-active:text-accent-foreground",
-        secondary:
-          "text-secondary-foreground group-active:text-secondary-foreground",
-        ghost: "group-active:text-accent-foreground",
-        link: "text-primary group-active:underline",
-      },
-      size: {
-        default: "",
-        sm: "",
-        lg: "native:text-lg",
-        icon: "",
-      },
+const buttonTextVariants = cva('text-center font-medium', {
+  variants: {
+    variant: {
+      default: 'text-primary-foreground',
+      secondary: 'text-secondary-foreground',
+      destructive: 'text-destructive-foreground',
+      ghost: 'text-primary-foreground',
+      link: 'text-primary-foreground underline',
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    size: {
+      default: 'text-base',
+      sm: 'text-sm',
+      lg: 'text-xl',
     },
   },
-);
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
-type ButtonProps = ComponentPropsWithoutRef<typeof Pressable> &
-  VariantProps<typeof buttonVariants>;
-
-const Button = forwardRef<ElementRef<typeof Pressable>, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    return (
-      <TextClassContext.Provider
-        value={cn(
-          props.disabled && "web:pointer-events-none",
-          buttonTextVariants({ variant, size }),
+interface ButtonProps
+  extends React.ComponentPropsWithoutRef<typeof TouchableOpacity>,
+    VariantProps<typeof buttonVariants> {
+  label: string;
+  labelClasses?: string;
+}
+function Button({
+  label,
+  labelClasses,
+  className,
+  variant,
+  size,
+  ...props
+}: ButtonProps) {
+  return (
+    <TouchableOpacity
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    >
+      <Text
+        className={cn(
+          buttonTextVariants({ variant, size, className: labelClasses })
         )}
       >
-        <Pressable
-          className={cn(
-            props.disabled && "opacity-50 web:pointer-events-none",
-            buttonVariants({ variant, size, className }),
-          )}
-          ref={ref}
-          role="button"
-          {...props}
-        />
-      </TextClassContext.Provider>
-    );
-  },
-);
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+}
 
-Button.displayName = "Button";
-
-export { Button, buttonTextVariants, buttonVariants };
-export type { ButtonProps };
+export { Button, buttonVariants, buttonTextVariants };
