@@ -29,7 +29,7 @@ export default function RegisterScreen() {
         //     "validacionMail":0
         // }
 
-        const res = await createUser({ nombre: name, apellido: lastName, email: email, username: username, password: password, validacionMail: 0 })
+        const res = await createUser({ name: name, lastname: lastName, email: email, username: username, password: password, mail_validation: 0 })
         console.log(res);
 
     }

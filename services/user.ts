@@ -7,7 +7,7 @@ export const createUser = async (userAccount: UserAccount) => {
     console.log("API_URL");
     console.log(API_URL);
 
-    const url = 'http://localhost:5000/users';
+    const url = 'http://127.0.0.1:5000/users';
     const data = {
         nombre: "Fede",
         apellido: "valle",
@@ -27,7 +27,7 @@ export const createUser = async (userAccount: UserAccount) => {
     };
 
     try {
-        const res = await fetch('http://localhost:5000/users', options);
+        const res = await fetch('http://127.0.0.1:5000/users', options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
