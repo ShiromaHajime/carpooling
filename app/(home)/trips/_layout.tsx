@@ -11,13 +11,15 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(account)',
+  initialRouteName: '(home)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function TripsLayout() {
+
+  console.log('render TripsLayout');
 
   return (
 
@@ -31,7 +33,8 @@ export default function TripsLayout() {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen name="detail/[id]" options={{ headerShown: true, title: "Detalle Viaje", }} />
+      <Stack.Screen name="detail/[id]" options={{ headerShown: true, title: "Detalle viaje", }} />
+      <Stack.Screen name="tripList" options={{ headerShown: true, title: "Viajes", }} />
     </Stack>
   );
 }

@@ -30,6 +30,8 @@ export default function IndexScreen() {
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/home'>Ir a home</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/tripList'>Ir a trips</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/detail/4'>Ir a detail trip 4</Link>
+
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/test'>Pantalla test</Link>
             </View>
 
         </View>
