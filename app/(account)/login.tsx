@@ -10,10 +10,15 @@ import { useState } from "react";
 
 export default function LoginScreen() {
 
-    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const handleLogin = async () => {
+        if (!username || !password) {
+          console.log('Error, Por favor, ingrese el username y password.');
+          return;
+        }
+    }
 
     return (
         <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900 ">
@@ -47,6 +52,11 @@ export default function LoginScreen() {
                     onChange={(e) => setPassword(e.nativeEvent.text)}
                     placeholder="Ingrese su contraseña"
                 />
+            </View>
+
+            <View className="items-center mt-7 mb-7">
+                <Button className="w-52 bg-[#176b50]" label="Iniciar sesión"
+                    onPress={handleLogin} />
             </View>
 
             <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5">
