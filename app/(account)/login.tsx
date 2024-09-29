@@ -26,7 +26,11 @@ export default function LoginScreen() {
 
     return (
         <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900 ">
-        
+            
+            <View className="bg-[#104736] items-center ">
+                <Link className="mb-2 bg-slate-500 dark:bg-slate-900 p-1 rounded" href='/(account)/welcome'>Ir a welcome</Link>
+            </View>
+            
             <View className="self-center mt-8">
                     <Avatar className="w-36 h-36">
                         <AvatarImage
@@ -59,7 +63,7 @@ export default function LoginScreen() {
             </View>
 
             <View className="items-center mt-7 mb-7">
-                <Button className="w-52 bg-[#176b50]" label="Iniciar sesión"
+                <Button className="w-52 bg-[#104736]" label="Iniciar sesión"
                     onPress={handleLogin} />
             </View>
 
