@@ -1,22 +1,31 @@
 import { API_URL } from "@/constants/const";
-import { UserAccount } from "@/types/input";
+import { UserAccount } from "@/types/types";
 
 
 export const createUser = async (userAccount: UserAccount) => {
 
-    console.log("API_URL");
+    console.log("API_URL de la variable de entorno");
     console.log(API_URL);
 
-    const url = 'http://localhost:5000/users';
+    //               Ejemplo body
+    // {
+    //     "nombre":"Fede",
+    //     "apellido":"Fritz",
+    //     "email":"santiagofirz97@gmail.com",
+    //     "password":"test1234",
+    //     "username":"santiagof",
+    //     "validacionMail":0
+    // }
+
+    const url = API_URL ?? 'http://127.0.0.1:5000';
     const data = {
-        nombre: "Fede",
-        apellido: "valle",
-        email: "santiagofirz97@gmail.com",
-        password: "test1234",
-        username: "santiagof",
+        name: userAccount.name,
+        lastname: userAccount.lastname,
+        email: userAccount.email,
+        password: userAccount.password,
+        username: userAccount.username,
         validacionMail: 0
     };
-
 
     const options = {
         method: 'POST',
@@ -27,12 +36,10 @@ export const createUser = async (userAccount: UserAccount) => {
     };
 
     try {
-        const res = await fetch('http://localhost:5000/users', options);
+        const res = await fetch(`${url}/users`, options);
         if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
+            throw new Error(`HTTP error! status: ${res.status}`); //falta manejo de errores si usuario ya existe
         }
-        // const response = JSON.stringify(res)
-        // console.log(response);
 
         if (res.status == 201) {
             return res.json()
@@ -40,7 +47,6 @@ export const createUser = async (userAccount: UserAccount) => {
 
     } catch (error) {
         console.log(error);
-
         return false;
     }
 
