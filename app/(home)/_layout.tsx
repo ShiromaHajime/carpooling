@@ -62,6 +62,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="trips"
         options={{
+          href: "/(home)/trips/tripList",
           title: 'Viajes',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
