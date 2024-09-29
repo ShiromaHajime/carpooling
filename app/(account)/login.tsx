@@ -5,17 +5,21 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useState } from "react";
-
+import { loginUser } from "@/services/userLogin";
 
 
 export default function LoginScreen() {
 
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState('');  
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
+
+        const res = await loginUser(username, password);//saque corchetes porque tiraba error
+        console.log(res);
+
         if (!username || !password) {
-          console.log('Error, Por favor, ingrese el username y password.');
+            console.log('Error, Por favor, ingrese el username y password.');
           return;
         }
     }
