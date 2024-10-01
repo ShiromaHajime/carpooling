@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "./Input"
-import { PropsInput } from "@/types/input";
+import { PropsInput } from "@/types/types";
 import { useColorScheme } from "nativewind";
 
 export const InputStyled = ({ setValueInput, placeholder, className }: PropsInput) => {
