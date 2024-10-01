@@ -1,4 +1,4 @@
-import { Link } from "expo-router"
+import { Link, router } from "expo-router"
 import { Text, View } from "react-native"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar"
 import { Button } from "@/components/Button";
@@ -6,42 +6,42 @@ import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useState } from "react";
 import { loginUser } from "@/services/userLogin";
-
+import { useToast } from "@/components/Toast";
 
 export default function LoginScreen() {
 
-    const [username, setUsername] = useState('');  
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const toast = useToast()
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleLogin = async () => {
 
-        const res = await loginUser(username, password);//saque corchetes porque tiraba error
-        
-        if (res){ 
-            //QUE LLEVE A PANTALLA DE PASAJERO/CONDUCTOR
+        const res = await loginUser(username, password);
+
+        if (res) {
+            toast.toast('Se logueo correctamente', 'success', 3000, 'top', true)
+            router.replace('/home');
         }
 
         if (!username || !password) {
             console.log('Error, Por favor, ingrese el username y password.'); //ARREGLAR PARA MENSAJE
-          return;
+            return;
         }
     }
 
     return (
         <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900 ">
-            
-            <View className="bg-[#104736] items-center ">
-                <Link className="mb-2 bg-slate-500 dark:bg-slate-900 p-1 rounded" href='/(account)/welcome'>Ir a welcome</Link>
-            </View>
-            
+
+
             <View className="self-center mt-8">
-                    <Avatar className="w-36 h-36">
-                        <AvatarImage
-                            className="w-36 h-36"
-                            source={require('../../assets/images/userlogoblack.png')}
-                        />
-                        <AvatarFallback>CG</AvatarFallback>
-                    </Avatar>
+                <Avatar className="w-36 h-36">
+                    <AvatarImage
+                        className="w-36 h-36"
+                        source={require('../../assets/images/userlogoblack.png')}
+                    />
+                    <AvatarFallback>CG</AvatarFallback>
+                </Avatar>
             </View>
 
             <View className="mt-5">
@@ -51,6 +51,7 @@ export default function LoginScreen() {
                     setValueInput={setUsername}
                     placeholder="Ingrese su nombre de usuario"
                 />
+
             </View>
 
             <View className="mt-5 mb-5">
@@ -63,6 +64,7 @@ export default function LoginScreen() {
                     onChange={(e) => setPassword(e.nativeEvent.text)}
                     placeholder="Ingrese su contraseña"
                 />
+                {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
             </View>
 
             <View className="items-center mt-7 mb-7">
@@ -70,12 +72,12 @@ export default function LoginScreen() {
                     onPress={handleLogin} />
             </View>
 
-            <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5">
+            <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5 rounded">
                 <Text className="text-gray-200">Login</Text>
                 <Link href='/(account)/register'>No tienes cuenta? registrarse</Link>
             </View>
 
 
-        </View>    
+        </View>
     )
 }
