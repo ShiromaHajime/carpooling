@@ -4,6 +4,7 @@ import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { createUser } from "@/services/user";
 import { useState } from "react";
+import { Alert, ScrollView, Text, View } from "react-native"
 import { Text, View } from "react-native"
 
 export default function RegisterScreen() {
