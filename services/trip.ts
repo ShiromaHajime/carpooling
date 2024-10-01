@@ -1,23 +1,20 @@
-import { API_URL } from "@/constants/const";
-import { UserAccount } from "@/types/types";
 
-
-export const createUser = async (userAccount: UserAccount) => {
+export const joinTrip = async ({ id_passager, id_trip }: { id_passager: string, id_trip: string }) => {
 
     console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
+    // console.log(API_URL);
 
     //               Ejemplo body
     // {
-    //     "name":"Fede",
-    //     "lastname":"Fritz",
+    //     "nombre":"Fede",
+    //     "apellido":"Fritz",
     //     "email":"santiagofirz97@gmail.com",
     //     "password":"test1234",
     //     "username":"santiagof",
     //     "validacionMail":0
     // }
 
-    const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
+    const url = API_URL ?? 'http://127.0.0.1:5000';
     const data = {
         name: userAccount.name,
         lastname: userAccount.lastname,
@@ -36,12 +33,7 @@ export const createUser = async (userAccount: UserAccount) => {
     };
 
     try {
-        console.log('hace fetch');
-
         const res = await fetch(`${url}/users`, options);
-        console.log('tern fetch');
-        console.log(res);
-
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`); //falta manejo de errores si usuario ya existe
         }
@@ -54,24 +46,3 @@ export const createUser = async (userAccount: UserAccount) => {
         console.log(error);
         return false;
     }
-
-
-
-
-    // fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(data)
-    // })
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok ' + response.statusText);
-    //         }
-    //         return response.json();
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error:', error);
-    //     });
-}
