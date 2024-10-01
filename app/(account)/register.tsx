@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar"
 import { Button } from "@/components/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
+import { createUser } from "@/services/user";
 import { useState } from "react";
 import { Text, View } from "react-native"
 
@@ -14,14 +15,23 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState('');
 
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         console.log('handle register');
         console.log('values');
-        console.log(name);
-        console.log(lastName);
-        console.log(username);
-        console.log(email);
-        console.log(password);
+
+
+        // {
+        //     "nombre":"Fede",
+        //     "apellido":"Fritz",
+        //     "email":"santiagofirz97@gmail.com",
+        //     "password":"test1234",
+        //     "username":"santiagof",
+        //     "validacionMail":0
+        // }
+
+        const res = await createUser({ nombre: name, apellido: lastName, email: email, username: username, password: password, validacionMail: 0 })
+        console.log(res);
+
     }
 
     return (
@@ -88,8 +98,8 @@ export default function RegisterScreen() {
                 />
             </View>
 
-            <View className="items-center mt-12">
-                <Button className="w-52" label="Registrarse"
+            <View className="items-center mt-7">
+                <Button className="w-52 bg-[#7d3bed]" label="Registrarse"
                     onPress={handleRegister} />
             </View>
 
