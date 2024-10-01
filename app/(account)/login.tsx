@@ -16,10 +16,13 @@ export default function LoginScreen() {
     const handleLogin = async () => {
 
         const res = await loginUser(username, password);//saque corchetes porque tiraba error
-        console.log(res);
+        
+        if (res){ 
+            //QUE LLEVE A PANTALLA DE PASAJERO/CONDUCTOR
+        }
 
         if (!username || !password) {
-            console.log('Error, Por favor, ingrese el username y password.');
+            console.log('Error, Por favor, ingrese el username y password.'); //ARREGLAR PARA MENSAJE
           return;
         }
     }

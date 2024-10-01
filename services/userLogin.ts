@@ -24,8 +24,8 @@ export const loginUser = async (username: string, password: string) => {
         // const response = JSON.stringify(res)
         // console.log(response);
 
-        if (res.status == 201) {
-            return res.json()
+        if (res.status == 200) {
+            return res.json() //DEBERIA DEVOLVER TRUE
         } else return false
 
     } catch (error) {
