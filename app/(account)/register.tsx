@@ -5,6 +5,7 @@ import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { createUser } from "@/services/user";
 import { schemaFormUser } from "@/types/types";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native"
 import { z } from 'zod';
@@ -36,11 +37,11 @@ export default function RegisterScreen() {
         } else {
             // Datos válidos
             console.log(result.data);
-            toast('Enviando datos...', 'info', 3000, 'top')
+            toast('Enviando datos...', 'info', 1200, 'top')
             const res = await createUser({ name: name, lastname: lastname, email: email, username: username, password: password })
-            console.log(res);
             if (res) {
-                toast('Usuario creado exitosamente!', 'success', 2300, 'top')
+                toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
+                router.replace('/login')
             } else {
                 toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
             }

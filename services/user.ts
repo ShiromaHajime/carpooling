@@ -9,15 +9,15 @@ export const createUser = async (userAccount: UserAccount) => {
 
     //               Ejemplo body
     // {
-    //     "nombre":"Fede",
-    //     "apellido":"Fritz",
+    //     "name":"Fede",
+    //     "lastname":"Fritz",
     //     "email":"santiagofirz97@gmail.com",
     //     "password":"test1234",
     //     "username":"santiagof",
     //     "validacionMail":0
     // }
 
-    const url = API_URL ?? 'http://127.0.0.1:5000';
+    const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
     const data = {
         name: userAccount.name,
         lastname: userAccount.lastname,
@@ -36,7 +36,12 @@ export const createUser = async (userAccount: UserAccount) => {
     };
 
     try {
+        console.log('hace fetch');
+
         const res = await fetch(`${url}/users`, options);
+        console.log('tern fetch');
+        console.log(res);
+
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`); //falta manejo de errores si usuario ya existe
         }
