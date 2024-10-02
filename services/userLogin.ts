@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants/const";
 
 export const loginUser = async (username: string, password: string) => {
 
@@ -17,7 +18,7 @@ export const loginUser = async (username: string, password: string) => {
 
     try {
         
-        const res = await fetch('http://localhost:5000/users', conver);
+        const res = await fetch(API_URL + '/users', conver);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }

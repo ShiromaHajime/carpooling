@@ -11,34 +11,18 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(account)',
+  initialRouteName: '(home)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function AccountLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
+export default function TripsLayout() {
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+  console.log('render TripsLayout');
 
   return (
+
     <Stack
       screenOptions={{
         headerStyle: {
@@ -49,9 +33,8 @@ export default function AccountLayout() {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen name="welcome" options={{ headerShown: true, title: "Welcome" }} />
-      <Stack.Screen name="register" options={{ headerShown: true, title: "Registro" }} />
-      <Stack.Screen name="login" options={{ headerShown: true, title: "Login" }} />
+      <Stack.Screen name="detail/[id]" options={{ headerShown: true, title: "Detalle viaje", }} />
+      <Stack.Screen name="tripList" options={{ headerShown: true, title: "Viajes", }} />
     </Stack>
   );
 }
