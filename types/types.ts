@@ -68,3 +68,29 @@ export interface Trip {
     vehicleDriverId: string;
 }
 
+interface Address {
+    id: number;
+    street: string;
+    number: number;
+    city: number;
+}
+
+export interface Driver {
+    user_id: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    password: string;
+    is_active: boolean;
+    registration_date: string;
+}
+
+export interface TripFromDB {
+    id: number;
+    departure_date: string;
+    departure_address: Address;
+    arrival_address: Address;
+    driver: Driver;
+}
+
