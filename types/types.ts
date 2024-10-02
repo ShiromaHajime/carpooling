@@ -55,26 +55,6 @@ export interface PropsInput {
 
 export type Users = UserAccount[]
 
-
-export interface Trip {
-    id: string;
-    departureDate: string;
-    departureTime: string;
-    availableSeats: number;
-    seatPrice: number;
-    creationTimestamp: string;
-    departureAddressId: string;
-    arrivalAddressId: string;
-    vehicleDriverId: string;
-}
-
-interface Address {
-    id: number;
-    street: string;
-    number: number;
-    city: number;
-}
-
 export interface Driver {
     user_id: number;
     username: string;
@@ -93,4 +73,55 @@ export interface TripFromDB {
     arrival_address: Address;
     driver: Driver;
 }
+
+interface Province {
+    province_id: number;
+    name: string;
+}
+
+interface City {
+    id: number;
+    name: string;
+    province: Province;
+}
+
+interface Address {
+    id: number;
+    street: string;
+    number: number;
+    city: City;
+}
+
+interface User {
+    creation_date: string;
+    email: string;
+    first_name: string;
+    id: number;
+    last_name: string;
+}
+
+interface Driver2 {
+    id: number;
+    user: User;
+
+}
+
+interface Vehicle_driver {
+    driver: Driver2;
+}
+
+
+interface Trip {
+    arrival_address: Address;
+    available_seats: number;
+    creation_timestamp: number;
+    deaparture_address: Address;
+    departure_date: string;
+    departure_time: string;
+    id: number;
+    seat_price: number;
+    vehicle_driver: Vehicle_driver;
+}
+
+export type Trips = Trip[]
 
