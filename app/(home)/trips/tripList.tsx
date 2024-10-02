@@ -2,6 +2,7 @@ import { Trips } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router"; // Importa el hook router para navegación
+import { API_URL } from "@/constants/const";
 
 export default function TripsScreen() {
   const [trips, setTrips] = useState<Trips>([]);
@@ -9,7 +10,7 @@ export default function TripsScreen() {
   const router = useRouter();  // Inicializa el router
 
   useEffect(() => {
-    fetch('http://192.168.0.225:5000/trip')
+    fetch(API_URL + '/trip')
       .then(response => response.json())
       .then(data => {
           setTrips(data);

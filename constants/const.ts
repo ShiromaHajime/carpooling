@@ -5,4 +5,4 @@
 // EXPO_PUBLIC_API_URL = https://dscarpooling-back.alwaysdata.net
 //
 
-export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://192.168.0.176:5000"
+export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://192.168.0.225:5000"

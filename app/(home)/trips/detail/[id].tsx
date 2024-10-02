@@ -2,25 +2,12 @@ import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
 import { getTripById } from "@/services/trip";
-import { Driver, Trip, TripFromDB } from "@/types/types";
+import { Driver, TripFromDB } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
-
-const dummyTrip: Trip =
-{
-    id: "1",
-    departureDate: "2024-09-30T00:00:00Z",
-    departureTime: "14:30",
-    availableSeats: 20,
-    seatPrice: 30.0,
-    creationTimestamp: "2024-09-01T10:00:00Z",
-    departureAddressId: "addr123",
-    arrivalAddressId: "addr436",
-    vehicleDriverId: "driver789"
-}
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -93,12 +80,12 @@ export default function DetailTripScreen() {
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
-                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address.city}, calle {trip.arrival_address.street}</Text>
+                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address.city.name}, calle {trip.arrival_address.street}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
-                    <Text className="text-[#64748B]">Cuidad {trip.departure_address.city}, calle {trip.departure_address.street}</Text>
+                    <Text className="text-[#64748B]">Cuidad {trip.departure_address.city.name}, calle {trip.departure_address.street}</Text>
                 </View>
 
                 <View className="mt-3">
