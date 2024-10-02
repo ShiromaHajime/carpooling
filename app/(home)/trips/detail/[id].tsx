@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
 import { getTripById } from "@/services/trip";
-import { Driver, TripFromDB } from "@/types/types";
+import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react";
@@ -11,8 +11,8 @@ import { CardDriver } from "./CardDriver";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
-    const [trip, setTrip] = useState<TripFromDB>()
-    const [driver, setDriver] = useState<Driver>()
+    const [trip, setTrip] = useState<TripById>()
+    const [driver, setDriver] = useState<User>()
 
     const [loading, setLoading] = useState(true)
     const { toast } = useToast();
@@ -90,22 +90,22 @@ export default function DetailTripScreen() {
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Fecha y hora de salida</Text>
-                    <Text className="text-[#64748B]">con departureDate: {trip.departure_date}</Text>
-                    <Text className="text-[#64748B]">con departureTime: sin tiempo por ahora</Text>
+                    <Text className="text-[#64748B]">Fecha: {trip.departure_date}</Text>
+                    <Text className="text-[#64748B]">Hora: {trip.departure_time}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Asientos disponibles</Text>
-                    <Text className="text-[#64748B]">con availableSeats: sin asientos por ahora</Text>
+                    <Text className="text-[#64748B]">{trip.available_seats}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Precio por asiento</Text>
-                    <Text className="text-[#64748B]">con seatPrice: sin precio por ahora</Text>
+                    <Text className="text-[#64748B]">{trip.seat_price} ARS</Text>
                 </View>
 
                 <View className="mt-8 w-full">
-                    <CardDriver driver={driver} />
+                    <CardDriver driver={driver} vehicle={trip.vehicle} />
                 </View>
 
                 <View className="self-center mt-8 mb-6">

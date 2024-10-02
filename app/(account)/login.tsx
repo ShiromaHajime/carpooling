@@ -19,9 +19,9 @@ export default function LoginScreen() {
 
         const res = await loginUser(username, password);
 
-        if (res) {
-            toast.toast('Se logueo correctamente', 'success', 3000, 'top', true);
-        }
+    if (res) {
+      handleShowModal();
+    }
 
     if (!username || !password) {
       console.log('Error, Por favor, ingrese el username y password.'); //ARREGLAR PARA MENSAJE
@@ -45,12 +45,6 @@ export default function LoginScreen() {
 
   return (
     <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900">
-
-      <View className="bg-[#104736] items-center">
-        <Link className="mb-2 bg-slate-500 dark:bg-slate-900 p-1 rounded" href='/(account)/welcome'>
-          Ir a welcome
-        </Link>
-      </View>
 
       <View className="self-center mt-8">
         <Avatar className="w-36 h-36">
@@ -82,9 +76,8 @@ export default function LoginScreen() {
       </View>
 
       <View className="items-center mt-7 mb-7">
-      <Button className="w-52 bg-[#104736]" label = "Iniciar sesión"
-onPress = { handleLogin } />
-        <Button className="w-52 bg-[#104736]" label="Iniciar sesión" onPress={handleShowModal} />
+        <Button className="w-52 bg-[#104736]" label="Iniciar sesión"
+          onPress={handleLogin} />
       </View>
 
             <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5 rounded">

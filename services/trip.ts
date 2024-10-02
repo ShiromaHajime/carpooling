@@ -1,5 +1,5 @@
 import { API_URL } from "@/constants/const";
-import { TripFromDB } from "@/types/types";
+import { TripById } from "@/types/types";
 
 export const joinTrip = async ({ id_passager, id_trip }: { id_passager: string, id_trip: string }) => {
 
@@ -23,7 +23,7 @@ export const joinTrip = async ({ id_passager, id_trip }: { id_passager: string, 
     }
 }
 
-export const getTripById = async (id_trip: string): Promise<TripFromDB | false> => {
+export const getTripById = async (id_trip: string): Promise<TripById | false> => {
 
     // esto segun lo que devuelve el endpoint
     // function-get_trip,-join_trip-y-add-database-tables
