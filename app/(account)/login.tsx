@@ -15,7 +15,7 @@ export default function LoginScreen() {
     const res = await loginUser(username, password);//saque corchetes porque tiraba error
 
     if (res) {
-      // se tiene que ejecutar el handleShowModal
+      handleShowModal();
     }
 
     if (!username || !password) {
@@ -71,9 +71,8 @@ export default function LoginScreen() {
       </View>
 
       <View className="items-center mt-7 mb-7">
-      <Button className="w-52 bg-[#104736]" label = "Iniciar sesión"
-onPress = { handleLogin } />
-        <Button className="w-52 bg-[#104736]" label="Iniciar sesión" onPress={handleShowModal} />
+        <Button className="w-52 bg-[#104736]" label="Iniciar sesión"
+          onPress={handleLogin} />
       </View>
 
       <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5">

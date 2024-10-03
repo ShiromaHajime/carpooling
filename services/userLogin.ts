@@ -18,7 +18,7 @@ export const loginUser = async (username: string, password: string) => {
 
     try {
         
-        const res = await fetch(API_URL + '/users', conver);
+        const res = await fetch(API_URL + '/auth/login', conver);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
