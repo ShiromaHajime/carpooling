@@ -100,7 +100,7 @@ interface Driver {
 
 }
 
-interface Vehicle {
+export interface Vehicle {
     brand: string;
     color: string;
     id: number;

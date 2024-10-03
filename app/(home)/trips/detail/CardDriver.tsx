@@ -1,11 +1,11 @@
 import { Badge } from "@/components/Badge"
 import { Button } from "@/components/Button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/Card"
-import { Driver } from "@/types/types"
+import { User, Vehicle } from "@/types/types"
 import { Medal } from "lucide-react-native"
 import { Text, View } from "react-native"
 
-export const CardDriver = ({ driver }: { driver: Driver }) => {
+export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle }) => {
 
     return (
         <View className="flex gap-2">
@@ -20,7 +20,7 @@ export const CardDriver = ({ driver }: { driver: Driver }) => {
 
                         <Button label="Ver perfil" />
                     </View>
-                    <CardDescription>Automovil: Bora negro</CardDescription>
+                    <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.color}</CardDescription>
                 </CardHeader>
                 <CardFooter className="flex flex-row justify-between items-center flex-wrap">
                     <Text className="text-sm dark:text-slate-100">Viajes realizados: 4</Text>
@@ -29,6 +29,5 @@ export const CardDriver = ({ driver }: { driver: Driver }) => {
                 </CardFooter>
             </Card>
         </View>
-
     )
 }
