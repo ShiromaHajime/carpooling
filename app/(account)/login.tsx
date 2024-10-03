@@ -15,7 +15,7 @@ export default function LoginScreen() {
     const res = await loginUser(username, password);//saque corchetes porque tiraba error
 
     if (res) {
-      //QUE LLEVE A PANTALLA DE PASAJERO/CONDUCTOR
+      // se tiene que ejecutar el handleShowModal
     }
 
     if (!username || !password) {

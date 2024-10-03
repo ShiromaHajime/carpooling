@@ -50,7 +50,7 @@ export default function AccountLayout() {
         },
       }}>
       <Stack.Screen name="register" options={{ headerShown: true, title: "Registro" }} />
-      <Stack.Screen name="login" options={{ headerShown: true, title: "Login" }} />
+      <Stack.Screen name="login" options={{ headerShown: true, title: "Login", headerBackVisible: false }} />
     </Stack>
   );
 }

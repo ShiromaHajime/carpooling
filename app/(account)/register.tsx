@@ -7,8 +7,7 @@ import { createUser } from "@/services/user";
 import { schemaFormUser } from "@/types/types";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native"
-import { z } from 'zod';
+import { ScrollView, Text, View } from "react-native"
 
 export default function RegisterScreen() {
 
