@@ -5,8 +5,8 @@ import { useRouter } from "expo-router";
 export default function CreateTripScreen() {
   const router = useRouter();
 
-  const handleBackToTrips = () => {
-    router.push("/trips/tripList");  // Redirige de nuevo a la lista de viajes
+  const handleBackToHome = () => {
+    router.push("/(home)/home");
   };
 
   return (
@@ -20,8 +20,8 @@ export default function CreateTripScreen() {
 
       <Button
         className="w-40"
-        label="Volver a la lista"
-        onPress={handleBackToTrips}
+        label="Volver al inicio"
+        onPress={handleBackToHome}
       />
     </View>
   );
