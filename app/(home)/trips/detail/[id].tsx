@@ -90,18 +90,18 @@ export default function DetailTripScreen() {
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Fecha y hora de salida</Text>
-                    <Text className="text-[#64748B]">con departureDate: {trip.departure_date}</Text>
-                    <Text className="text-[#64748B]">con departureTime: {trip.departure_time}</Text>
+                    <Text className="text-[#64748B]">Fecha: {trip.departure_date}</Text>
+                    <Text className="text-[#64748B]">Hora: {trip.departure_time}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Asientos disponibles</Text>
-                    <Text className="text-[#64748B]">con availableSeats: {trip.available_seats}</Text>
+                    <Text className="text-[#64748B]">{trip.available_seats}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Precio por asiento</Text>
-                    <Text className="text-[#64748B]">con seatPrice: {trip.seat_price}</Text>
+                    <Text className="text-[#64748B]">{trip.seat_price} ARS</Text>
                 </View>
 
                 <View className="mt-8 w-full">
