@@ -55,23 +55,17 @@ export interface PropsInput {
 
 export type Users = UserAccount[]
 
-// export interface Driver {
-//     user_id: number;
-//     username: string;
-//     email: string;
-//     first_name: string;
-//     last_name: string;
-//     password: string;
-//     is_active: boolean;
-//     registration_date: string;
-// }
-
-export interface TripById {
-    id: number;
-    departure_date: string;
-    departure_address: Address;
+export interface TripById {  // las peticiones de /trips/:id devuelven en este formato
     arrival_address: Address;
+    available_seats: number;
+    creation_timestamp: number;
+    departure_address: Address;
+    departure_date: string;
+    departure_time: string;
     driver: User;
+    id: number;
+    seat_price: number;
+    vehicle: Vehicle;
 }
 
 interface Province {
@@ -106,12 +100,20 @@ interface Driver {
 
 }
 
+interface Vehicle {
+    brand: string;
+    color: string;
+    id: number;
+    license_plate: string;
+    model: string;
+}
+
 interface Vehicle_driver {
     driver: Driver;
 }
 
 
-interface Trip {
+interface Trip {    // las peticiones de /trip devuelven en este formato
     arrival_address: Address;
     available_seats: number;
     creation_timestamp: number;
