@@ -13,9 +13,9 @@ export default function TripsScreen() {
     fetch(API_URL + '/trip')
       .then(response => response.json())
       .then(data => {
-          setTrips(data);
-          console.log(data); 
-          setLoading(false);
+        setTrips(data);
+        console.log(data);
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error:', error);
