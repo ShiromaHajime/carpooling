@@ -20,7 +20,7 @@ export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle
 
                         <Button label="Ver perfil" />
                     </View>
-                    <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.color}</CardDescription>
+                    <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.year} {vehicle.color}</CardDescription>
                 </CardHeader>
                 <CardFooter className="flex flex-row justify-between items-center flex-wrap">
                     <Text className="text-sm dark:text-slate-100">Viajes realizados: 4</Text>

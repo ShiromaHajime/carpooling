@@ -106,6 +106,7 @@ export interface Vehicle {
     id: number;
     license_plate: string;
     model: string;
+    year: number;
 }
 
 interface Vehicle_driver {
