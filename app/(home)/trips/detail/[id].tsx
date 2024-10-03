@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
 import { getTripById } from "@/services/trip";
-import { Driver, TripFromDB } from "@/types/types";
+import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react";
@@ -11,8 +11,8 @@ import { CardDriver } from "./CardDriver";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
-    const [trip, setTrip] = useState<TripFromDB>()
-    const [driver, setDriver] = useState<Driver>()
+    const [trip, setTrip] = useState<TripById>()
+    const [driver, setDriver] = useState<User>()
 
     const [loading, setLoading] = useState(true)
     const { toast } = useToast();
