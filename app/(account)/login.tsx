@@ -17,7 +17,7 @@ export default function LoginScreen() {
 
   const context = useContext(GlobalContext);
 
-    const toast = useToast()
+    const {toast} = useToast()
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleLogin = async () => {
@@ -27,10 +27,10 @@ export default function LoginScreen() {
     if (res) {
       const user = res.user
       handleShowModal(user);
-    }
+    }else toast('Usuario y/o contraseña incorrecta', 'destructive', 3000);
 
     if (!username || !password) {
-      console.log('Error, Por favor, ingrese el username y password.'); //ARREGLAR PARA MENSAJE
+      toast('Por favor, ingrese usuario y contraseña.', "destructive", 3000); //ARREGLAR PARA MENSAJE
       return;
     }
   }
@@ -64,17 +64,17 @@ export default function LoginScreen() {
     <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900">
 
       <View className="self-center mt-8">
-        <Avatar className="w-36 h-36">
-          <AvatarImage
-            className="w-36 h-36"
-            source={require('../../assets/images/userlogoblack.png')}
-          />
-          <AvatarFallback>CG</AvatarFallback>
-        </Avatar>
+        <Avatar className="w-40 h-40">
+            <AvatarImage
+              className="w-40 h-40"
+              source={require('../../assets/images/CarKeys.png')}
+            />
+            <AvatarFallback>CG</AvatarFallback>
+          </Avatar>
       </View>
 
       <View className="mt-5">
-        <Text className="text-md font-medium mb-2 dark:text-slate-100">Username</Text>
+        <Text className="text-md font-medium mb-2 dark:text-slate-100">Usuario</Text>
         <InputStyled
           setValueInput={setUsername}
           placeholder="Ingrese su nombre de usuario"
@@ -93,13 +93,13 @@ export default function LoginScreen() {
       </View>
 
       <View className="items-center mt-7 mb-7">
-        <Button className="w-52 bg-[#104736]" label="Iniciar sesión"
-          onPress={handleLogin} />
+        <Button className="w-52 h-11 bg-[#104736]" label="Iniciar sesión"
+          onPress={handleLogin} /> 
       </View>
 
-            <View className="bg-slate-400 flex items-center justify-center h-20 pl-5 pr-5 rounded">
-                <Text className="text-gray-200">Login</Text>
-                <Link href='/(account)/register'>No tienes cuenta? registrarse</Link>
+            <View className="bg-slate-400 flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
+                <Text>No tienes cuenta? </Text>
+                <Link href='/(account)/register'>registrate!</Link>
             </View>
 
     </View>
