@@ -1,6 +1,8 @@
 import { ScrollView, Text, View } from "react-native"
 import { Button } from "@/components/Button";
 import { useRouter } from "expo-router";
+import { GlobalContext } from "@/utils/Provider";
+import { useContext, useState } from "react";
 import { useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { Tripc } from "@/types/types";
@@ -9,6 +11,8 @@ import { createTrip } from "@/services/createTrip";
 
 export default function CreateTripScreen() {
   const router = useRouter();
+  const context = useContext(GlobalContext)
+  const [user, setUser] = useState(context?.state);
   const [deaparture_address, setTripDepaAddress] = useState('');
   const [arrival_address, setTripArrivAddress] = useState('');
   const [departure_date, setTripDate] = useState('');
@@ -39,7 +43,7 @@ export default function CreateTripScreen() {
 
     }
 
-
+    <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
   return (
         <ScrollView>
             <View className="bg-gray-200 flex h-full pl-5 pr-5 dark:bg-gray-900">
@@ -51,6 +55,7 @@ export default function CreateTripScreen() {
                     Aquí podrás crear un nuevo viaje.
                 </Text>
 
+      <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
                 <View className="mt-2 mb-6" >
                     <Text className="text-md font-medium mb-2 dark:text-slate-100"
                     >Lugar de inicio del viaje</Text>

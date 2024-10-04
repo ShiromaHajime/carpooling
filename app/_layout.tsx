@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import '../global.css';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ToastProvider } from '@/components/Toast';
+import { GlobalProvider } from '@/utils/Provider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,12 +29,15 @@ export default function RootLayout() {
   }
 
   return (
-    <ToastProvider position="top">
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(account)" options={{ headerShown: false }} />
-        <Stack.Screen name="(home)" options={{ headerShown: false }} />
-      </Stack>
-    </ToastProvider>
+    <GlobalProvider>
+      <ToastProvider position="top">
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="test" options={{ headerShown: false }} />
+          <Stack.Screen name="(account)" options={{ headerShown: false }} />
+          <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        </Stack>
+      </ToastProvider>
+    </GlobalProvider>
   );
 }
