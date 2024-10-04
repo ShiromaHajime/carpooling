@@ -9,6 +9,8 @@ import { useContext, useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
 import { GlobalContext } from "@/utils/Provider";
+import { Skeleton } from "@/components/Skeleton";
+import { LoadingScreen } from "./LoadingScreen";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -69,13 +71,8 @@ export default function DetailTripScreen() {
     }
 
 
-    if (loading) {
-        return (
-            <View>
-                <Text>Cargando detalle del viaje...</Text>
-            </View>
-        )
-    }
+    if (loading) return (<LoadingScreen />)
+
     console.log('devuelve algo');
 
     if (!trip || !driver) return
