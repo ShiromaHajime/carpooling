@@ -5,46 +5,52 @@ import { GlobalContext } from "@/utils/Provider";
 import { useContext, useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { createTrip } from "@/services/createTrip";
+import { useToast } from "@/components/Toast";
 
 
 export default function CreateTripScreen() {
-  const router = useRouter();
-  const context = useContext(GlobalContext)
-  const [user, setUser] = useState(context?.state);
-  const [deaparture_address, setTripDepaAddress] = useState('');
-  const [arrival_address, setTripArrivAddress] = useState('');
-  const [departure_date, setTripDate] = useState('');
-  const [departure_time, setTripTime] = useState('');
-  const [available_seats, setTripSeat] = useState('');
-  const [seat_price, setTripSeatPrice] = useState('');
-  const [vehicle_driver, setVehicle] = useState('');
+    const router = useRouter();
+    const context = useContext(GlobalContext)
+    const idDriver = context?.state.id
+    const [user, setUser] = useState(context?.state);
+    const [deaparture_address, setTripDepaAddress] = useState('');
+    const [arrival_address, setTripArrivAddress] = useState('');
+    const [departure_date, setTripDate] = useState('');
+    const [departure_time, setTripTime] = useState('');
+    const [available_seats, setTripSeat] = useState('');
+    const [seat_price, setTripSeatPrice] = useState('');
+    const [vehicle_driver, setVehicle] = useState('');
+    const { toast } = useToast();
+
+    const handleBackToHome = () => {
+        router.push("/(home)/home");
+    };
+
+    /*const voptions= [0,4,10]
+    //[Tripc.vehicle_driver_id]
+    <Select
+                  label="Choose an option"
+                  options={voptions}
   
-  const handleBackToHome = () => {
-    router.push("/(home)/home");
-  };
-
-  /*const voptions= [0,4,10]
-  //[Tripc.vehicle_driver_id]
-  <Select
-                label="Choose an option"
-                options={voptions}
-
-                onSelect={setSelectedValue}
-                selectedValue={selectedValue}
-                labelKey="description"
-                valueKey="code"
-                />
-    */
+                  onSelect={setSelectedValue}
+                  selectedValue={selectedValue}
+                  labelKey="description"
+                  valueKey="code"
+                  />
+      */
     const handleCreateTrip = async () => {
-        const resp= await createTrip({deaparture_address, arrival_address, departure_date, departure_time, available_seats, seat_price, vehicle_driver})
+        const res = await createTrip({ idDriver, deaparture_address, arrival_address, departure_date, departure_time, available_seats, seat_price, vehicle_driver })
+        if (res) {
+            toast(res.message ?? 'Viaje creado exitosamente!', 'success', 2000, 'top')
+        }
 
     }
 
     <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
-  return (
+    return (
         <ScrollView>
             <View className="bg-gray-200 flex h-full pl-5 pr-5 dark:bg-gray-900">
-            
+
                 <Text className="text-2xl font-bold mb-5 text-slate-800 dark:text-slate-100">
                     ¡Crea un viaje!
                 </Text>
@@ -121,18 +127,18 @@ export default function CreateTripScreen() {
 
                 <View className="pt-10 flex-row justify-between pb-10">
                     <Button
-                    className="w-40"
-                    label="Volver al inicio"
-                    onPress={handleBackToHome}
+                        className="w-40"
+                        label="Volver al inicio"
+                        onPress={handleBackToHome}
                     />
                     <Button
-                    className="w-40"
-                    label="Crear viaje"
-                    onPress={handleCreateTrip}
+                        className="w-40"
+                        label="Crear viaje"
+                        onPress={handleCreateTrip}
                     />
                 </View>
-                
-                
+
+
             </View>
         </ScrollView>
     );

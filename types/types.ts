@@ -122,6 +122,7 @@ export interface Vehicle_driver {
 
 
 export interface Tripc {
+    idDriver?: number
     deaparture_address: string,
     arrival_address: string,
     departure_date: string,

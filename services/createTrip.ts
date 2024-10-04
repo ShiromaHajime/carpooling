@@ -9,14 +9,26 @@ export const createTrip = async (Tripc: Tripc) => {
 
     const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
 
+    // const bodyExample = {
+    //     departure_date: "2023-25-30",
+    //     departure_time: "10:05",
+    //     available_seats: "3",
+    //     seat_price: "150.5",
+    //     departure_address: "Buenos Aires, La Plata, Calle 58, 607",  // FORMATO "STRING", "STRING", "STRING"
+    //     arrival_address: "Buenos Aires, La Plata, Calle 58, 843", // FORMATO "STRING", "STRING", "STRING"
+    //     vehicle_driver_id: 1
+    // }
+
+
+
     const data = {
-        deaparture_address: Tripc.deaparture_address,
-        arrival_address: Tripc.arrival_address,
         departure_date: Tripc.departure_date,
         departure_time: Tripc.departure_time,
-        available_seats:Tripc.available_seats,
+        available_seats: Tripc.available_seats,
         seat_price: Tripc.seat_price,
-        vehicle_driver: Tripc.vehicle_driver,
+        departure_address: "Buenos Aires, La Plata, Calle 58, 607",
+        arrival_address: "Buenos Aires, La Plata, Calle 58, 843",
+        vehicle_driver_id: Tripc.idDriver
     };
 
     const options = {
@@ -24,22 +36,19 @@ export const createTrip = async (Tripc: Tripc) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data) // Convertir meetingDTO a una cadena JSON
+        body: JSON.stringify(data)
     };
 
     try {
-        console.log('hace fetch');
 
         const res = await fetch(`${url}/trip`, options);
-        console.log('tern fetch');
-        console.log(res);
 
         if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`); //falta manejo de errores si usuario ya existe
+            throw new Error(`HTTP error! status: ${res.status}`)
         }
 
-        if (res.status == 201) {
-            return res.json()
+        if (res.status == 200) {
+            return await res.json()
         } else return false
 
     } catch (error) {
