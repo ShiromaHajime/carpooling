@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
-import { getTripById } from "@/services/trip";
+import { getTripById, joinTrip } from "@/services/trip";
 import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
@@ -53,8 +53,14 @@ export default function DetailTripScreen() {
     }, [])
 
 
-    const handleJoinTrip = () => {
+    const handleJoinTrip = async () => {
         console.log('join trip'); //falta hacer la request para unirse al viaje
+        const { data, error } = await joinTrip("1", "1")
+        if (error) {
+            toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+            return
+        }
+        toast('Se ha unido al viaje! Puedes hablar con el conductor para coordinar el viaje', 'success', 4000, 'top', false);
 
     }
 
