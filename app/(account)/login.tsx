@@ -45,14 +45,14 @@ export default function LoginScreen() {
         {
           text: "Conductor", onPress: () => {
             context?.setState(user)
-            router.push("/trips/create")
+            router.replace("/trips/create")
 
           }
         },  // Redirigir a crear viaje
         {
           text: "Pasajero", onPress: () => {
             context?.setState(user)
-            router.push("/trips/tripList")
+            router.replace("/trips/tripList")
           }
         },  // Redirigir a lista de viajes
       ],

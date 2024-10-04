@@ -61,7 +61,7 @@ interface VehicleDriver {
     vehicle: Vehicle;
 }
 
-export interface TripById {  // las peticiones de /trips/:id devuelven en este formato
+export interface TripById {  // las peticiones de /trips/id devuelven en este formato
     id: number;
     departure_date: string; // Consider using Date type if parsing the date
     departure_time: string; // You might want to parse this into a Date object as well
@@ -121,7 +121,7 @@ export interface Vehicle_driver {
 
 
 
-export interface Tripc {
+export interface Tripc { // de donde sales este trip?
     idDriver?: number
     deaparture_address: string,
     arrival_address: string,
