@@ -116,13 +116,13 @@ export interface Vehicle_driver {
 
 
 export interface Tripc {
+    deaparture_address: string,
+    arrival_address: string,
     departure_date: string,
     departure_time: string,
     available_seats: number,
     seat_price: number,
-    deaparture_address: Address,
-    arrival_address: Address,
-    vehicle_driver_id: number
+    vehicle_driver: string,
 }
 
 export interface Trip {    // las peticiones de /trip devuelven en este formato

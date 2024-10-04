@@ -1,15 +1,22 @@
-import { View, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native"
 import { Button } from "@/components/Button";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { Tripc } from "@/types/types";
-import {  } from "@/components/Select";
+import { createTrip } from "@/services/createTrip";
+
 
 export default function CreateTripScreen() {
   const router = useRouter();
-  const [TripDate, setTripDate] = useState('');
-
+  const [deaparture_address, setTripDepaAddress] = useState('');
+  const [arrival_address, setTripArrivAddress] = useState('');
+  const [departure_date, setTripDate] = useState('');
+  const [departure_time, setTripTime] = useState('');
+  const [available_seats, setTripSeat] = useState('');
+  const [seat_price, setTripSeatPrice] = useState('');
+  const [vehicle_driver, setVehicle] = useState('');
+  
   const handleBackToHome = () => {
     router.push("/(home)/home");
   };
@@ -26,39 +33,109 @@ export default function CreateTripScreen() {
                 labelKey="description"
                 valueKey="code"
                 />
-*/
+    */
+    const handleCreateTrip = async () => {
+        const resp= await createTrip({deaparture_address, arrival_address, departure_date, departure_time, available_seats, seat_price, vehicle_driver})
+
+    }
+
 
   return (
-    <View className="bg-gray-200 flex items-center justify-center h-screen pl-5 pr-5 dark:bg-gray-900">
-      <Text className="text-2xl font-bold mb-5 text-slate-800 dark:text-slate-100">
-        Pantalla de crear viaje
-      </Text>
+        <ScrollView>
+            <View className="bg-gray-200 flex h-full pl-5 pr-5 dark:bg-gray-900">
+            
+                <Text className="text-2xl font-bold mb-5 text-slate-800 dark:text-slate-100">
+                    Pantalla de crear viaje
+                </Text>
+                <Text className="text-base mb-5 text-slate-600 dark:text-slate-300">
+                    Aquí podrás crear un nuevo viaje.
+                </Text>
 
-      <View className="mt-2">
-            <Text className="text-md font-medium mb-2 dark:text-slate-100"
-            >Hora de partida</Text>
-            <InputStyled
-                className=""
-                setValueInput={setTripDate}
-                placeholder="Ingrese la hora de salida del viaje"
-             />
-      </View>
+                <View className="mt-2 mb-6" >
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Lugar de inicio del viaje</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripDepaAddress}
+                        placeholder="Ubicación de salida"
+                    />
+                </View>
 
+                <View className="mt-2 mb-6" >
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Lugar de finalización del viaje</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripArrivAddress}
+                        placeholder="Ubicación de salida"
+                    />
+                </View>
 
-      <View className="mt-2">
-            <Text className="text-md font-medium mb-2 dark:text-slate-100"
-            >Vehiculo con el que viajas</Text>
-      </View>
+                <View className="mt-2 mb-6" >
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Fecha de inicio del viaje</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripDate}
+                        placeholder="DD-MM-AAAA"
+                    />
+                </View>
 
-      <Text className="text-lg mb-5 text-slate-600 dark:text-slate-300">
-        Aquí podrás crear un nuevo viaje.
-      </Text>
+                <View className="mt-2 mb-6">
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Hora de partida</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripTime}
+                        placeholder="HH:MM"
+                    />
+                </View>
 
-      <Button
-        className="w-40"
-        label="Volver al inicio"
-        onPress={handleBackToHome}
-      />
-    </View>
-  );
+                <View className="mt-2 mb-6">
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Asientos disponibles</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripSeat}
+                        placeholder="Ingrese la cantidad de pasajeros"
+                    />
+                </View>
+
+                <View className="mt-2 mb-6">
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Precio por asiento</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setTripSeatPrice}
+                        placeholder="Ingrese la cantidad de pasajeros"
+                    />
+                </View>
+
+                <View className="mt-2 mb-15">
+                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
+                    >Auto con el que va a realizar el viaje</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setVehicle}
+                        placeholder="Ingrese el modelo del auto"
+                    />
+                </View>
+
+                <View className="pt-10 flex-row justify-between pb-10">
+                    <Button
+                    className="w-40"
+                    label="Volver al inicio"
+                    onPress={handleBackToHome}
+                    />
+                    <Button
+                    className="w-40"
+                    label="Crear viaje"
+                    onPress={handleCreateTrip}
+                    />
+                </View>
+                
+                
+            </View>
+        </ScrollView>
+    );
 }

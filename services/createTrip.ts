@@ -10,13 +10,13 @@ export const createTrip = async (Tripc: Tripc) => {
     const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
 
     const data = {
+        deaparture_address: Tripc.deaparture_address,
+        arrival_address: Tripc.arrival_address,
         departure_date: Tripc.departure_date,
         departure_time: Tripc.departure_time,
         available_seats:Tripc.available_seats,
         seat_price: Tripc.seat_price,
-        deaparture_address: Tripc.departure_time,
-        arrival_address: Tripc.arrival_address,
-        vehicle_driver_id: Tripc.vehicle_driver_id,
+        vehicle_driver: Tripc.vehicle_driver,
     };
 
     const options = {
