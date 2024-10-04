@@ -26,8 +26,8 @@ export const createTrip = async (Tripc: Tripc) => {
         departure_time: Tripc.departure_time,
         available_seats: Tripc.available_seats,
         seat_price: Tripc.seat_price,
-        departure_address: "Buenos Aires, La Plata, Calle 58, 607",
-        arrival_address: "Buenos Aires, La Plata, Calle 58, 843",
+        departure_address: Tripc.deaparture_address,
+        arrival_address: Tripc.arrival_address,
         vehicle_driver_id: Tripc.idDriver
     };
 

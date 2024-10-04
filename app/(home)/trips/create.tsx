@@ -39,9 +39,13 @@ export default function CreateTripScreen() {
                   />
       */
     const handleCreateTrip = async () => {
+        toast('Registrando viaje', 'info', 2000, 'top')
         const res = await createTrip({ idDriver, deaparture_address, arrival_address, departure_date, departure_time, available_seats, seat_price, vehicle_driver })
         if (res) {
-            toast(res.message ?? 'Viaje creado exitosamente!', 'success', 2000, 'top')
+            toast(res.message ?? 'Viaje creado exitosamente!', 'success', 3400, 'top', false)
+        } else {
+            toast('Hubo un error al registrar el viaje', 'destructive', 3400, 'top', false)
+
         }
 
     }

@@ -58,6 +58,7 @@ export default function DetailTripScreen() {
 
     const handleJoinTrip = async () => {
         if (!idPassenger) return
+        toast('Uniendose al viaje', 'info', 2800, 'top')
         const { data, error } = await joinTrip(idPassenger, parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
