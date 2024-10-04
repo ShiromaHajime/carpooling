@@ -10,7 +10,7 @@ interface UserContext {
     username: string;
 }
 
-interface MyContextType {
+interface ContextType {
     state: UserContext;
     setState: (value: UserAccount) => void;
 }
@@ -24,7 +24,7 @@ const initialState = {
 }
 
 // Create the context with a default value
-export const GlobalContext = createContext<MyContextType | undefined>(undefined);
+export const GlobalContext = createContext<ContextType | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [state, setState] = useState<UserContext>(initialState);

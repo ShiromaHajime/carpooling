@@ -5,12 +5,15 @@ import { getTripById, joinTrip } from "@/services/trip";
 import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
+import { GlobalContext } from "@/utils/Provider";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
+    const context = useContext(GlobalContext);
+    const idPassenger = context?.state.id?.toString()
     const [trip, setTrip] = useState<TripById>()
     const [driver, setDriver] = useState<User>()
 
@@ -54,8 +57,8 @@ export default function DetailTripScreen() {
 
 
     const handleJoinTrip = async () => {
-        console.log('join trip'); //falta hacer la request para unirse al viaje
-        const { data, error } = await joinTrip(parseUrlParams(id), "1")
+        if (!idPassenger) return
+        const { data, error } = await joinTrip(idPassenger.toString(), parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return
