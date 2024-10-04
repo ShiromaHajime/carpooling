@@ -42,7 +42,7 @@ export default function DetailTripScreen() {
 
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.driver)
+                setDriver(trip.vehicle_driver.driver.user)
             }
             setLoading(false)
         }
@@ -58,7 +58,7 @@ export default function DetailTripScreen() {
 
     const handleJoinTrip = async () => {
         if (!idPassenger) return
-        const { data, error } = await joinTrip(idPassenger.toString(), parseUrlParams(id))
+        const { data, error } = await joinTrip(idPassenger, parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return
@@ -75,8 +75,10 @@ export default function DetailTripScreen() {
             </View>
         )
     }
+    console.log('devuelve algo');
 
     if (!trip || !driver) return
+    console.log('devuelve algo');
 
     return (
         <ScrollView>
@@ -89,12 +91,12 @@ export default function DetailTripScreen() {
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
-                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address.city.name}, calle {trip.arrival_address.street}</Text>
+                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address?.city.name}, calle {trip.arrival_address?.street}</Text>
                 </View>
 
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
-                    <Text className="text-[#64748B]">Cuidad {trip.departure_address.city.name}, calle {trip.departure_address.street}</Text>
+                    <Text className="text-[#64748B]">Cuidad {trip.departure_address?.city.name}, calle {trip.departure_address?.street}</Text>
                 </View>
 
                 <View className="mt-3">
@@ -114,7 +116,7 @@ export default function DetailTripScreen() {
                 </View>
 
                 <View className="mt-8 w-full">
-                    <CardDriver driver={driver} vehicle={trip.vehicle} />
+                    <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
                 </View>
 
                 <View className="self-center mt-8 mb-6">

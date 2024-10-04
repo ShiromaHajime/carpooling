@@ -55,17 +55,22 @@ export interface PropsInput {
 
 export type Users = UserAccount[]
 
-export interface TripById {  // las peticiones de /trips/:id devuelven en este formato
-    arrival_address: Address;
-    available_seats: number;
-    creation_timestamp: number;
-    departure_address: Address;
-    departure_date: string;
-    departure_time: string;
-    driver: User;
+interface VehicleDriver {
     id: number;
-    seat_price: number;
+    driver: Driver;
     vehicle: Vehicle;
+}
+
+export interface TripById {  // las peticiones de /trips/:id devuelven en este formato
+    id: number;
+    departure_date: string; // Consider using Date type if parsing the date
+    departure_time: string; // You might want to parse this into a Date object as well
+    seat_price: number;
+    available_seats: number;
+    creation_timestamp: number; // Consider changing this to a Date type if it represents a timestamp
+    departure_address: Address;
+    arrival_address: Address;
+    vehicle_driver: VehicleDriver;
 }
 
 export interface Province {
@@ -97,20 +102,21 @@ export interface User {
 export interface Driver {
     id: number;
     user: User;
-
 }
 
 export interface Vehicle {
+    id: number;
     brand: string;
-    color: string;
-    //id: number;
-    license_plate: string;
     model: string;
-    year: number;
+    year: string;
+    color: string;
+    license_plate: string;
 }
 
 export interface Vehicle_driver {
+    id: number;
     driver: Driver;
+    vehicle: Vehicle;
 }
 
 
