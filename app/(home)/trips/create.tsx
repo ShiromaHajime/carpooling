@@ -3,9 +3,7 @@ import { Button } from "@/components/Button";
 import { useRouter } from "expo-router";
 import { GlobalContext } from "@/utils/Provider";
 import { useContext, useState } from "react";
-import { useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { Tripc } from "@/types/types";
 import { createTrip } from "@/services/createTrip";
 
 
@@ -24,7 +22,6 @@ export default function CreateTripScreen() {
   const handleBackToHome = () => {
     router.push("/(home)/home");
   };
-
 
   /*const voptions= [0,4,10]
   //[Tripc.vehicle_driver_id]
@@ -49,20 +46,16 @@ export default function CreateTripScreen() {
             <View className="bg-gray-200 flex h-full pl-5 pr-5 dark:bg-gray-900">
             
                 <Text className="text-2xl font-bold mb-5 text-slate-800 dark:text-slate-100">
-                    Pantalla de crear viaje
-                </Text>
-                <Text className="text-base mb-5 text-slate-600 dark:text-slate-300">
-                    Aquí podrás crear un nuevo viaje.
+                    ¡Crea un viaje!
                 </Text>
 
-      <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
                 <View className="mt-2 mb-6" >
                     <Text className="text-md font-medium mb-2 dark:text-slate-100"
                     >Lugar de inicio del viaje</Text>
                     <InputStyled
                         className=""
                         setValueInput={setTripDepaAddress}
-                        placeholder="Ubicación de salida"
+                        placeholder="Provincia,ciudad,calle,número."
                     />
                 </View>
 
@@ -72,7 +65,7 @@ export default function CreateTripScreen() {
                     <InputStyled
                         className=""
                         setValueInput={setTripArrivAddress}
-                        placeholder="Ubicación de salida"
+                        placeholder="Provincia,ciudad,calle,número."
                     />
                 </View>
 
@@ -144,3 +137,5 @@ export default function CreateTripScreen() {
         </ScrollView>
     );
 }
+
+//<Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>

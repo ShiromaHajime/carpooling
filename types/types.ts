@@ -120,8 +120,8 @@ export interface Tripc {
     arrival_address: string,
     departure_date: string,
     departure_time: string,
-    available_seats: number,
-    seat_price: number,
+    available_seats: string,//en realidad number
+    seat_price: string,// en realidad number
     vehicle_driver: string,
 }
 
