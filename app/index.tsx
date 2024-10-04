@@ -19,9 +19,7 @@ export default function WelcomeScreen() {
         <View className="bg-slate-400 h-full pl-5 pr-5 justify-center">
 
 
-
-
-            <View className="h-28 pl-30 pb-20 place-items-center">
+            <View className="h-28 self-center">
                 <Link href='/test'>
                     <ThemedText type="title">¡Bienvenido!</ThemedText>
                 </Link>
