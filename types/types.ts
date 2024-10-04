@@ -68,18 +68,18 @@ export interface TripById {  // las peticiones de /trips/:id devuelven en este f
     vehicle: Vehicle;
 }
 
-interface Province {
+export interface Province {
     province_id: number;
     name: string;
 }
 
-interface City {
+export interface City {
     id: number;
     name: string;
     province: Province;
 }
 
-interface Address {
+export interface Address {
     id: number;
     street: string;
     number: number;
@@ -94,7 +94,7 @@ export interface User {
     last_name: string;
 }
 
-interface Driver {
+export interface Driver {
     id: number;
     user: User;
 
@@ -103,18 +103,29 @@ interface Driver {
 export interface Vehicle {
     brand: string;
     color: string;
-    id: number;
+    //id: number;
     license_plate: string;
     model: string;
     year: number;
 }
 
-interface Vehicle_driver {
+export interface Vehicle_driver {
     driver: Driver;
 }
 
 
-interface Trip {    // las peticiones de /trip devuelven en este formato
+
+export interface Tripc {
+    departure_date: string,
+    departure_time: string,
+    available_seats: number,
+    seat_price: number,
+    deaparture_address: Address,
+    arrival_address: Address,
+    vehicle_driver_id: number
+}
+
+export interface Trip {    // las peticiones de /trip devuelven en este formato
     arrival_address: Address;
     available_seats: number;
     creation_timestamp: number;
