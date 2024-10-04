@@ -55,7 +55,7 @@ export default function DetailTripScreen() {
 
     const handleJoinTrip = async () => {
         console.log('join trip'); //falta hacer la request para unirse al viaje
-        const { data, error } = await joinTrip("1", "1")
+        const { data, error } = await joinTrip(parseUrlParams(id), "1")
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return

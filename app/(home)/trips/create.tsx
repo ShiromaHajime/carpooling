@@ -1,9 +1,13 @@
 import { View, Text } from "react-native";
 import { Button } from "@/components/Button";
 import { useRouter } from "expo-router";
+import { GlobalContext } from "@/utils/Provider";
+import { useContext, useState } from "react";
 
 export default function CreateTripScreen() {
   const router = useRouter();
+  const context = useContext(GlobalContext)
+  const [user, setUser] = useState(context?.state);
 
   const handleBackToHome = () => {
     router.push("/(home)/home");
@@ -18,6 +22,7 @@ export default function CreateTripScreen() {
         Aquí podrás crear un nuevo viaje.
       </Text>
 
+      <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
       <Button
         className="w-40"
         label="Volver al inicio"

@@ -4,18 +4,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { loginUser } from "@/services/userLogin";
+import { GlobalContext } from "@/utils/Provider";
+import { UserAccount } from "@/types/types";
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const context = useContext(GlobalContext);
+
   const handleLogin = async () => {
 
     const res = await loginUser(username, password);//saque corchetes porque tiraba error
 
     if (res) {
-      handleShowModal();
+      const user = res.user
+      handleShowModal(user);
     }
 
     if (!username || !password) {
@@ -25,14 +31,25 @@ export default function LoginScreen() {
   }
   const router = useRouter();  // Para redirección
 
-  const handleShowModal = () => {
+  const handleShowModal = (user: UserAccount) => {
     // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
     Alert.alert(
       "Elige tu rol",
       "¿Eres conductor o pasajero?",
       [
-        { text: "Conductor", onPress: () => router.push("/trips/create") },  // Redirigir a crear viaje
-        { text: "Pasajero", onPress: () => router.push("/trips/tripList") },  // Redirigir a lista de viajes
+        {
+          text: "Conductor", onPress: () => {
+            context?.setState(user)
+            router.push("/trips/create")
+
+          }
+        },  // Redirigir a crear viaje
+        {
+          text: "Pasajero", onPress: () => {
+            context?.setState(user)
+            router.push("/trips/tripList")
+          }
+        },  // Redirigir a lista de viajes
       ],
       { cancelable: true }
     );
