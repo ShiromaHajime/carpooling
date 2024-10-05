@@ -1,32 +1,42 @@
 import { API_URL } from "@/constants/const";
-import { TripFromDB } from "@/types/types";
+import { Response, Response500 } from "@/types/errors";
+import { TripById } from "@/types/types";
 
-export const joinTrip = async ({ id_passager, id_trip }: { id_passager: string, id_trip: string }) => {
+export const joinTrip = async (passenger_id: string, id_trip: string): Promise<Response> => {
 
     console.log("API_URL de la variable de entorno");
     console.log(API_URL);
 
+    const body = {
+        passenger_id: passenger_id,
+        id_trip: id_trip,
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
 
     try {
-        const res = await fetch(`${API_URL}/trip`);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        if (res.status == 201) {
-            return res.json()
-        } else return false
+        const res = await fetch(`${API_URL}/trip_join`, options);
+        if (res.status == 200) {
+            const data = await res.json()
+            const response: Response = {
+                data: data
+            }
+            return response
+        } else return Response500
 
     } catch (error) {
-        console.log(error);
-        return false;
+
+        return Response500;
     }
 }
 
-export const getTripById = async (id_trip: string): Promise<TripFromDB | false> => {
-
-    // esto segun lo que devuelve el endpoint
-    // function-get_trip,-join_trip-y-add-database-tables
+export const getTripById = async (id_trip: string): Promise<TripById | false> => {
 
     try {
         const res = await fetch(`${API_URL}/trip/${id_trip}`);

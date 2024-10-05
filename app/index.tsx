@@ -1,39 +1,36 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native"
-import { colorScheme, useColorScheme } from "nativewind";
+import { Link } from "expo-router"
+import { Text, View, Image } from "react-native"
+import { ThemedText } from '@/components/ThemedText';
 import { Button } from "@/components/Button";
+import { router } from "expo-router";
 
-export default function IndexScreen() {
 
+export default function WelcomeScreen() {
 
-    function ModeToggle() {
-        const { colorScheme, setColorScheme } = useColorScheme();
+    const handleBlogin = () => {
+        router.navigate("/(account)/login");
+    }
 
-        return (
-            <Button
-                label="Cambiar modo oscuro/claro"
-                variant="ghost"
-                onPress={() => setColorScheme(colorScheme === "dark" ? "light" : "dark")}
-            />
-        )
+    const handleBregistro = () => {
+        router.navigate("/(account)/register");
     }
 
     return (
-        <View className="bg-slate-400 flex items-center justify-center h-screen pl-5 pr-5">
-            <Text className="text-2xl text-gray-900 text-card-foreground font-semibold leading-none tracking-tight mb-2">Pantalla inicio</Text>
-            <Text className="text-sm mb-7">Esta pantalla en un futuro se borra, es el index para ir a todas las pantallas</Text>
-            <ModeToggle />
-            <View className="mt-5">
-                <Link className="mb-2 bg-slate-500 dark:bg-slate-900 p-1 rounded" href='/(account)/welcome'>Ir a welcome</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/register'>Ir a register</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/login'>Ir a login</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/home'>Ir a home</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/tripList'>Ir a trips</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/detail/4'>Ir a detail trip 4</Link>
+        <View className="bg-slate-400 h-full pl-5 pr-5 justify-center">
 
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/test'>Pantalla test</Link>
+
+            <View className="h-28 self-center">
+                <Link href='/test'>
+                    <ThemedText type="title">¡Bienvenido!</ThemedText>
+                </Link>
+            </View>
+
+            <View className="flex-row justify-evenly">
+                <Button className="color" label="Registrarse" onPress={handleBregistro}></Button>
+                <Button className="color" label="Ingresar" onPress={handleBlogin}></Button>
             </View>
 
         </View>
+
     )
 }

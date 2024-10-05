@@ -55,44 +55,43 @@ export interface PropsInput {
 
 export type Users = UserAccount[]
 
-export interface Driver {
-    user_id: number;
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    password: string;
-    is_active: boolean;
-    registration_date: string;
+interface VehicleDriver {
+    id: number;
+    driver: Driver;
+    vehicle: Vehicle;
 }
 
-export interface TripFromDB {
+export interface TripById {  // las peticiones de /trips/id devuelven en este formato
     id: number;
-    departure_date: string;
+    departure_date: string; // Consider using Date type if parsing the date
+    departure_time: string; // You might want to parse this into a Date object as well
+    seat_price: number;
+    available_seats: number;
+    creation_timestamp: number; // Consider changing this to a Date type if it represents a timestamp
     departure_address: Address;
     arrival_address: Address;
-    driver: Driver;
+    vehicle_driver: VehicleDriver;
 }
 
-interface Province {
+export interface Province {
     province_id: number;
     name: string;
 }
 
-interface City {
+export interface City {
     id: number;
     name: string;
     province: Province;
 }
 
-interface Address {
+export interface Address {
     id: number;
     street: string;
     number: number;
     city: City;
 }
 
-interface User {
+export interface User {
     creation_date: string;
     email: string;
     first_name: string;
@@ -100,18 +99,40 @@ interface User {
     last_name: string;
 }
 
-interface Driver2 {
+export interface Driver {
     id: number;
     user: User;
-
 }
 
-interface Vehicle_driver {
-    driver: Driver2;
+export interface Vehicle {
+    id: number;
+    brand: string;
+    model: string;
+    year: string;
+    color: string;
+    license_plate: string;
+}
+
+export interface Vehicle_driver {
+    id: number;
+    driver: Driver;
+    vehicle: Vehicle;
 }
 
 
-interface Trip {
+
+export interface Tripc { // de donde sales este trip?
+    idDriver?: number
+    deaparture_address: string,
+    arrival_address: string,
+    departure_date: string,
+    departure_time: string,
+    available_seats: string,//en realidad number
+    seat_price: string,// en realidad number
+    vehicle_driver: string,
+}
+
+export interface Trip {    // las peticiones de /trip devuelven en este formato
     arrival_address: Address;
     available_seats: number;
     creation_timestamp: number;

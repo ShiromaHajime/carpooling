@@ -25,16 +25,17 @@ export default function TripsScreen() {
 
   if (loading) {
     return (
-      <View className="bg-slate-400 flex items-center justify-center h-screen pl-5 pr-5">
+      <View className="bg-slate-400 flex items-center justify-center h-full pl-5 pr-5">
         <Text className="text-gray-200">Cargando viajes...</Text>
       </View>
     );
   }
 
   return (
-    <View className="bg-slate-400 flex items-center justify-center h-screen p-5">
+    <View className="bg-slate-400 flex items-center justify-center h-full p-5">
       <Text className="text-gray-200 text-2xl mb-4">Lista de viajes</Text>
       <FlatList
+        className="w-full"
         data={trips}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (

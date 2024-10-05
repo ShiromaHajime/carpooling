@@ -59,17 +59,9 @@ export default function HomeLayout() {
         options={{
           title: 'Viajes',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={focused ? 'car' : 'home-outline'} color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}
       />
     </Tabs>
