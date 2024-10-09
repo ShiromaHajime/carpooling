@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/Button';
 import { InputStyled } from '@/components/inputs/InputStyled';
+import { MessageData } from '@/types/types';
 import { GlobalContext } from '@/utils/Provider';
 import { useRouter } from 'expo-router';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
@@ -26,8 +27,11 @@ export default function ChatScreen() {
     }, [id]);
 
 
+
     useEffect(() => {
-        socket.on('message', msg => {
+        socket.on('message', (msg: MessageData) => {
+            console.log('recibe msg');
+            console.log(msg);
             setMessages((prev: any) => [...prev, msg]);
         });
 
@@ -39,23 +43,35 @@ export default function ChatScreen() {
 
     const sendMessage = () => {
         const messageData = {
+            sender_id: id?.toString(),
             recipient_id: idRecipient.toString(), // ID del usuario al que se envía el mensaje
             message: input
         };
         socket.emit('message', messageData);
+        if (id != idRecipient) {
+            setMessages((prev: any) => [...prev, messageData]);
+        }
+
         setInput('');
     };
 
-    const ItemMessage = ({ item }: { item: string }) => {
+    const ItemMessage = ({ message, idUser }: { message: MessageData, idUser: number }) => {
+
+        let stylesOwnMessage = 'bg-[#ebeaec] ml-10'
+        let stylesViewOtherMessage = 'bg-[#25324b] mr-10'
+        let stylesTextOtherMessage = 'text-slate-100'
+
+        let viewStyle = (idUser == message.sender_id) ? stylesOwnMessage : stylesViewOtherMessage
+        let textStyle = (idUser == message.sender_id) ? '' : stylesTextOtherMessage
         return (
-            <View className='bg-sky-400 rounded mt-2 p-2'>
-                <Text>{item}</Text>
+            <View className={`${viewStyle} rounded-xl mt-2 p-3`}>
+                <Text className={textStyle}>{message.message}</Text>
             </View>
         )
     }
 
     return (
-        <View className='flex items-center justify-center max-h-screen p-6 pt-12 pb-24 bg-slate-400'>
+        <View className='flex items-center justify-center max-h-screen p-6 pt-12 pb-24 '>
             <View>
                 <Text>Sesion con id: {id}</Text>
 
@@ -64,21 +80,21 @@ export default function ChatScreen() {
                     className='bg-gray-400'
                 />
             </View>
-            <View className='bg-slate-200 w-screen p-5'>
-
-                <FlatList
-                    data={messages}
-                    renderItem={({ item }) => <ItemMessage item={item} />}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                <Text className="text-md font-medium mb-2 text-slate-700"
-                >Mensaje:</Text>
-                <InputStyled
-                    className=""
-                    setValueInput={setInput}
-                    placeholder="Ingrese un mensaje"
-                />
-                <Button label="Enviar mensaje" variant={'secondary'} onPress={sendMessage} />
+            <View className='bg-[#9ab7e8] min-w-full h-auto p-5 rounded-xl'>
+                <View>
+                    <FlatList
+                        data={messages}
+                        renderItem={({ item }) => <ItemMessage message={item} idUser={id} />}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                    <Text className="text-md font-medium mb-2 text-slate-700">Mensaje:</Text>
+                    <InputStyled
+                        className=""
+                        setValueInput={setInput}
+                        placeholder="Ingrese un mensaje"
+                    />
+                    <Button label="Enviar mensaje" variant={'secondary'} onPress={sendMessage} />
+                </View>
             </View>
         </View>
     )

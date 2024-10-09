@@ -157,3 +157,10 @@ export interface LocationInfo {
     continentCode: string,
     postcode: string
 }
+
+export interface MessageData {
+    sender_id: number,
+    recipient_id: number,
+    message: string,
+    sendedTime?: string
+}
