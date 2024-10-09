@@ -158,9 +158,10 @@ export interface LocationInfo {
     postcode: string
 }
 
-export interface MessageData {
-    sender_id: number,
-    recipient_id: number,
+export interface RoomMessage {
+    id_user: number,
+    username: string,
+    room: string,
     message: string,
     sendedTime?: string
 }
