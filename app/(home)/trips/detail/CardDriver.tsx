@@ -9,7 +9,7 @@ export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle
 
     return (
         <View className="flex gap-2">
-            <Text className="font-semibold text-xl text-primary">Acerca del conductor</Text>
+            <Text className="font-semibold text-xl text-foreground">Acerca del conductor</Text>
             <Card>
                 <CardHeader>
                     <View className="flex flex-row justify-between items-center">
@@ -18,7 +18,7 @@ export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle
                             <View className="ml-3"><Medal size={25} color={'rgb(251,191,36)'} /></View>
                         </View>
 
-                        <Button label="Ver perfil" />
+                        <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="Ver perfil" />
                     </View>
                     <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.year} {vehicle.color}</CardDescription>
                 </CardHeader>

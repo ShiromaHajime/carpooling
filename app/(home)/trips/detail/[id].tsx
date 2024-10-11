@@ -85,13 +85,12 @@ export default function DetailTripScreen() {
                     className="h-[230] object-cover"
                 />
             </View>
-            <View className="bg-gray-200 dark:bg-gray-900 flex items-start justify-start h-full pl-8 pr-8">
+            <View className="bg-background flex items-start justify-start h-full pl-8 pr-8">
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
                     <Text className="text-[#64748B]">Ciudad: {trip.arrival_address?.city.name}, calle {trip.arrival_address?.street}</Text>
                 </View>
-
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
                     <Text className="text-[#64748B]">Cuidad {trip.departure_address?.city.name}, calle {trip.departure_address?.street}</Text>
