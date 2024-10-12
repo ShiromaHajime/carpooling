@@ -60,7 +60,7 @@ export default function HomeLayout() {
         options={{
           title: 'Viajes',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name="car-sports" size={34} color={focused ? '#007aff' : ''} />
+            <MaterialCommunityIcons name="car-sports" size={38} color={focused ? '#007aff' : ''} />
           ),
           unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}

@@ -46,13 +46,15 @@ export default function LoginScreen() {
   };
 
   return (
-    <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900">
+    <View className="bg-background flex h-screen pl-7 pr-7">
 
       <View className="self-center mt-8">
-        <Avatar className="w-40 h-40">
+        <Avatar className="w-36 h-36">
           <AvatarImage
-            className="w-40 h-40"
-            source={require('../../../assets/images/CarKeys.png')}
+            className="w-36 h-36"
+            source={{
+              uri: 'https://png.pngtree.com/png-clipart/20230623/original/pngtree-an-illustration-of-dog-in-circle-shape-sky-png-image_9205321.png',
+            }}
           />
           <AvatarFallback>CG</AvatarFallback>
         </Avatar>
@@ -76,13 +78,11 @@ export default function LoginScreen() {
           placeholder="Ingrese su contraseña"
         />
       </View>
-
-
-      <View className="bg-slate-400 flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
-        <Text>No tienes cuenta? </Text>
-        <Link href='/(account)/register'>registrate!</Link>
+      <View className="self-center  justify-center">
+        <Button label="Registrar vehiculo"
+          className="rounded bg-primary self-center  w-52 h-11"
+          onPress={() => router.navigate({ pathname: "/(home)/(profile)/createVehicle" })} />
       </View>
-
     </View>
   );
 }
