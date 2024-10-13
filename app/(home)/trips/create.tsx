@@ -11,8 +11,8 @@ import { useToast } from "@/components/Toast";
 export default function CreateTripScreen() {
     const router = useRouter();
     const context = useContext(GlobalContext)
-    const idDriver = context?.state.id
-    const [user, setUser] = useState(context?.state);
+    const idDriver = context?.user.id
+    const [user, setUser] = useState(context?.user);
     const [deaparture_address, setTripDepaAddress] = useState('');
     const [arrival_address, setTripArrivAddress] = useState('');
     const [departure_date, setTripDate] = useState('');

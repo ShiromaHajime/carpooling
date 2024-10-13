@@ -15,7 +15,7 @@ import { LoadingScreen } from "./LoadingScreen";
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
     const context = useContext(GlobalContext);
-    const idPassenger = context?.state.id?.toString()
+    const idPassenger = context?.user.id?.toString()
     const [trip, setTrip] = useState<TripById>()
     const [driver, setDriver] = useState<User>()
 

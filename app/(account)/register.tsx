@@ -35,6 +35,7 @@ export default function RegisterScreen() {
             setErrors(newErrors);
         } else {
             // Datos válidos
+            setErrors({})
             console.log(result.data);
             toast('Enviando datos...', 'info', 1200, 'top')
             const res = await createUser({ name: name, lastname: lastname, email: email, username: username, password: password })

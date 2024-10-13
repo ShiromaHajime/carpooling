@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
+import { Card } from "@/components/Card";
 import { useToast } from "@/components/Toast";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
@@ -11,10 +12,11 @@ import { Alert, Text, View } from "react-native";
 
 export default function LoginScreen() {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   const context = useContext(GlobalContext);
+  const user = context?.user
+  const [username, setUsername] = useState(user?.username);
+  const [lastname, setLastname] = useState(user?.lastname);
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -29,14 +31,14 @@ export default function LoginScreen() {
       [
         {
           text: "Conductor", onPress: () => {
-            context?.setState(user)
+            context?.setUser(user)
             router.replace("/trips/create")
 
           }
         },  // Redirigir a crear viaje
         {
           text: "Pasajero", onPress: () => {
-            context?.setState(user)
+            context?.setUser(user)
             router.replace("/trips/tripList")
           }
         },  // Redirigir a lista de viajes
@@ -47,42 +49,47 @@ export default function LoginScreen() {
 
   return (
     <View className="bg-background flex h-screen pl-7 pr-7">
+      <View className="bg-card p-10 mt-10 border border-border shadow-sm rounded-md">
+        <View className="self-center">
+          <Avatar className="w-36 h-36">
+            <AvatarImage
+              className="w-36 h-36"
+              source={{
+                uri: 'https://png.pngtree.com/png-clipart/20230623/original/pngtree-an-illustration-of-dog-in-circle-shape-sky-png-image_9205321.png',
+              }}
+            />
+            <AvatarFallback>CG</AvatarFallback>
+          </Avatar>
+        </View>
 
-      <View className="self-center mt-8">
-        <Avatar className="w-36 h-36">
-          <AvatarImage
-            className="w-36 h-36"
-            source={{
-              uri: 'https://png.pngtree.com/png-clipart/20230623/original/pngtree-an-illustration-of-dog-in-circle-shape-sky-png-image_9205321.png',
-            }}
+        <View className="mt-5">
+          <Text className="text-md font-medium mb-2 dark:text-slate-100">Usuario</Text>
+          <InputStyled
+            setValueInput={setUsername}
+            valueInput={username}
+            placeholder="Ingrese su nombre de usuario"
           />
-          <AvatarFallback>CG</AvatarFallback>
-        </Avatar>
-      </View>
+        </View>
 
-      <View className="mt-5">
-        <Text className="text-md font-medium mb-2 dark:text-slate-100">Usuario</Text>
-        <InputStyled
-          setValueInput={setUsername}
-          placeholder="Ingrese su nombre de usuario"
-        />
-      </View>
+        <View className="mt-5">
+          <Text className="text-md font-medium mb-2 text-primary">Apellido</Text>
+          <InputStyled
+            setValueInput={setLastname}
+            valueInput={lastname}
+            placeholder="Ingrese su apellido"
+          />
+        </View>
 
-      <View className="mt-5 mb-5">
-        <Text className="text-md font-medium mb-2 dark:text-slate-100">Contraseña</Text>
-        <Input
-          className="focus:border focus:border-slate-900 dark:focus:border-gray-400"
-          secureTextEntry={true}
-          value={password}
-          onChange={(e) => setPassword(e.nativeEvent.text)}
-          placeholder="Ingrese su contraseña"
-        />
-      </View>
-      <View className="self-center  justify-center">
-        <Button label="Registrar vehiculo"
-          className="rounded bg-primary self-center  w-52 h-11"
-          onPress={() => router.navigate({ pathname: "/(home)/(profile)/createVehicle" })} />
+        <Card>
+
+        </Card>
+        <View className="self-center  justify-center">
+          <Button label="Registrar vehiculo"
+            className="rounded bg-primary self-center  w-52 h-11"
+            onPress={() => router.navigate({ pathname: "/(home)/(profile)/createVehicle" })} />
+        </View>
       </View>
     </View>
+
   );
 }
