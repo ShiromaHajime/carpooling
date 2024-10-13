@@ -26,7 +26,15 @@ export default function LoginScreen() {
 
     if (res) {
       const user = res.user
-      handleShowModal(user);
+      const userParsed: UserAccount = {
+        email: user.email,
+        lastname: user.last_name,
+        name: user.first_name,
+        username: user.username,
+        password: ""
+      }
+
+      handleShowModal(userParsed);
     } else toast('Usuario y/o contraseña incorrecta', 'destructive', 3000);
 
     if (!username || !password) {

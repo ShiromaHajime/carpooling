@@ -1,6 +1,7 @@
 import { Switch } from '@/components/Switch';
 import { GlobalContext } from '@/utils/Provider';
 import { Stack } from 'expo-router';
+import { useColorScheme } from 'nativewind';
 import { useContext, useState } from 'react';
 import { Text, View } from 'react-native';
 
@@ -18,43 +19,39 @@ export const unstable_settings = {
 export default function ProfileLayout() {
   const context = useContext(GlobalContext);
   const contextRole = context?.role
-  const user = context?.user
 
   const CurrentRole = () => {
-    const [isDriver, setIsDriver] = useState(false);
     const [role, setRole] = useState(contextRole);
-
-    console.log("role");
-    console.log(contextRole);
-
-    console.log("isDriver");
-    console.log(isDriver);
-
 
     let textRole
     if (contextRole) {
-      textRole = role == 'Passenger' ? 'Pasajero' : 'Driver'
+      textRole = role == 'Passenger' ? 'Pasajero' : 'Conductor'
     }
     const handleChangeRol = () => {
       const newRole = role == 'Driver' ? 'Passenger' : 'Driver'
       setRole(newRole)
-      setIsDriver(role == 'Driver' ? false : true)
       context?.setRole(newRole)
     }
 
     return (
       <View className='flex flex-row justify-center items-center gap-3'>
-        <Text className='text-foreground text-lg'>Rol: {textRole}</Text>
-        <Switch onCheckedChange={handleChangeRol} checked={isDriver} />
+        <Text className='text-lg text-white'>Rol: {textRole}</Text>
+        <Switch onCheckedChange={handleChangeRol} checked={role == 'Driver' ? true : false} />
       </View>
     )
   }
+
+  const { colorScheme } = useColorScheme()
+
   return (
-    <Stack screenOptions={{
-      headerStyle: { backgroundColor: "#ccc" },
-      headerRight: () => (<CurrentRole />)
-    }}>
-      <Stack.Screen name="profile" options={{ headerShown: true, title: 'Perfil' }} />
+    <Stack>
+      <Stack.Screen name="profile" options={{
+        headerShown: true,
+        title: 'Perfil',
+        headerRight: () => (<CurrentRole />),
+        headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+        headerTitleStyle: { color: "#fff" }
+      }} />
       <Stack.Screen name="createVehicle" options={{ headerShown: true, presentation: 'modal', title: 'Registar vehículo' }} />
     </Stack>
   );

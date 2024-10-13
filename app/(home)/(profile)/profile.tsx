@@ -16,6 +16,7 @@ export default function LoginScreen() {
   const context = useContext(GlobalContext);
   const user = context?.user
   const [username, setUsername] = useState(user?.username);
+  const [name, setName] = useState(user?.name);
   const [lastname, setLastname] = useState(user?.lastname);
 
   const { toast } = useToast()
@@ -63,16 +64,16 @@ export default function LoginScreen() {
         </View>
 
         <View className="mt-5">
-          <Text className="text-md font-medium mb-2 dark:text-slate-100">Usuario</Text>
+          <Text className="text-md font-medium mb-2 text-foreground">Apellido</Text>
           <InputStyled
-            setValueInput={setUsername}
-            valueInput={username}
-            placeholder="Ingrese su nombre de usuario"
+            setValueInput={setName}
+            valueInput={name}
+            placeholder="Ingrese su nombre"
           />
         </View>
 
         <View className="mt-5">
-          <Text className="text-md font-medium mb-2 text-primary">Apellido</Text>
+          <Text className="text-md font-medium mb-2 text-foreground">Apellido</Text>
           <InputStyled
             setValueInput={setLastname}
             valueInput={lastname}
@@ -80,10 +81,16 @@ export default function LoginScreen() {
           />
         </View>
 
-        <Card>
+        <View className="mt-5">
+          <Text className="text-md font-medium mb-2 text-foreground">Nombre de usuario</Text>
+          <InputStyled
+            setValueInput={setUsername}
+            valueInput={username}
+            placeholder="Ingrese su nombre de usuario"
+          />
+        </View>
 
-        </Card>
-        <View className="self-center  justify-center">
+        <View className="self-center justify-center mt-5">
           <Button label="Registrar vehiculo"
             className="rounded bg-primary self-center  w-52 h-11"
             onPress={() => router.navigate({ pathname: "/(home)/(profile)/createVehicle" })} />

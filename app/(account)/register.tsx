@@ -22,8 +22,6 @@ export default function RegisterScreen() {
 
 
     const handleRegister = async () => {
-        console.log('handle register');
-        console.log('values');
         const result = schemaFormUser.safeParse({ name, lastname, username, email, password });
 
         if (!result.success) {
@@ -36,7 +34,6 @@ export default function RegisterScreen() {
         } else {
             // Datos válidos
             setErrors({})
-            console.log(result.data);
             toast('Enviando datos...', 'info', 1200, 'top')
             const res = await createUser({ name: name, lastname: lastname, email: email, username: username, password: password })
             if (res) {
