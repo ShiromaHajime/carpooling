@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar"
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { useToast } from "@/components/Toast";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";

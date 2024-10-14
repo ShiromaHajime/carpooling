@@ -1,5 +1,5 @@
 import { Badge } from "@/components/Badge"
-import { Button } from "@/components/Button"
+import { Button } from "@/components/buttons/Button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/Card"
 import { User, Vehicle } from "@/types/types"
 import { Medal } from "lucide-react-native"
@@ -17,7 +17,6 @@ export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle
                             <CardTitle>{driver.first_name} {driver.last_name}</CardTitle>
                             <View className="ml-3"><Medal size={25} color={'rgb(251,191,36)'} /></View>
                         </View>
-
                         <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="Ver perfil" />
                     </View>
                     <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.year} {vehicle.color}</CardDescription>

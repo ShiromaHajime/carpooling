@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
 import { getTripById, joinTrip } from "@/services/trip";
