@@ -1,7 +1,7 @@
 import { Link, useRouter } from "expo-router";
 import { Text, View, Alert } from "react-native";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useContext, useState } from "react";

@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native"
 import { colorScheme, useColorScheme } from "nativewind";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 
 export default function TestScreen() {
     function ModeToggle() {

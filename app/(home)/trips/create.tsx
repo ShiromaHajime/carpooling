@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from "react-native"
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { useRouter } from "expo-router";
 import { GlobalContext } from "@/utils/Provider";
 import { useContext, useState } from "react";

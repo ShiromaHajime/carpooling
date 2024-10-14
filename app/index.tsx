@@ -1,7 +1,7 @@
 import { Link } from "expo-router"
 import { Text, View, Image } from "react-native"
 import { ThemedText } from '@/components/ThemedText';
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { router } from "expo-router";
 
 
