@@ -6,7 +6,7 @@ import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useContext, useState } from "react";
 import { loginUser } from "@/services/userLogin";
-import { GlobalContext } from "@/utils/Provider";
+import { GlobalContext, UserContext } from "@/utils/Provider";
 import { UserAccount } from "@/types/types";
 import { useToast } from "@/components/Toast";
 
@@ -26,12 +26,12 @@ export default function LoginScreen() {
 
     if (res) {
       const user = res.user
-      const userParsed: UserAccount = {
+      const userParsed: UserContext = {
+        id: user.id,
         email: user.email,
         lastname: user.last_name,
         name: user.first_name,
         username: user.username,
-        password: ""
       }
 
       handleShowModal(userParsed);
@@ -44,7 +44,7 @@ export default function LoginScreen() {
   }
   const router = useRouter();  // Para redirección
 
-  const handleShowModal = (user: UserAccount) => {
+  const handleShowModal = (user: UserContext) => {
     // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
     Alert.alert(
       "Elige tu rol",

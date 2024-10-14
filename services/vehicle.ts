@@ -2,7 +2,7 @@ import { API_URL } from "@/constants/const";
 import { Vehicle } from "@/types/types";
 
 interface PropsCreateVehicle extends Vehicle {
-    idDriver: number
+    user_id: number
 }
 export const createVehicle = async (props: PropsCreateVehicle) => {
 
@@ -13,7 +13,7 @@ export const createVehicle = async (props: PropsCreateVehicle) => {
     const data = {
         brand: props.brand,
         color: props.color,
-        idDriver: props.idDriver,
+        user_id: props.user_id,
         license_plate: props.license_plate,
         model: props.model,
         year: props.year,
@@ -28,10 +28,7 @@ export const createVehicle = async (props: PropsCreateVehicle) => {
     };
 
     try {
-        console.log('hace fetch');
-
-        const res = await fetch(`${url}/users`, options);
-        console.log('tern fetch');
+        const res = await fetch(`http://192.168.0.176:5000/vehicles`, options);
         console.log(res);
 
         if (!res.ok) {

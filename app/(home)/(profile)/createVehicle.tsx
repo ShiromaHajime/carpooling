@@ -9,7 +9,7 @@ import { Vehicle, schemaFormUser, schemaFormVehicle } from "@/types/types";
 import { GlobalContext } from "@/utils/Provider";
 import { parseErrors } from "@/utils/utils";
 import { router } from "expo-router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native"
 
 export default function CreateVehicleScreen() {
@@ -21,8 +21,9 @@ export default function CreateVehicleScreen() {
   const [color, setColor] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const context = useContext(GlobalContext);
-  const idDriver = context?.user.id
+  const context = useContext(GlobalContext)
+
+
   const { toast } = useToast();
 
   const handleRegister = async () => {
@@ -39,14 +40,15 @@ export default function CreateVehicleScreen() {
       setErrors({})
       console.log(result.data);
       toast('Enviando datos...', 'info', 1200, 'top')
-      if (!idDriver) return
-      const res = await createVehicle({ license_plate, brand, model, year, color, idDriver })
-      // if (res) {
-      //   toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
-      //   router.replace('/login')
-      // } else {
-      //   toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
-      // }
+
+      if (!context?.user.id) return
+      const res = await createVehicle({ license_plate, brand, model, year, color, user_id: context?.user.id })
+      if (res) {
+        toast('Vehiculo creado exitosamente!', 'success', 2300, 'top', false)
+        router.replace('/(home)/(profile)/vehicles')
+      } else {
+        toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
+      }
 
     }
 

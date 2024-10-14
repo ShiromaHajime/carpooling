@@ -140,6 +140,7 @@ export const schemaFormVehicle = z.object({
         .min(1, { message: "El año es requerido" }),
 
     color: z.string()
+        .min(1, { message: "El Color es requerido" })
         .superRefine((value, ctx) => {
             if (value.length > 0 && !isNaN(Number(value))) {
                 ctx.addIssue({
@@ -148,7 +149,6 @@ export const schemaFormVehicle = z.object({
                 });
             }
         })
-        .optional()
     ,
 });
 
