@@ -9,6 +9,7 @@ import { loginUser } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { UserAccount } from "@/types/types";
 import { useToast } from "@/components/Toast";
+import { useAuth0 } from "react-native-auth0";
 
 export default function LoginScreen() {
 
@@ -19,6 +20,25 @@ export default function LoginScreen() {
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+
+  const LoginButton = () => {
+    const { authorize } = useAuth0();
+
+    const onPress = async () => {
+      try {
+        const res = await authorize();
+        console.log("res");
+        console.log(res);
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    return <Button onPress={onPress} label="Log in" />
+  }
+
 
   const handleLogin = async () => {
 
@@ -106,6 +126,8 @@ export default function LoginScreen() {
           onPress={handleLogin} />
       </View>
 
+
+      <LoginButton />
       <View className="bg-slate-400 flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
         <Text>No tienes cuenta? </Text>
         <Link href='/(account)/register'>registrate!</Link>
