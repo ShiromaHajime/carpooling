@@ -1,6 +1,5 @@
 import { UserAccount } from '@/types/types';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
+import React, { createContext, useState, ReactNode } from 'react';
 
 interface UserContext {
     id?: number
@@ -10,9 +9,13 @@ interface UserContext {
     username: string;
 }
 
+type Role = "Passenger" | "Driver"
+
 interface ContextType {
-    state: UserContext;
-    setState: (value: UserAccount) => void;
+    user: UserContext;
+    role: Role
+    setUser: (value: UserAccount) => void;
+    setRole: (value: Role) => void;
 }
 
 const initialState = {
@@ -20,17 +23,19 @@ const initialState = {
     name: '',
     lastname: '',
     email: '',
-    username: ''
+    username: '',
 }
+
 
 // Create the context with a default value
 export const GlobalContext = createContext<ContextType | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [state, setState] = useState<UserContext>(initialState);
+    const [user, setUser] = useState<UserContext>(initialState);
+    const [role, setRole] = useState<Role>("Passenger");
 
     return (
-        <GlobalContext.Provider value={{ state, setState }}>
+        <GlobalContext.Provider value={{ user, role, setUser, setRole }}>
             {children}
         </GlobalContext.Provider>
     );

@@ -1,7 +1,7 @@
 import { Link } from "expo-router"
 import { Text, View, Image } from "react-native"
 import { ThemedText } from '@/components/ThemedText';
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { router } from "expo-router";
 
 
@@ -16,12 +16,12 @@ export default function WelcomeScreen() {
     }
 
     return (
-        <View className="bg-slate-400 h-full pl-5 pr-5 justify-center">
+        <View className="bg-background h-full pl-5 pr-5 justify-center">
 
 
             <View className="h-28 self-center">
                 <Link href='/test'>
-                    <ThemedText type="title">¡Bienvenido!</ThemedText>
+                    <Text className="text-foreground text-5xl">¡Bienvenido!</Text>
                 </Link>
             </View>
 
