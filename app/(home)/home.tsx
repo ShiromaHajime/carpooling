@@ -5,6 +5,7 @@ import { Credentials, useAuth0 } from "react-native-auth0";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/inputs/Input";
 import * as Crypto from 'expo-crypto';
+import * as Linking from 'expo-linking';
 
 
 export default function HomeScreen() {
@@ -13,12 +14,23 @@ export default function HomeScreen() {
     const [data, setData] = useState()
     const [challenge, setChallenge] = useState()
     const [url, setUrl] = useState()
-    const { code } = useLocalSearchParams();
+    const [code, setCode] = useState()
 
-    if (code) {
-        console.log("code");
-        console.log(code);
-    }
+    useEffect(() => {
+        const handleUrl = (event) => {
+            const url = event.url;
+            // Extraer el authorizationCode desde la URL
+            const params = Linking.parse(url);
+            console.log('Authorization Code:', params.queryParams.code);
+            setCode(params.queryParams.code)
+        };
+
+        const subscription = Linking.addEventListener('url', handleUrl);
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
 
     const base64URLEncode = (str: string) => {
         return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
