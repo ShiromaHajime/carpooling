@@ -6,3 +6,4 @@
 //
 
 export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "https://carpooling-backend.alwaysdata.net/"
+export const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET ?? "secreto en discord o en eas secret"

@@ -143,18 +143,13 @@ export default function HomeScreen() {
                 {credentials?.tokenType && <Text>Credential tokenType{credentials.tokenType}</Text>}
 
 
-
-
                 {!user && <Text>Not logged in</Text>}
                 {error && <Text>{error.message}</Text>}
                 <Button label="Logout" onPress={Logout} />
                 <Button label="GetCredentials" onPress={getCred} />
                 <Button label="getBearedToken" onPress={getBearedToken} />
                 <Button label="getProtectedData" onPress={getProtectedData} />
-                {code && <Input className="focus:border focus:border-slate-900 dark:focus:border-gray-400"
-                    value={code.toString()}
-                />}
-                {data && <Text>data: {data}</Text>}
+
 
             </View>
         </View>
