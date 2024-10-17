@@ -1,15 +1,62 @@
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { Alert, Text, View } from "react-native";
 import { Button } from "@/components/buttons/Button";
 import { Credentials, useAuth0 } from "react-native-auth0";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/inputs/Input";
+import * as Crypto from 'expo-crypto';
 
 
 export default function HomeScreen() {
     const { user, error, clearSession, getCredentials } = useAuth0();
     const [credentials, setCredentials] = useState<Credentials | undefined>()
     const [data, setData] = useState()
+    const [challenge, setChallenge] = useState()
+    const [url, setUrl] = useState()
+
+
+    const base64URLEncode = (str: string) => {
+        return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+
+    function getVerifier() {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        let resultado = '';
+
+        for (let i = 0; i < 43; i++) {
+            const indice = Math.floor(Math.random() * caracteres.length);
+            resultado += caracteres[indice];
+        }
+
+        // Realizar las transformaciones
+        resultado = base64URLEncode(resultado)
+
+        return resultado;
+    }
+
+    useEffect(() => {
+        const getHash = async () => {
+            const verifier = getVerifier()
+            const challenge = (await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, verifier)).substring(0, 43)
+            const url = `https://dev-voifjkzdk2go4y1p.us.auth0.com/authorize?
+            response_type=code&
+            client_id=j60v2zaXLYBkylThZBPAm35tErH6ZmQF&
+            code_challenge=${challenge}&
+            code_challenge_method=S256&
+            redirect_uri=com.fedevalle.carpooling.auth0://dev-voifjkzdk2go4y1p.us.auth0.com/android/com.fedevalle.carpooling/callback&
+            audience=carpooling&
+            state=xyzABC123`
+            console.log("challenge");
+            console.log(challenge);
+            console.log("url");
+            console.log(url);
+
+            setUrl(url)
+            setChallenge(challenge)
+
+        }
+        getHash()
+    }, [])
 
     const handleLogout = () => {
         router.replace("/(account)/login");
@@ -67,11 +114,11 @@ export default function HomeScreen() {
                 {user && <Text>Sub {user.sub}</Text>}
 
 
-
+                {challenge && <Link href={url}><Text>Google</Text></Link>}
                 {credentials && <Text>Credential expiresAt{credentials.expiresAt}</Text>}
                 {credentials?.accessToken && (
                     <Input className="focus:border focus:border-slate-900 dark:focus:border-gray-400"
-                        value={credentials.expiresAt.toString()}
+                        value={credentials.accessToken.toString()}
                     />
                 )}
                 {credentials?.idToken && (
