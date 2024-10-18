@@ -8,3 +8,11 @@ export const IconSave = () => {
     <FontAwesome name="save" size={24} color={colorScheme == 'dark' ? "#fff" : "#000"} />
   )
 }
+
+export const IconSendMessage = () => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <FontAwesome name="send-o" size={16} color="#fff" />
+  )
+}
