@@ -1,8 +1,8 @@
 import { UserAccount } from '@/types/types';
 import React, { createContext, useState, ReactNode } from 'react';
 
-interface UserContext {
-    id?: number
+export interface UserContext {
+    id: number
     name: string;
     lastname: string;
     email: string;
@@ -14,11 +14,11 @@ type Role = "Passenger" | "Driver"
 interface ContextType {
     user: UserContext;
     role: Role
-    setUser: (value: UserAccount) => void;
+    setUser: (value: UserContext) => void;
     setRole: (value: Role) => void;
 }
 
-const initialState = {
+const initialState: UserContext = {
     id: 0,
     name: '',
     lastname: '',
