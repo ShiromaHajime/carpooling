@@ -187,3 +187,14 @@ export interface Trip {    // las peticiones de /trip devuelven en este formato
 
 export type Trips = Trip[]
 
+export interface LocationInfo {
+    locality: string,
+    principalSubdivision: string,
+    city: string,
+    countryName: string,
+    continent: string,
+    latitude: number,
+    longitude: number,
+    continentCode: string,
+    postcode: string
+}
