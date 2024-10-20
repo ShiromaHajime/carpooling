@@ -6,18 +6,22 @@ import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useContext, useEffect, useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native"
+import { FlatList, Image, ScrollView, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
 import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
 import { LoadingScreen } from "./LoadingScreen";
+import { CardPassenger } from "./CardPassenger";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
     const context = useContext(GlobalContext);
     const idPassenger = context?.user.id?.toString()
+    const role = context?.role
+
     const [trip, setTrip] = useState<TripById>()
     const [driver, setDriver] = useState<User>()
+    const [solicitudes, setSolicitudes] = useState()
 
     const [loading, setLoading] = useState(true)
     const { toast } = useToast();
@@ -29,6 +33,20 @@ export default function DetailTripScreen() {
             router.replace('/(home)/trips/tripList');
         }
     }, [loading, trip]);
+
+
+    const getSolicitudesByID = async () => {
+        return ['algo']
+    }
+
+    useEffect(() => {
+        const getSolicitudes = async () => {
+            const solicitudes = await getSolicitudesByID(id)
+            setSolicitudes(solicitudes)
+        }
+
+        getSolicitudes()
+    }, []);
 
 
     useEffect(() => {
@@ -78,8 +96,72 @@ export default function DetailTripScreen() {
     if (!trip || !driver) return
     console.log('devuelve algo');
 
+    const CardDriverPassanger = () => {
+
+        if (role == 'Passenger') {
+            return (
+                <View>
+                    <View className="mt-8 w-full">
+                        <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
+                    </View>
+
+                    <View className="self-center mt-8 mb-6">
+                        <Button className="w-52" label="Unirse al viaje"
+                            onPress={handleJoinTrip} />
+                    </View>
+                </View>
+            )
+        }
+
+        const user1: User = {
+            id: 1,
+            first_name: "zoe",
+            email: "zoekpa@gmail.com",
+            last_name: 'quiroz',
+            creation_date: "10-10-2024"
+        }
+        const user2: User = {
+            id: 2,
+            first_name: "pepe",
+            email: "pep@gmail.com",
+            last_name: 'quiroz',
+            creation_date: "10-10-2024"
+        }
+        const user3: User = {
+            id: 3,
+            first_name: "zoe",
+            email: "zoekpa@gmail.com",
+            last_name: 'quiroz',
+            creation_date: "10-10-2024"
+        }
+
+        const solicitudes = [user1, user2, user3]
+
+
+
+        //la card me tendrua que llevar al User, pero ahora esta 
+        if (role == 'Driver') {
+            const cantsolicitudes = solicitudes.length
+            return (
+                <>
+                    <View>
+                        <Text className="font-semibold dark:color-slate-200">La cantidad de solicitudes es: {cantsolicitudes} </Text>
+                    </View>
+                    {/* solicitudes */}
+
+                    <FlatList data={solicitudes}
+                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} title={`Pasajero: ${item.first_name}`} />}
+                        keyExtractor={item => item.email}
+                    />
+
+                </>
+            )
+        }
+
+    }
+
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
             <View>
                 <Image source={require('@/assets/images/googleMapsExample.png')}
                     className="h-[230] object-cover"
@@ -112,14 +194,8 @@ export default function DetailTripScreen() {
                     <Text className="text-[#64748B]">{trip.seat_price} ARS</Text>
                 </View>
 
-                <View className="mt-8 w-full">
-                    <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
-                </View>
+                <CardDriverPassanger />
 
-                <View className="self-center mt-8 mb-6">
-                    <Button className="w-52" label="Unirse al viaje"
-                        onPress={handleJoinTrip} />
-                </View>
             </View>
         </ScrollView >
     )
