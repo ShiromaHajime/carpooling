@@ -2,10 +2,13 @@ import { ScrollView, Text, View } from "react-native"
 import { Button } from "@/components/buttons/Button";
 import { useRouter } from "expo-router";
 import { GlobalContext } from "@/utils/Provider";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { createTrip } from "@/services/createTrip";
 import { useToast } from "@/components/Toast";
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { Entypo } from "@expo/vector-icons";
+import { IconArrowUp } from "@/components/icons/Icons";
 
 
 export default function CreateTripScreen() {
@@ -22,22 +25,18 @@ export default function CreateTripScreen() {
     const [vehicle_driver, setVehicle] = useState('');
     const { toast } = useToast();
 
+    const snapPoints = ["80%", "40%", "10%"]
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    // callbacks
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+
+
     const handleBackToHome = () => {
         router.push("/(home)/home");
     };
 
-    /*const voptions= [0,4,10]
-    //[Tripc.vehicle_driver_id]
-    <Select
-                  label="Choose an option"
-                  options={voptions}
-  
-                  onSelect={setSelectedValue}
-                  selectedValue={selectedValue}
-                  labelKey="description"
-                  valueKey="code"
-                  />
-      */
     const handleCreateTrip = async () => {
         toast('Registrando viaje', 'info', 2000, 'top')
         const res = await createTrip({ idDriver, deaparture_address, arrival_address, departure_date, departure_time, available_seats, seat_price, vehicle_driver })
@@ -50,16 +49,16 @@ export default function CreateTripScreen() {
 
     }
 
-    <Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>
+    const HandleHeader = () => (
+        <View className="bg-secondary border border-secondary px-auto justify-center items-center rounded-t-2xl">
+            <IconArrowUp />
+        </View>
+    )
     return (
         <ScrollView>
-            <View className="bg-gray-200 flex h-full pl-5 pr-5 dark:bg-gray-900">
+            <View className="bg-background flex h-full px-5 dark:bg-gray-900">
 
-                <Text className="text-2xl font-bold mb-5 text-slate-800 dark:text-slate-100">
-                    ¡Crea un viaje!
-                </Text>
-
-                <View className="mt-2 mb-6" >
+                <View className="mt-4 mb-6" >
                     <Text className="text-md font-medium mb-2 dark:text-slate-100"
                     >Lugar de inicio del viaje</Text>
                     <InputStyled
@@ -142,10 +141,23 @@ export default function CreateTripScreen() {
                     />
                 </View>
 
-
+                <BottomSheet
+                    ref={bottomSheetRef}
+                    onChange={handleSheetChanges}
+                    snapPoints={snapPoints}
+                    enableHandlePanningGesture
+                    enablePanDownToClose
+                    handleComponent={() => (<HandleHeader />)}
+                >
+                    <BottomSheetView style={{ flex: 1, padding: 36, height: 700, alignItems: "center" }} className="bg-background">
+                        <Text>Awesome 🎉</Text>
+                        <Text>Awesome 🎉</Text>
+                        <Text>Awesome 🎉</Text>
+                        <Text>Awesome 🎉</Text>
+                        <Text>Awesome 🎉</Text>
+                    </BottomSheetView>
+                </BottomSheet>
             </View>
         </ScrollView>
     );
 }
-
-//<Text className="dark: text-slate-100">ID Del usuario con sesion iniciada: {user?.id}</Text>

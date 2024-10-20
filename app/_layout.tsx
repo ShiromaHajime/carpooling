@@ -8,6 +8,7 @@ import '../global.css';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ToastProvider } from '@/components/Toast';
 import { GlobalProvider } from '@/utils/Provider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,13 +32,15 @@ export default function RootLayout() {
   return (
     <GlobalProvider>
       <ToastProvider position="top">
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="test" options={{ headerShown: false }} />
-          <Stack.Screen name="map" options={{ headerShown: false }} />
-          <Stack.Screen name="(account)" options={{ headerShown: false }} />
-          <Stack.Screen name="(home)" options={{ headerShown: false }} />
-        </Stack>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="test" options={{ headerShown: false }} />
+            <Stack.Screen name="map" options={{ headerShown: false }} />
+            <Stack.Screen name="(account)" options={{ headerShown: false }} />
+            <Stack.Screen name="(home)" options={{ headerShown: false }} />
+          </Stack>
+        </GestureHandlerRootView>
       </ToastProvider>
     </GlobalProvider>
   );

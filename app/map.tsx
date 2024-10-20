@@ -5,6 +5,7 @@ import axios from 'axios';
 import { LocationInfo } from '@/types/types';
 import { haversineDistance } from '@/utils/utils';
 import * as Location from 'expo-location';
+import { useLocalPosition } from '@/hooks/useLocalPosition';
 
 export default function MapScreen() {
     const [locationInfo, setLocationInfo] = useState<LocationInfo>();
@@ -22,17 +23,15 @@ export default function MapScreen() {
     }, [pointA, pointB]);
 
     useEffect(() => {
-        (async () => {
-
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
+        const getUserLocation = async () => {
+            const { error, userLocation } = await useLocalPosition()
+            if (error) {
+                setErrorMsg(error)
+                return
             }
-
-            let userLocation = await Location.getCurrentPositionAsync({});
-            setUserLocation(userLocation);
-        })();
+            if (userLocation) setUserLocation(userLocation)
+        }
+        getUserLocation()
     }, []);
 
     let data = 'Waiting..';
