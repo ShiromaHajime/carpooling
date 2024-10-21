@@ -35,7 +35,7 @@ export default function TripsLayout() {
       }}>
       <Stack.Screen name="detail/[id]" options={{ headerShown: true, title: "Detalle viaje", }} />
       <Stack.Screen name="tripList" options={{ headerShown: true, title: "Viajes", }} />
-      <Stack.Screen name="create" options={{ headerShown: true, title: "Crear viaje", }} />
+      <Stack.Screen name="createTrip" options={{ headerShown: true, title: "Crear viaje", }} />
     </Stack>
   );
 }
