@@ -2,7 +2,7 @@ import { LocationInfo } from '@/types/types';
 import axios from 'axios';
 import { LatLng } from 'react-native-maps';
 
-export const usePointPosition = async (point: LatLng): Promise<{ error: string, location: LocationInfo | null }> => {
+export const usePointPosition = async (point: LatLng): Promise<{ error: string, location: LocationInfo | undefined }> => {
 
     const latitude = point.latitude
     const longitude = point.longitude
@@ -17,7 +17,7 @@ export const usePointPosition = async (point: LatLng): Promise<{ error: string, 
         });
         return { error: '', location: response.data }
     } catch (error) {
-        return { error: 'api error', location: null }
+        return { error: 'api error', location: undefined }
 
     }
 }

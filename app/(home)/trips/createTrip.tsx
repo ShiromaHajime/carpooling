@@ -1,26 +1,18 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import { Button } from "@/components/buttons/Button";
-import { useRouter } from "expo-router";
 import { GlobalContext } from "@/utils/Provider";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { createTrip } from "@/services/createTrip";
 import { useToast } from "@/components/Toast";
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Entypo } from "@expo/vector-icons";
-import { IconArrowUp } from "@/components/icons/Icons";
 import { HandleHeader } from "@/components/headers/HandleHeader";
 import FormTrip from "./FormTrip";
 import { haversineDistance } from "@/utils/utils";
 import { useLocalPosition } from "@/hooks/useLocalPosition";
-import axios from "axios";
 import MapView, { LatLng, MapPressEvent, Marker, Polyline } from "react-native-maps";
 import * as Location from 'expo-location';
-import { AlertProp, LocationInfo, modeMap } from "@/types/types";
-import { AlertTriangle, Terminal, Locate } from "lucide-react-native";
-import { Alert, AlertDescription, AlertTitle } from "@/components/Alert";
+import { LocationInfo, modeMap } from "@/types/types";
 import { usePointPosition } from "@/hooks/usePointPosition";
-import { useColorScheme } from "nativewind";
 import { AlertSelecting } from "@/components/alerts/AlertSelecting";
 
 
@@ -35,13 +27,13 @@ export default function CreateTripScreen() {
     }
 
     const [locationInfo, setLocationInfo] = useState<LocationInfo>();
-    const [distance, setDistance] = useState<number | null>(null);
-    const [origin, setOrigin] = useState<LatLng | null>(null);
-    const [destination, setDestination] = useState<LatLng | null>(null);
+    const [distance, setDistance] = useState<number | undefined>(undefined);
+    const [origin, setOrigin] = useState<LatLng | undefined>(undefined);
+    const [destination, setDestination] = useState<LatLng | undefined>(undefined);
     const [mode, setMode] = useState<modeMap>('iddle');
-    const [userLocation, setUserLocation] = useState<Location.LocationObject | null>();
-    const [originLocation, setOriginLocation] = useState<LocationInfo | null>();
-    const [destinationLocation, setDestinationLocation] = useState<LocationInfo | null>();
+    const [userLocation, setUserLocation] = useState<Location.LocationObject | undefined>();
+    const [originLocation, setOriginLocation] = useState<LocationInfo | undefined>();
+    const [destinationLocation, setDestinationLocation] = useState<LocationInfo | undefined>();
     const [errorMsg, setErrorMsg] = useState('');
     const [currentRegion, setCurrentRegion] = useState(InitialRegion);
     const [departure, setDeparture] = useState('');
@@ -87,7 +79,7 @@ export default function CreateTripScreen() {
 
 
 
-    const snapPoints = ["20%", "40", "90%"]
+    const snapPoints = ["20%", "37%", "90%"]
     const bottomSheetRef = useRef<BottomSheet>(null);
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
@@ -103,10 +95,9 @@ export default function CreateTripScreen() {
 
         return (
             <View className="flex h-full px-5">
-
                 <View className="mt-4 mb-6 flex-row justify-between items-center" >
                     <View>
-                        <Text className="text-md font-medium text-foreground mb-2">
+                        <Text className="text-md font-medium text-foreground mb-2 ">
                             Lugar de inicio del viaje
                         </Text>
 
@@ -122,7 +113,7 @@ export default function CreateTripScreen() {
                         label="Marcar origen" />
                 </View>
 
-                <View className="mt-4 mb-6 flex-row justify-between items-center" >
+                <View className="mt-3 mb-6 flex-row justify-between items-center" >
                     <View>
                         <Text className="text-md font-medium mb-2 dark:text-slate-100"
                         >Lugar de finalización del viaje</Text>
@@ -146,13 +137,13 @@ export default function CreateTripScreen() {
         const coordPressed = e.nativeEvent.coordinate
         if (mode == 'selectingOrigin') setOrigin(coordPressed)
         if (mode == 'selectingDestination') {
-            if (!origin) setOrigin(userLocation?.coords ? userLocation.coords : null)
+            setOrigin(userLocation?.coords ? userLocation.coords : undefined)
             setDestination(coordPressed)
-            bottomSheetRef.current?.snapToIndex(2)
-            setIndexSheet(2)
+            setTimeout(() => {
+                bottomSheetRef.current?.snapToIndex(2)
+            }, 500);
         }
         bottomSheetRef.current?.snapToIndex(1)
-        setIndexSheet(1)
         setMode('end')
 
     }
@@ -216,7 +207,7 @@ export default function CreateTripScreen() {
                         className="bg-[#f8f8f8] dark:bg-background">
                         <View>
                             {(indexSheet == 0 || indexSheet == 1) && (<SelectPoints />)}
-                            {(indexSheet > 1 && (<FormTrip />))}
+                            {(indexSheet > 1 && (<FormTrip origin={origin} destination={destination} />))}
                         </View>
                     </BottomSheetView>
                 </BottomSheet>
