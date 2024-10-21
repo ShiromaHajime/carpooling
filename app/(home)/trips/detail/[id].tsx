@@ -76,7 +76,8 @@ export default function DetailTripScreen() {
     console.log('devuelve algo');
 
     if (!trip || !driver) return
-    console.log('devuelve algo');
+    console.log('devuelve algo', driver);
+
 
     return (
         <ScrollView>
@@ -85,6 +86,7 @@ export default function DetailTripScreen() {
                     className="h-[230] object-cover"
                 />
             </View>
+
             <View className="bg-gray-200 dark:bg-gray-900 flex items-start justify-start h-full pl-8 pr-8">
 
                 <View className="mt-7 " >
@@ -112,7 +114,7 @@ export default function DetailTripScreen() {
                     <Text className="font-semibold dark:color-slate-200">Precio por asiento</Text>
                     <Text className="text-[#64748B]">{trip.seat_price} ARS</Text>
                 </View>
-
+                
                 <View className="mt-8 w-full">
                     <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
                 </View>
@@ -121,6 +123,7 @@ export default function DetailTripScreen() {
                     <Button className="w-52" label="Unirse al viaje"
                         onPress={handleJoinTrip} />
                 </View>
+                
             </View>
         </ScrollView >
     )
