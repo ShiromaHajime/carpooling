@@ -1,4 +1,5 @@
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack, Tabs } from 'expo-router';
@@ -59,11 +60,22 @@ export default function HomeLayout() {
         options={{
           title: 'Viajes',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'car' : 'home-outline'} color={color} />
+            <MaterialCommunityIcons name="car-sports" size={38} color={focused ? '#007aff' : ''} />
+          ),
+          unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
+        }}
+      />
+      <Tabs.Screen
+        name="(profile)"
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome6 name="user-circle" size={24} color={focused ? '#007aff' : ''} />
           ),
           unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}
       />
     </Tabs>
+
   );
 }

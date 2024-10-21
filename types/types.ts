@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export interface PropsInput {
     setValueInput: Function,
+    valueInput?: string
     placeholder: string,
     className?: string
 }
@@ -104,14 +105,54 @@ export interface Driver {
     user: User;
 }
 
-export interface Vehicle {
-    id: number;
-    brand: string;
-    model: string;
-    year: string;
-    color: string;
-    license_plate: string;
-}
+export const schemaFormVehicle = z.object({
+    brand: z.string()
+        .min(1, { message: "La marca es requerida" })
+        .superRefine((value, ctx) => {
+            if (value.length > 0 && !isNaN(Number(value))) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "El nombre no puede ser numérico",
+                });
+            }
+        }),
+    license_plate: z.string()
+        .min(1, { message: "El numero de patente es requerido" })
+        .superRefine((value, ctx) => {
+            if (value.length > 0 && !isNaN(Number(value))) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Formato incorrecto",
+                });
+            }
+        }),
+    model: z.string()
+        .min(1, { message: "El modelo es requerido" })
+        .superRefine((value, ctx) => {
+            if (value.length > 0 && !isNaN(Number(value))) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "El modelo no puede ser numérico",
+                });
+            }
+        }),
+    year: z.string()
+        .min(1, { message: "El año es requerido" }),
+
+    color: z.string()
+        .min(1, { message: "El Color es requerido" })
+        .superRefine((value, ctx) => {
+            if (value.length > 0 && !isNaN(Number(value))) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "El color no puede ser numérico",
+                });
+            }
+        })
+    ,
+});
+
+export type Vehicle = z.infer<typeof schemaFormVehicle>;
 
 export interface Vehicle_driver {
     id: number;
@@ -146,3 +187,14 @@ export interface Trip {    // las peticiones de /trip devuelven en este formato
 
 export type Trips = Trip[]
 
+export interface LocationInfo {
+    locality: string,
+    principalSubdivision: string,
+    city: string,
+    countryName: string,
+    continent: string,
+    latitude: number,
+    longitude: number,
+    continentCode: string,
+    postcode: string
+}

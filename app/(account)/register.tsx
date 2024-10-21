@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar"
-import { Button } from "@/components/Button";
+import { Button } from "@/components/buttons/Button";
 import { useToast } from "@/components/Toast";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
@@ -22,8 +22,6 @@ export default function RegisterScreen() {
 
 
     const handleRegister = async () => {
-        console.log('handle register');
-        console.log('values');
         const result = schemaFormUser.safeParse({ name, lastname, username, email, password });
 
         if (!result.success) {
@@ -35,7 +33,7 @@ export default function RegisterScreen() {
             setErrors(newErrors);
         } else {
             // Datos válidos
-            console.log(result.data);
+            setErrors({})
             toast('Enviando datos...', 'info', 1200, 'top')
             const res = await createUser({ name: name, lastname: lastname, email: email, username: username, password: password })
             if (res) {
