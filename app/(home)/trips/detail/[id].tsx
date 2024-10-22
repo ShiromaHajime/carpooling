@@ -22,6 +22,9 @@ export default function DetailTripScreen() {
     const [loading, setLoading] = useState(true)
     const { toast } = useToast();
 
+    console.log("trip que tengo");
+    console.log(trip);
+    console.log(trip?.id);
 
     useEffect(() => {
         if (!loading && !trip) {
@@ -116,9 +119,11 @@ export default function DetailTripScreen() {
                     <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
                 </View>
 
-                <View className="self-center mt-8 mb-6">
-                    <Button className="w-52" label="Unirse al viaje"
+                <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
+                    <Button className="flex-1" label="Unirse al viaje"
                         onPress={handleJoinTrip} />
+                    <Button className="flex-1" label="Chat"
+                        onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>
             </View>
         </ScrollView >
