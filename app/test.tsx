@@ -26,7 +26,7 @@ export default function TestScreen() {
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/home'>Ir a home</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/tripList'>Ir a trips</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/createTrip'>Ir a createTrip</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/detail/4'>Ir a detail trip 4</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/detail/1'>Ir a detail trip 1, sin logearse no puede entrar al chat del viaje</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/map'>Pantalla map test</Link>
             </View>
         </View>

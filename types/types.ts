@@ -200,3 +200,12 @@ export interface LocationInfo {
 }
 export type modeMap = 'iddle' | 'selectingOrigin' | 'selectingDestination' | 'end'
 export interface AlertProp { title: string, description: string }
+
+
+export interface RoomMessage {
+    id_user: number,
+    username: string,
+    room: string,
+    message: string,
+    sendedTime?: string
+}

@@ -5,4 +5,4 @@
 // EXPO_PUBLIC_API_URL = https://dscarpooling-back.alwaysdata.net
 //
 
-export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "https://carpooling-backend.alwaysdata.net/"
+export const API_URL = process.env.EXPO_PUBLIC_LOCAL_API_URL ?? 'https://carpooling-backend.alwaysdata.net/'

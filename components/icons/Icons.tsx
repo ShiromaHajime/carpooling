@@ -38,3 +38,12 @@ export const IconCar = () => {
     <Car size={18} color={colorScheme == 'dark' ? "#fff" : "#000"} />
   )
 }
+
+
+export const IconSendMessage = () => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <FontAwesome name="send-o" size={16} color="#fff" />
+  )
+}
