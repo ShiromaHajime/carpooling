@@ -15,6 +15,15 @@ export const parseUrlParams = (param: string | string[]): string => {
     return ''
 }
 
+export const parseErrors = (result: any) => {
+    // Manejar errores
+    const newErrors: Record<string, string> = {};
+    result.error.errors.forEach((error: any) => {
+        newErrors[error.path[0]] = error.message;
+    });
+    return newErrors
+}
+
 
 // Función para calcular la distancia usando la fórmula de Haversine
 export const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -29,12 +38,3 @@ export const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c; // Distancia en km
 };
-
-export const parseErrors = (result: any) => {
-    // Manejar errores
-    const newErrors: Record<string, string> = {};
-    result.error.errors.forEach((error: any) => {
-        newErrors[error.path[0]] = error.message;
-    });
-    return newErrors
-}

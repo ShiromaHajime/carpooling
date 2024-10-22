@@ -3,15 +3,11 @@ import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/Card";
 import { useToast } from "@/components/Toast";
 import { IconSave } from "@/components/icons/Icons";
-import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { UserAccount, Vehicle } from "@/types/types";
 import { GlobalContext } from "@/utils/Provider";
-import { FontAwesome } from "@expo/vector-icons";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useContext, useState } from "react";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { CarList } from "./CarList";
+import { Text, TouchableOpacity, View } from "react-native";
 import { ButtonSave } from "@/components/buttons/ButtonSave";
 
 export default function ProfileScreen() {
@@ -22,70 +18,8 @@ export default function ProfileScreen() {
   const [name, setName] = useState(user?.name);
   const [lastname, setLastname] = useState(user?.lastname);
 
-  const { toast } = useToast()
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const router = useRouter();  // Para redirección
-  const dummyCars: Vehicle[] = [
-    {
-      brand: "Toyota",
-      license_plate: "ABC123",
-      model: "Corolla",
-      year: "2020",
-      color: "Red",
-    },
-    {
-      brand: "Honda",
-      license_plate: "XYZ789",
-      model: "Civic",
-      year: "2019",
-      color: "Blue",
-    },
-    {
-      brand: "Ford",
-      license_plate: "LMN456",
-      model: "Focus",
-      year: "2021",
-      // color está ausente, es opcional
-    },
-    {
-      brand: "Chevrolet",
-      license_plate: "QRS321",
-      model: "Malibu",
-      year: "2018",
-      color: "Black",
-    },
-    {
-      brand: "Nissan",
-      license_plate: "TUV654",
-      model: "Altima",
-      year: "2022",
-      color: "White",
-    },
-  ];
-  const handleShowModal = (user: UserAccount) => {
-    // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
-    Alert.alert(
-      "Elige tu rol",
-      "¿Eres conductor o pasajero?",
-      [
-        {
-          text: "Conductor", onPress: () => {
-            context?.setUser(user)
-            router.replace("/trips/create")
-
-          }
-        },  // Redirigir a crear viaje
-        {
-          text: "Pasajero", onPress: () => {
-            context?.setUser(user)
-            router.replace("/trips/tripList")
-          }
-        },  // Redirigir a lista de viajes
-      ],
-      { cancelable: true }
-    );
-  };
 
   const handleSave = () => {
     console.log('algo');
@@ -94,7 +28,7 @@ export default function ProfileScreen() {
 
   return (
     <View className="bg-background flex h-screen pl-7 pr-7 pt-4">
-      <Card className="pl-5 pr-5 pt-4 pb-4 bg-background rounded-md">
+      <Card className="pl-5 pr-5 pt-4 pb-4 bg-secondary rounded-md">
         <View className="self-center">
           <Avatar className="w-32 h-32">
             <AvatarImage
