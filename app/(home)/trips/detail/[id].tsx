@@ -22,9 +22,6 @@ export default function DetailTripScreen() {
     const [loading, setLoading] = useState(true)
     const { toast } = useToast();
 
-    console.log("trip que tengo");
-    console.log(trip);
-    console.log(trip?.id);
 
     useEffect(() => {
         if (!loading && !trip) {
@@ -37,17 +34,14 @@ export default function DetailTripScreen() {
     useEffect(() => {
 
         const getDetail = async (id: string) => {
-
             setLoading(true)
-
-            console.log('fetch con id' + id + ' Por ahora solo funciona con id 1');
             const trip = await getTripById(id)
             console.log("trip getted");
-            console.log(trip);
-
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.vehicle_driver.driver.user)
+                setDriver(trip.vehicle_driver.driver) // puede cambiar tipo vehicle_driver en el back?
+                console.log(trip);
+                console.log(trip?.id);
             }
             setLoading(false)
         }

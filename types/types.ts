@@ -173,11 +173,11 @@ export interface Tripc { // de donde sales este trip?
     vehicle_driver: string,
 }
 
-export interface Trip {    // las peticiones de /trip devuelven en este formato
+export interface Trip {    // las peticiones de /trips devuelven en este formato
     arrival_address: Address;
     available_seats: number;
     creation_timestamp: number;
-    deaparture_address: Address;
+    departure_address: Address;
     departure_date: string;
     departure_time: string;
     id: number;

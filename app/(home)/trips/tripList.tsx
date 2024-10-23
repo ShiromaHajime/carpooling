@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router"; // Importa el hook router para navegación
 import { API_URL } from "@/constants/const";
+import { getAllTrips } from "@/services/trip";
 
 export default function TripsScreen() {
   const [trips, setTrips] = useState<Trips>([]);
@@ -10,17 +11,13 @@ export default function TripsScreen() {
   const router = useRouter();  // Inicializa el router
 
   useEffect(() => {
-    fetch(API_URL + '/trip')
-      .then(response => response.json())
-      .then(data => {
-        setTrips(data);
-        console.log(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
+    const getTrips = async () => {
+      const trips = await getAllTrips()
+      setLoading(false)
+      if (trips) setTrips(trips)
+    }
+    setLoading(true)
+    getTrips()
   }, []);
 
   if (loading) {
@@ -42,7 +39,7 @@ export default function TripsScreen() {
           <TouchableOpacity onPress={() => router.push(`/trips/detail/${item.id}`)}>
             <View className="bg-white p-4 mb-4 w-full rounded-lg shadow-lg">
               <Text className="text-gray-800 text-lg font-bold">
-                De:  {item.deaparture_address.city.province.name} - {item.deaparture_address.city.name} - {item.deaparture_address.street} {item.deaparture_address.number}
+                De:  {item.departure_address.city.province.name} - {item.departure_address.city.name} - {item.departure_address.street} {item.departure_address.number}
               </Text>
               <Text className="text-gray-800 text-lg font-bold">
                 A: {item.arrival_address.city.province.name} - {item.arrival_address.city.name} - {item.arrival_address.street} {item.arrival_address.number}
@@ -51,7 +48,8 @@ export default function TripsScreen() {
                 Hora de salida: {item.departure_time}
               </Text>
               <Text className="text-gray-600 text-sm">
-                Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
+                {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
+                Conductor : {item.vehicle_driver.driver.first_name} {item.vehicle_driver.driver.last_name}
               </Text>
             </View>
           </TouchableOpacity>
