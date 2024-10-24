@@ -207,5 +207,9 @@ export interface RoomMessage {
     username: string,
     room: string,
     message: string,
+    isSystem?: boolean
     sendedTime?: string
+}
+export interface MessageRes extends RoomMessage {
+    id: number
 }
