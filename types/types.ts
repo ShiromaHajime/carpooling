@@ -173,11 +173,11 @@ export interface Tripc { // de donde sales este trip?
     vehicle_driver: string,
 }
 
-export interface Trip {    // las peticiones de /trip devuelven en este formato
+export interface Trip {    // las peticiones de /trips devuelven en este formato
     arrival_address: Address;
     available_seats: number;
     creation_timestamp: number;
-    deaparture_address: Address;
+    departure_address: Address;
     departure_date: string;
     departure_time: string;
     id: number;
@@ -197,4 +197,15 @@ export interface LocationInfo {
     longitude: number,
     continentCode: string,
     postcode: string
+}
+export type modeMap = 'iddle' | 'selectingOrigin' | 'selectingDestination' | 'end'
+export interface AlertProp { title: string, description: string }
+
+
+export interface RoomMessage {
+    id_user: number,
+    username: string,
+    room: string,
+    message: string,
+    sendedTime?: string
 }

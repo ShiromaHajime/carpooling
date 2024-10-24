@@ -52,17 +52,14 @@ export default function DetailTripScreen() {
     useEffect(() => {
 
         const getDetail = async (id: string) => {
-
             setLoading(true)
-
-            console.log('fetch con id' + id + ' Por ahora solo funciona con id 1');
             const trip = await getTripById(id)
             console.log("trip getted");
-            console.log(trip);
-
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.vehicle_driver.driver.user)
+                setDriver(trip.vehicle_driver.driver) // puede cambiar tipo vehicle_driver en el back?
+                console.log(trip);
+                console.log(trip?.id);
             }
             setLoading(false)
         }
@@ -196,6 +193,12 @@ export default function DetailTripScreen() {
 
                 <CardDriverPassanger />
 
+                <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
+                    <Button className="flex-1" label="Unirse al viaje"
+                        onPress={handleJoinTrip} />
+                    <Button className="flex-1" label="Chat"
+                        onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
+                </View>
             </View>
         </ScrollView >
     )

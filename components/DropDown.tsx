@@ -63,7 +63,7 @@ type DropDownLabelProps = {
 
 const DropDownLabel = ({ labelTitle }: DropDownLabelProps) => {
   return (
-    <Text className="text-xl font-semibold text-primary">{labelTitle}</Text>
+    <Text className="font-semibold text-foreground">{labelTitle}</Text>
   );
 };
 

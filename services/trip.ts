@@ -1,6 +1,31 @@
 import { API_URL } from "@/constants/const";
 import { Response, Response500 } from "@/types/errors";
-import { TripById } from "@/types/types";
+import { Trip, TripById } from "@/types/types";
+
+interface TripsFromDB {
+
+}
+export const getAllTrips = async (): Promise<Trip[] | false> => {
+
+    try {
+        const res = await fetch(`${API_URL}/trips`);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        if (res.status == 200) {
+            const trip = await res.json()
+            console.log(trip[0]);
+            return trip
+        } else return false
+
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+
+}
+
 
 export const joinTrip = async (passenger_id: string, id_trip: string): Promise<Response> => {
 
@@ -39,7 +64,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
 export const getTripById = async (id_trip: string): Promise<TripById | false> => {
 
     try {
-        const res = await fetch(`${API_URL}/trip/${id_trip}`);
+        const res = await fetch(`${API_URL}/trips/${id_trip}`);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
