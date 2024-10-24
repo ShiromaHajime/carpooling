@@ -4,6 +4,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { User, Vehicle } from "@/types/types"
 import { Medal } from "lucide-react-native"
 import { Text, View } from "react-native"
+import { AvatarImage } from "@/components/Avatar";
 
 export const CardPassenger = ({ passenger, isSimple, title }: { passenger: User, isSimple: boolean, title: string }) => {
 
@@ -13,9 +14,16 @@ export const CardPassenger = ({ passenger, isSimple, title }: { passenger: User,
             <Card>
                 <CardHeader>
                     <View className="flex flex-row justify-between items-center">
+                        <View> 
+                            {/* <AvatarImage
+                                className="w-40 h-40"
+                                source={require('../../assets/images/userlogoblackS.png')}
+                            /> */}
+                            {/* <Img source ('../../assets/images/userlogoblackS.png')>
+                            </Img> */}
+                        </View>
                         <View className="flex flex-row items-center">
                             <CardTitle>{passenger.first_name} {passenger.last_name}</CardTitle>
-                            <View className="ml-3"><Medal size={25} color={'rgb(251,191,36)'} /></View>
                         </View>
                         {(!isSimple) && (<Button className="bg-background border border-secondary" labelClasses="text-foreground" label="Ver perfil" />)}
                     </View>
