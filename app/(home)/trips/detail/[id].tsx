@@ -44,7 +44,6 @@ export default function DetailTripScreen() {
             const solicitudes = await getSolicitudesByID(id)
             setSolicitudes(solicitudes)
         }
-
         getSolicitudes()
     }, []);
 
@@ -84,6 +83,7 @@ export default function DetailTripScreen() {
         toast('Se ha unido al viaje! Puedes hablar con el conductor para coordinar el viaje', 'success', 4000, 'top', false);
 
     }
+
 
 
     if (loading) return (<LoadingScreen />)
@@ -136,7 +136,7 @@ export default function DetailTripScreen() {
 
 
 
-        //la card me tendrua que llevar al User, pero ahora esta 
+        //la card me tendrua que llevar al User, pero ahora no hace
         if (role == 'Driver') {
             const cantsolicitudes = solicitudes.length
             return (
@@ -159,7 +159,7 @@ export default function DetailTripScreen() {
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}>
-            <View>
+            <View> 
                 <Image source={require('@/assets/images/googleMapsExample.png')}
                     className="h-[230] object-cover"
                 />
