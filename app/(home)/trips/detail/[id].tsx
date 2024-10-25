@@ -12,6 +12,7 @@ import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
 import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
+import { acceptPassenger, rejectPassenger } from "@/services/petitionPassenger";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -157,7 +158,7 @@ export default function DetailTripScreen() {
                     {/* solicitudes */}
 
                     <FlatList data={solicitudes}
-                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} title={`Pasajero: ${item.first_name}`} />}
+                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} handleAccept={() => acceptPassenger(trip.id, id)} handleReject={() => rejectPassenger(trip.id, id)} title={`Pasajero: ${item.first_name}`} />}
                         keyExtractor={item => item.email}
                     />
 
@@ -209,8 +210,6 @@ export default function DetailTripScreen() {
                 <CardDriverPassanger />
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
-                    <Button className="flex-1" label="Unirse al viaje"
-                        onPress={handleJoinTrip} />
                     <Button className="flex-1" label="Chat"
                         onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>

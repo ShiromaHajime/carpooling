@@ -1,4 +1,3 @@
-import { Badge } from "@/components/Badge"
 import { Button } from "@/components/buttons/Button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/Card"
 import { User, Vehicle } from "@/types/types"
@@ -8,16 +7,15 @@ import { Toggle } from "@/components/Toggle"
 import { Toast } from "@/components/Toast"
 
 
-
-const handleAccept = () => {
-    console.log("ha aceptado al pasajero")
+interface PropCard {
+    passenger: User,
+    isSimple: boolean, 
+    title: string,
+    handleAccept: () => void,
+    handleReject: () => void,
 }
-const handleReject = () => {
-    console.log("NOOOOOOOO LO RECHAZOOO")
-}
 
-
-export const CardPassenger = ({ passenger, isSimple, title }: { passenger: User, isSimple: boolean, title: string }) => {
+export const CardPassenger = ({ passenger, isSimple, title, handleAccept, handleReject }: PropCard) => {
 
     return (
         <View className="flex gap-2">
@@ -35,7 +33,7 @@ export const CardPassenger = ({ passenger, isSimple, title }: { passenger: User,
                         </View>
                         {(!isSimple) && (
                             <View>
-                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={handleAccept} />
+                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={handleAccept}/>
                                 <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="RECHAZAR" onPress={handleReject}/>
                             </View> 
                         )}   
