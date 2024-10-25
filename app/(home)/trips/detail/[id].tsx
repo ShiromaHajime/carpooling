@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
-import { getTripById, joinTrip, cancelTrip } from "@/services/trip";
+import { getTripById, joinTrip, cancelTrip, cancelPetition } from "@/services/trip";
 import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
@@ -16,6 +16,7 @@ import { acceptPassenger, rejectPassenger } from "@/services/petitionPassenger";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
+    const iduser = parseUrlParams(id);
     const context = useContext(GlobalContext);
     const idPassenger = context?.user.id?.toString()
     const role = context?.role
@@ -86,6 +87,14 @@ export default function DetailTripScreen() {
 
     }
 
+    const handleCancelPetition = async () => {
+        if (!trip) return
+        const res= await cancelPetition(trip?.id, iduser)
+        if (res) return{
+
+        }
+    }
+
     const handleCancelTrip = async () => {
         if(!trip) return
             toast('Cancelando el viaje', 'default', 2800, 'top')
@@ -113,6 +122,8 @@ export default function DetailTripScreen() {
                     <View className="self-center mt-8 mb-6">
                         <Button className="w-52" label="Unirse al viaje"
                             onPress={handleJoinTrip} />
+                         <Button className="bg-red-600ed" label="Cancelar Solicitud"
+                            onPress={handleCancelPetition}/>
                     </View>
                 </View>
             )
@@ -155,7 +166,7 @@ export default function DetailTripScreen() {
                     {/* solicitudes */}
 
                     <FlatList data={solicitudes}
-                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} handleAccept={() => acceptPassenger(trip.id, id)} handleReject={() => rejectPassenger(trip.id, id)} title={`Pasajero: ${item.first_name}`} />}
+                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} handleAccept={() => acceptPassenger(trip.id, iduser)} handleReject={() => rejectPassenger(trip.id, iduser)} title={`Pasajero: ${item.first_name}`} />}
                         keyExtractor={item => item.email}
                     />
 

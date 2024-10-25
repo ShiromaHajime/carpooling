@@ -102,3 +102,34 @@ export const cancelTrip = async (id_trip: number) => {
     }
     
 }
+
+
+export const cancelPetition = async (id_trip: number, id_user: string) => {
+        
+    console.log("API_URL de la variable de entorno");
+    console.log(API_URL);
+
+    const body = {
+        id_trip: id_trip,
+        passenger_id: id_user,
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
+
+    try {
+        const res = await fetch(`${API_URL}/trip_join`, options); //HAY QUE AGREGAR LA RUTA CORRECTA
+        
+        if (res.status == 200) {
+            return true
+        } else return false
+
+    } catch (error) {
+        return false
+    }
+}
