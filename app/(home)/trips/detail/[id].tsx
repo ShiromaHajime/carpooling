@@ -86,13 +86,10 @@ export default function DetailTripScreen() {
     }
 
     const handleCancelTrip = async () => {
-        if (!idPassenger) return
-        toast('Cancelando el viaje', 'default', 2800, 'top')
-        const res = await cancelTrip(trip?.id)
-        if (!res) {
-            toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
-            return
-        }
+        if(!trip) return
+            toast('Cancelando el viaje', 'default', 2800, 'top')
+            const res = await cancelTrip(trip.id)
+        if (res) toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
         toast('Se ha cancelado el viaje con exito', 'info', 4000, 'top', false);
     }
 
@@ -162,7 +159,7 @@ export default function DetailTripScreen() {
                     />
 
                     <View>
-                    <Button className="flex-1" label="Unirse al viaje"
+                    <Button className="flex-1 bg-red-600" label="Cancelar viaje"
                         onPress={handleCancelTrip} />
                     </View>
 
@@ -209,8 +206,6 @@ export default function DetailTripScreen() {
                 <CardDriverPassanger />
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
-                    <Button className="flex-1" label="Unirse al viaje"
-                        onPress={handleJoinTrip} />
                     <Button className="flex-1" label="Chat"
                         onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>

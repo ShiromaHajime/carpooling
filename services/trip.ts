@@ -82,6 +82,23 @@ export const getTripById = async (id_trip: string): Promise<TripById | false> =>
 
 }
 
-export const cancelTrip = async (id_trip: string) => {
+export const cancelTrip = async (id_trip: number) => {
+
+    try {
+        const res = await fetch(`${API_URL}/driver/trips/${id_trip}/cancel`);
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        if (res.status == 200) {
+            // const trip = await res.json()
+            return true
+        }
+
+    } catch (error) {
+        console.log(error);
+        return false
+    }
     
 }
