@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
-import { getTripById, joinTrip } from "@/services/trip";
+import { getTripById, joinTrip, cancelTrip } from "@/services/trip";
 import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
@@ -35,13 +35,9 @@ export default function DetailTripScreen() {
     }, [loading, trip]);
 
 
-    const getSolicitudesByID = async () => {
-        return ['algo']
-    }
-
     useEffect(() => {
         const getSolicitudes = async () => {
-            const solicitudes = await getSolicitudesByID(id)
+            const solicitudes = await getSolicitudesByID(trip?.id)
             setSolicitudes(solicitudes)
         }
         getSolicitudes()
@@ -56,7 +52,7 @@ export default function DetailTripScreen() {
             console.log("trip getted");
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.vehicle_driver.driver) // puede cambiar tipo vehicle_driver en el back?
+                setDriver(trip.vehicle_driver.driver.user) // puede cambiar tipo vehicle_driver en el back?
                 console.log(trip);
                 console.log(trip?.id);
             }
@@ -72,6 +68,11 @@ export default function DetailTripScreen() {
     }, [])
 
 
+    //COMO HAGO LOGICA PARA QUE ME DEVUELVA LAS SOLICITUDES?
+    const getSolicitudesByID = async () => {
+        return ['algo']
+    }
+
     const handleJoinTrip = async () => {
         if (!idPassenger) return
         toast('Uniendose al viaje', 'info', 2800, 'top')
@@ -84,11 +85,20 @@ export default function DetailTripScreen() {
 
     }
 
-
+    const handleCancelTrip = async () => {
+        if (!idPassenger) return
+        toast('Cancelando el viaje', 'default', 2800, 'top')
+        const res = await cancelTrip(trip?.id)
+        if (!res) {
+            toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+            return
+        }
+        toast('Se ha cancelado el viaje con exito', 'info', 4000, 'top', false);
+    }
 
     if (loading) return (<LoadingScreen />)
 
-    console.log('devuelve algo');
+    //console.log('devuelve algo');
 
     if (!trip || !driver) return
     console.log('devuelve algo');
@@ -150,6 +160,11 @@ export default function DetailTripScreen() {
                         renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} title={`Pasajero: ${item.first_name}`} />}
                         keyExtractor={item => item.email}
                     />
+
+                    <View>
+                    <Button className="flex-1" label="Unirse al viaje"
+                        onPress={handleCancelTrip} />
+                    </View>
 
                 </>
             )

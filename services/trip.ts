@@ -82,3 +82,6 @@ export const getTripById = async (id_trip: string): Promise<TripById | false> =>
 
 }
 
+export const cancelTrip = async (id_trip: string) => {
+    
+}
