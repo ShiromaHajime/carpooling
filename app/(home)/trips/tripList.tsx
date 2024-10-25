@@ -49,7 +49,7 @@ export default function TripsScreen() {
               </Text>
               <Text className="text-gray-600 text-sm">
                 {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
-                Conductor : {item.vehicle_driver.driver.first_name} {item.vehicle_driver.driver.last_name}
+                Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
               </Text>
             </View>
           </TouchableOpacity>

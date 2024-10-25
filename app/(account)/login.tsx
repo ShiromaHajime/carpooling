@@ -25,7 +25,7 @@ export default function LoginScreen() {
     const res = await loginUser(username, password);
 
     if (res) {
-      const user = res.user
+      const user = res
       const userParsed: UserContext = {
         id: user.id,
         email: user.email,

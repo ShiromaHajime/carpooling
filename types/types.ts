@@ -160,8 +160,6 @@ export interface Vehicle_driver {
     vehicle: Vehicle;
 }
 
-
-
 export interface Tripc { // de donde sales este trip?
     idDriver?: number
     deaparture_address: string,
