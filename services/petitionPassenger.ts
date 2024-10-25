@@ -3,7 +3,7 @@ import { Response, Response500 } from "@/types/errors";
 import { Trip, TripById } from "@/types/types";
 
 
-export const acceptPassenger= async (id_trip: number, id_user: string, decision: boolean) => {
+export const decisionPetition= async (id_trip: string, id_user: number, decision: boolean) => {
     
     console.log("API_URL de la variable de entorno");
     console.log(API_URL);
@@ -36,10 +36,5 @@ export const acceptPassenger= async (id_trip: number, id_user: string, decision:
 
         return Response500;
     }
-    return true
-}
-
-export const rejectPassenger=  (id_trip:number , id_user: string) => {
-
     return true
 }

@@ -11,11 +11,10 @@ interface PropCard {
     passenger: User,
     isSimple: boolean, 
     title: string,
-    handleAccept: () => void,
-    handleReject: () => void,
+    handleDecision: (desicion: boolean, id_user: number) => void,
 }
 
-export const CardPassenger = ({ passenger, isSimple, title, handleAccept, handleReject }: PropCard) => {
+export const CardPassenger = ({ passenger, isSimple, title, handleDecision }: PropCard) => {
 
     return (
         <View className="flex gap-2">
@@ -33,8 +32,8 @@ export const CardPassenger = ({ passenger, isSimple, title, handleAccept, handle
                         </View>
                         {(!isSimple) && (
                             <View>
-                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={handleAccept}/>
-                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="RECHAZAR" onPress={handleReject}/>
+                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={() => handleDecision(true, passenger.id)}/>
+                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="RECHAZAR" onPress={() => handleDecision(false, passenger.id)}/>
                             </View> 
                         )}   
                     </View>
