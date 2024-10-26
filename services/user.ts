@@ -1,5 +1,6 @@
-import { API_URL } from "@/constants/const";
-import { UserAccount } from "@/types/types";
+import { API_URL, storage } from "@/constants/const";
+import { ImageType, UserAccount } from "@/types/types";
+import { UploadResult, ref, uploadBytes } from "firebase/storage";
 
 
 export const createUser = async (userAccount: UserAccount) => {
@@ -45,4 +46,22 @@ export const createUser = async (userAccount: UserAccount) => {
         return false;
     }
 
+}
+
+export const getProfilePicture = () => {
+
+}
+
+
+export const uploadProfilePicture = async (image: ImageType, idUser: number): Promise<UploadResult | undefined> => {
+    if (!idUser || !image) return
+    try {
+        const response = await fetch(image.uri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `id-user-${idUser}/profile-picture`);
+        const snapshot = await uploadBytes(storageRef, blob);
+        return snapshot
+    } catch (error) {
+        return
+    }
 }

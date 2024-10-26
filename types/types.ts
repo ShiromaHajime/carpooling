@@ -211,3 +211,5 @@ export interface RoomMessage {
 export interface MessageRes extends RoomMessage {
     id: number
 }
+
+export interface ImageType { uri: string, filename: string }
