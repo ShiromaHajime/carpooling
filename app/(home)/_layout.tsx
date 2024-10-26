@@ -1,11 +1,13 @@
+import { Switch } from '@/components/Switch';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { GlobalContext } from '@/utils/Provider';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack, Tabs } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { Text, View, useColorScheme } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export {
@@ -40,6 +42,40 @@ export default function HomeLayout() {
     return null;
   }
 
+  const HeaderHome = () => {
+
+    const context = useContext(GlobalContext);
+    const contextRole = context?.role
+
+    const CurrentRole = () => {
+      const [role, setRole] = useState(contextRole);
+
+      let textRole
+      if (contextRole) {
+        textRole = role == 'Passenger' ? 'Pasajero' : 'Conductor'
+      }
+      const handleChangeRol = () => {
+        const newRole = role == 'Driver' ? 'Passenger' : 'Driver'
+        setRole(newRole)
+        context?.setRole(newRole)
+      }
+
+      return (
+        <View className='flex flex-row justify-center items-center gap-3 pr-4'>
+          <Text className='text-lg text-white'>Rol: {textRole}</Text>
+          <Switch onCheckedChange={handleChangeRol} checked={role == 'Driver' ? true : false} />
+        </View>
+      )
+    }
+
+
+    return (
+      <View className='flex flex-row gap-4 justify-end items-center'>
+        <CurrentRole />
+      </View>
+    )
+  }
+
   return (
     <Tabs
       screenOptions={{
@@ -49,7 +85,11 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          headerRight: () => (<HeaderHome />),
+          title: 'Carpooling',
+          headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+          headerTitleStyle: { color: "#fff" },
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),

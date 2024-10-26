@@ -47,3 +47,11 @@ export const IconSendMessage = () => {
     <FontAwesome name="send-o" size={16} color="#fff" />
   )
 }
+
+export const IconCamera = ({ size }: { size?: number }) => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <Entypo name="camera" size={size ?? 24} color={colorScheme == 'light' ? '#fff' : '#000'} />
+  )
+}

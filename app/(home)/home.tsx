@@ -1,22 +1,47 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
 import { Button } from "@/components/buttons/Button";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "@/utils/Provider";
 
 
 export default function HomeScreen() {
+    const context = useContext(GlobalContext);
+    const contextRole = context?.role
+    const user = context?.user
+    console.log('renderHome');
 
-    const handleLogout = () => {
-        router.replace("/(account)/login");
+    useEffect(() => {
+        // get RequestPassengers
+        // get activeTrips
+    }, [])
+
+    const handleButtonTrip = () => {
+        console.log('algo');
+
+    }
+    const RequestPassengers = () => {
+
+        return (
+            <View>
+                <Text>pasajeros</Text>
+            </View>
+        )
+    }
+
+    const ActiveTrips = () => {
+        return (
+            <View>
+                <Text>Viajes activos</Text>
+            </View>
+        )
     }
 
     return (
-        <View className="bg-slate-400 flex items-center justify-center h-screen pl-5 pr-5">
-            <Text className="text-gray-200">Home</Text>
-
-            <View className="items-center mt-7 mb-5">
-                <Button className="w-52 bg-[#104736] text-stone-50" label="Cerrar Sesión" onPress={handleLogout} />
-
-            </View>
+        <View className="bg-background flex items-center justify-center h-full pl-5 pr-5">
+            {(contextRole == 'Passenger') && (<RequestPassengers />)}
+            <Button label={`${contextRole == 'Driver' ? 'Crear nuevo viaje' : 'Buscar nuevo viaje'}`} onPress={handleButtonTrip} className="px-28 py-2" />
+            <ActiveTrips />
         </View>
     );
 }
