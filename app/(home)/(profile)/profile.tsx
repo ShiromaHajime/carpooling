@@ -5,11 +5,11 @@ import { IconCamera, IconEdit, IconSave } from "@/components/icons/Icons";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useContext, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { ButtonSave } from "@/components/buttons/ButtonSave";
 import { ProfileAvatar } from "./ProfileAvatar";
-import { getUserById } from "@/services/user";
+import { getUserById, modifyUserValue } from "@/services/user";
 import { parseUrlParams } from "@/utils/utils";
 
 
@@ -62,14 +62,25 @@ export default function ProfileScreen() {
 
   const InputLine = ({ initialvalue, field, canEdit }: InputLineProps) => {
 
-    const handleSave = () => {
-      console.log('algo');
-    }
 
+    const firstValue = useMemo(() => (initialvalue), [])
     const [value, setValue] = useState(initialvalue)
     const [editing, setEditing] = useState(false)
 
+    const saveChanges = async () => {
+      if (!userProfile) return
+      toast('Modificando campo del usuario', 'info', 3000)
+      const res = await modifyUserValue(userProfile.id, field, value)
+      if (res) {
+        toast('Usuario modificado con éxito', 'success', 3000, 'top', false)
+      }
+    }
     const handlePress = () => {
+      if (editing) { // user press save
+        if (firstValue != value) {
+          saveChanges()
+        }
+      }
       setEditing((prev) => !prev)
     }
 

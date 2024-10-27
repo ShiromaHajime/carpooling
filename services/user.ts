@@ -49,6 +49,48 @@ export const createUser = async (userAccount: UserAccount) => {
 
 }
 
+export const modifyUserValue = async (idUser: number, field: 'name' | 'lastName' | 'username', value: string) => {
+
+    let data: any
+    if (field == 'name') {
+        data = {
+            first_name: value
+        }
+    }
+    if (field == 'lastName') {
+        data = {
+            last_name: value
+        }
+    }
+    if (field == 'username') {
+        data = {
+            username: value
+        }
+    }
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    try {
+        const res = await fetch(`${API_URL}/users/${idUser}`, options)
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+        }
+        if (res.status == 200) {
+            return res.json()
+        } else return false
+
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+
+}
+
 const parseUserContext = (user: any): UserContext => {
     const newUser: UserContext = {
         id: user.id,
