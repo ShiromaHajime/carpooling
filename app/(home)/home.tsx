@@ -17,7 +17,14 @@ export default function HomeScreen() {
     }, [])
 
     const handleButtonTrip = () => {
-        console.log('algo');
+        if (contextRole == 'Driver') {
+            router.replace({ pathname: "/(home)/trips/createTrip" })
+            return
+        }
+        if (contextRole == 'Passenger') {
+            // router.replace({pathname: "/(home)/trips/createTrip"}) //ir a buscar viaje
+            return
+        }
 
     }
     const RequestPassengers = () => {

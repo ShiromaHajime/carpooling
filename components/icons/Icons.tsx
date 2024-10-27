@@ -1,6 +1,14 @@
-import { Entypo, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import { Entypo, FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { Car } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
+
+export const IconEdit = () => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <FontAwesome5 name="edit" size={20} color={colorScheme == 'dark' ? "#fff" : "#000"} />
+  )
+}
 
 export const IconSave = () => {
   const { colorScheme } = useColorScheme()

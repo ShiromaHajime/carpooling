@@ -18,14 +18,14 @@ export default function ChatScreen() {
     console.log(idTrip);
     const { toast } = useToast();
 
-    // const idUser = context?.user.id
-    // const username = context?.user.username
-    const obtenerIDAleatorio = () => Math.floor(Math.random() * 5) + 1;
-    const obtenerNombreAleatorio = () => ['fedevalle', 'pabloperez', 'anacastro', 'luismartinez', 'mariagomez', 'josegarcia', 'carlafernandez', 'davidlopez', 'monicacruz', 'jorgerodriguez'][Math.floor(Math.random() * 10)];
-    const idUser = useMemo(() => { return obtenerIDAleatorio() }, [])
-    const username = useMemo(() => { return obtenerNombreAleatorio() }, [])
-    console.log('mi user: ' + username);
-    // hasta que funcione login
+    const idUser = context.user.id
+    const username = context.user.username
+
+    // const obtenerIDAleatorio = () => Math.floor(Math.random() * 5) + 1;
+    // const obtenerNombreAleatorio = () => ['fedevalle', 'pabloperez', 'anacastro', 'luismartinez', 'mariagomez', 'josegarcia', 'carlafernandez', 'davidlopez', 'monicacruz', 'jorgerodriguez'][Math.floor(Math.random() * 10)];
+    // const idUser = useMemo(() => { return obtenerIDAleatorio() }, [])
+    // const username = useMemo(() => { return obtenerNombreAleatorio() }, [])
+    // console.log('mi user: ' + username);
 
     const [messages, setMessages] = useState<RoomMessage[]>([]);
     const [loading, setLoading] = useState(true);

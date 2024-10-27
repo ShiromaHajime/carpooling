@@ -4,10 +4,10 @@ import { GlobalContext } from '@/utils/Provider';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { Stack, Tabs } from 'expo-router';
+import { Stack, Tabs, router, useFocusEffect } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useContext, useEffect, useState } from 'react';
-import { Text, View, useColorScheme } from 'react-native';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Pressable, Text, View, useColorScheme } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export {
@@ -76,6 +76,29 @@ export default function HomeLayout() {
     )
   }
 
+  const IconTabProfile = () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    useFocusEffect(
+      useCallback(() => {
+        setIsFocused(true);
+
+        return () => setIsFocused(false);
+      }, [])
+    );
+
+    return (
+      <Pressable
+        onPress={() => {
+          router.navigate({ pathname: "/(home)/(profile)", params: { idDriver: undefined } });
+        }}
+        className='flex-1 justify-center items-center mt-2'
+      >
+        <FontAwesome6 name="user-circle" size={24} color={isFocused ? '#007aff' : 'gray'} />
+        <Text className='text-muted text-xs mt-1'>Perfil</Text>
+      </Pressable>
+    );
+  };
   return (
     <Tabs
       screenOptions={{
@@ -107,11 +130,10 @@ export default function HomeLayout() {
       />
       <Tabs.Screen
         name="(profile)"
+        initialParams={{}}
         options={{
           title: 'Perfil',
-          tabBarIcon: ({ color, focused }) => (
-            <FontAwesome6 name="user-circle" size={24} color={focused ? '#007aff' : ''} />
-          ),
+          tabBarButton: () => <IconTabProfile />,
           unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}
       />

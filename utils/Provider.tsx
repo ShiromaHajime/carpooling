@@ -2,11 +2,12 @@ import { UserAccount } from '@/types/types';
 import React, { createContext, useState, ReactNode } from 'react';
 
 export interface UserContext {
-    id: number
-    name: string;
-    lastname: string;
-    email: string;
-    username: string;
+    id: number,
+    name: string,
+    lastname: string,
+    email: string,
+    username: string,
+    creation_date: string,
 }
 
 type Role = "Passenger" | "Driver"
@@ -24,11 +25,12 @@ const initialState: UserContext = {
     lastname: '',
     email: '',
     username: '',
+    creation_date: '',
 }
 
 
 // Create the context with a default value
-export const GlobalContext = createContext<ContextType | undefined>(undefined);
+export const GlobalContext = createContext<ContextType>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<UserContext>(initialState);

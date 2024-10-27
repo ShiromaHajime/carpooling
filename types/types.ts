@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { LatLng } from "react-native-maps";
+import { number, z } from "zod";
 
 export interface PropsInput {
     setValueInput: Function,
@@ -74,24 +75,6 @@ export interface TripById {  // las peticiones de /trips/id devuelven en este fo
     vehicle_driver: VehicleDriver;
 }
 
-export interface Province {
-    province_id: number;
-    name: string;
-}
-
-export interface City {
-    id: number;
-    name: string;
-    province: Province;
-}
-
-export interface Address {
-    id: number;
-    street: string;
-    number: number;
-    city: City;
-}
-
 export interface User {
     creation_date: string;
     email: string;
@@ -160,22 +143,11 @@ export interface Vehicle_driver {
     vehicle: Vehicle;
 }
 
-export interface Tripc { // de donde sales este trip?
-    idDriver?: number
-    deaparture_address: string,
-    arrival_address: string,
-    departure_date: string,
-    departure_time: string,
-    available_seats: string,//en realidad number
-    seat_price: string,// en realidad number
-    vehicle_driver: string,
-}
-
 export interface Trip {    // las peticiones de /trips devuelven en este formato
     arrival_address: Address;
+    departure_address: Address;
     available_seats: number;
     creation_timestamp: number;
-    departure_address: Address;
     departure_date: string;
     departure_time: string;
     id: number;
@@ -184,6 +156,20 @@ export interface Trip {    // las peticiones de /trips devuelven en este formato
 }
 
 export type Trips = Trip[]
+
+export interface Address {
+    id: number,
+    locality: Locality,
+    number: number,
+    street: string,
+    coords: LatLng
+}
+
+export interface Locality {
+    id: number,
+    name: string,
+    principal_subdivision: { name: string }
+}
 
 export interface LocationInfo {
     locality: string,

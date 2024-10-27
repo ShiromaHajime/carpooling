@@ -39,7 +39,7 @@ export default function DetailTripScreen() {
             console.log("trip getted");
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.vehicle_driver.driver) // puede cambiar tipo vehicle_driver en el back?
+                setDriver(trip.vehicle_driver.driver.user)
                 console.log(trip);
                 console.log(trip?.id);
             }
@@ -66,7 +66,9 @@ export default function DetailTripScreen() {
         toast('Se ha unido al viaje! Puedes hablar con el conductor para coordinar el viaje', 'success', 4000, 'top', false);
 
     }
-
+    const handlePressViewProfile = () => {
+        router.replace({ pathname: "/(home)/(profile)/profile", params: { idDriver: driver?.id } })
+    }
 
     if (loading) return (<LoadingScreen />)
 
@@ -86,11 +88,19 @@ export default function DetailTripScreen() {
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
-                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address?.city.name}, calle {trip.arrival_address?.street}</Text>
+                    <Text className="text-[#64748B]">
+                        Ciudad: {trip.arrival_address.locality.name},
+                        calle: {trip.arrival_address.street},
+                        numero: {trip.arrival_address.number}
+                    </Text>
                 </View>
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
-                    <Text className="text-[#64748B]">Cuidad {trip.departure_address?.city.name}, calle {trip.departure_address?.street}</Text>
+                    <Text className="text-[#64748B]">
+                        Ciudad: {trip.departure_address.locality.name},
+                        calle: {trip.departure_address.street},
+                        numero: {trip.departure_address.number}
+                    </Text>
                 </View>
 
                 <View className="mt-3">
@@ -110,7 +120,7 @@ export default function DetailTripScreen() {
                 </View>
 
                 <View className="mt-8 w-full">
-                    <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
+                    <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} handlePressViewProfile={handlePressViewProfile} />
                 </View>
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
