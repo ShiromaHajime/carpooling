@@ -92,9 +92,10 @@ export default function DetailTripScreen() {
 
     const handleCancelPetition = async () => {
         if (!trip || !iduser) return
+
         const res = await cancelPetition(trip?.id, iduser)
         if (res) {
-            toast('Se ha cancelado el viaje, se cancelaron las solicitudes', 'success', 4000, 'top', false);
+            toast('Se ha cancelado la solicitud', 'success', 4000, 'top', false);
             return
         }
 
@@ -102,9 +103,11 @@ export default function DetailTripScreen() {
 
     const handleCancelTrip = async () => {
         if (!trip) return
-        toast('Cancelando el viaje', 'default', 2800, 'top')
-        const res = await cancelTrip(trip.id)
-        if (res) toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+        // toast('Cancelando el viaje', 'default', 2800, 'top')
+        console.log("trip?.id, iduser");
+        console.log(trip?.id, iduser);
+        const res = await cancelTrip(trip.id, iduser)
+        if (!res) toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
         toast('Se ha cancelado el viaje con exito', 'info', 4000, 'top', false);
     }
 
@@ -127,10 +130,10 @@ export default function DetailTripScreen() {
                         <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} handlePressViewProfile={handlePressViewProfile} />
                     </View>
 
-                    <View className="self-center mt-8 mb-6">
+                    <View className="self-center mt-8 mb-6 gap-4">
                         <Button className="w-52" label="Unirse al viaje"
                             onPress={handleJoinTrip} />
-                        <Button className="bg-red-600ed" label="Cancelar Solicitud"
+                        <Button className="bg-destructive" label="Cancelar Solicitud"
                             onPress={handleCancelPetition} />
                     </View>
                 </View>
@@ -174,7 +177,7 @@ export default function DetailTripScreen() {
                     {/* solicitudes */}
 
                     <FlatList data={solicitudes}
-                        renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item} isSimple={false} handleDecision={handlePetition} title={`Pasajero: ${item.first_name}`} />}
+                        renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item} isSimple={false} handleDecision={handlePetition} title='' />}
                         keyExtractor={item => item.id.toString()}
                     />
 
