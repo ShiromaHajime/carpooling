@@ -3,12 +3,38 @@ import { Response, Response500 } from "@/types/errors";
 import { Trip, TripById } from "@/types/types";
 
 
-export const acceptPassenger= (id_trip: number, id_user: string) => {
+export const decisionPetition= async (id_trip: string, id_user: number, decision: boolean) => {
+    
+    console.log("API_URL de la variable de entorno");
+    console.log(API_URL);
 
-    return true
-}
+    const body = {
+        id_trip: id_trip,
+        passenger_id: id_user,
+        decision: decision,
+    }
 
-export const rejectPassenger=  (id_trip:number , id_user: string) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
 
+    try {
+        const res = await fetch(`${API_URL}/trip_join`, options);
+        if (res.status == 200) {
+            const data = await res.json()
+            const response: Response = {
+                data: data
+            }
+            return response
+        } else return Response500
+
+    } catch (error) {
+
+        return Response500;
+    }
     return true
 }

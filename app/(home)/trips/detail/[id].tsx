@@ -12,14 +12,14 @@ import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
 import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
-import { acceptPassenger, rejectPassenger } from "@/services/petitionPassenger";
+import { decisionPetition } from "@/services/petitionPassenger";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
-    const iduser = parseUrlParams(id);
     const context = useContext(GlobalContext);
-    const idPassenger = context?.user.id?.toString()
+    const iduser = context?.user.id?.toString()
     const role = context?.role
+    
 
     const [trip, setTrip] = useState<TripById>()
     const [driver, setDriver] = useState<User>()
@@ -39,7 +39,7 @@ export default function DetailTripScreen() {
 
     useEffect(() => {
         const getSolicitudes = async () => {
-            const solicitudes = await getSolicitudesByID(trip?.id)
+            const solicitudes = await getSolicitudesByID(trip?.id) //?????????🦆🦆🦆🦆🦆?
             setSolicitudes(solicitudes)
         }
         getSolicitudes()
@@ -76,9 +76,9 @@ export default function DetailTripScreen() {
     }
 
     const handleJoinTrip = async () => {
-        if (!idPassenger) return
+        if (!iduser) return
         toast('Postulandose al viaje', 'info', 2800, 'top')
-        const { data, error } = await joinTrip(idPassenger, parseUrlParams(id))
+        const { data, error } = await joinTrip(iduser, parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return
@@ -89,8 +89,9 @@ export default function DetailTripScreen() {
     const handlePressViewProfile = () => {
         router.replace({ pathname: "/(home)/(profile)/profile", params: { idDriver: driver?.id } })
     }
+
     const handleCancelPetition = async () => {
-        if (!trip) return
+        if (!trip || !iduser) return
         const res= await cancelPetition(trip?.id, iduser)
         if (res) return{
 
@@ -111,6 +112,12 @@ export default function DetailTripScreen() {
 
     if (!trip || !driver) return
     console.log('devuelve algo');
+
+    const handlePetition = (desicion: boolean, id_user: number) => {
+        
+        decisionPetition(parseUrlParams(id),id_user, desicion)
+
+    }
 
     const CardDriverPassanger = () => {
 
@@ -168,7 +175,7 @@ export default function DetailTripScreen() {
                     {/* solicitudes */}
 
                     <FlatList data={solicitudes}
-                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} handleAccept={() => acceptPassenger(trip.id, iduser)} handleReject={() => rejectPassenger(trip.id, iduser)} title={`Pasajero: ${item.first_name}`} />}
+                        renderItem={({ item }) => <CardPassenger key={item.id} passenger={item} isSimple={true} handleDecision={handlePetition} title={`Pasajero: ${item.first_name}`} />}
                         keyExtractor={item => item.email}
                     />
 
