@@ -47,7 +47,15 @@ export default function DetailTripScreen() {
 
 
     useEffect(() => {
+        const getSolicitudes = async () => {
+            const solicitudes = await getSolicitudesByID(trip?.id) //?????????🦆🦆🦆🦆🦆?
+            setSolicitudes(solicitudes)
+        }
+        getSolicitudes()
+    }, []);
 
+
+    useEffect(() => {
         const getDetail = async (id: string) => {
             setLoading(true)
             const trip = await getTripById(id)
@@ -78,9 +86,12 @@ export default function DetailTripScreen() {
     const handleJoinTrip = async () => {
         if (!iduser) return
         toast('Postulandose al viaje', 'info', 2800, 'top')
-        const { data, error } = await joinTrip(iduser, parseUrlParams(id))
+        let trip_id = parseUrlParams(id)
+        console.log('idPassenger', idPassenger, trip_id);
+        const { data, error } = await joinTrip(idPassenger, trip_id)
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+            console.log('idPassenger', idPassenger, trip_id);
             return
         }
         toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);

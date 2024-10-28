@@ -30,7 +30,6 @@ export const loginUser = async (username: string, password: string) => {
         } else return false
 
     } catch (error) {
-        console.log("AAAAAAAAAAAAAAAAAAA");
         console.log(error);
 
         return false;
