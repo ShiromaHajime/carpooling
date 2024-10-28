@@ -1,11 +1,14 @@
 import { Trips } from "@/types/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router"; // Importa el hook router para navegación
 import { API_URL } from "@/constants/const";
 import { getAllTrips } from "@/services/trip";
+import { GlobalContext } from "@/utils/Provider";
+import { Button } from "@/components/buttons/Button";
 
 export default function TripsScreen() {
+  const context = useContext(GlobalContext);
   const [trips, setTrips] = useState<Trips>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();  // Inicializa el router
@@ -55,6 +58,9 @@ export default function TripsScreen() {
           </TouchableOpacity>
         )}
       />
+      {context?.role === 'Driver' && (
+        <Button className="w-52 bg-[#104736] text-stone-50" label="Crear viaje" onPress={() => router.push('/trips/createTrip')}  />
+      )}
     </View>
   );
 }
