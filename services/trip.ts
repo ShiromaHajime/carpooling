@@ -33,8 +33,8 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     console.log(API_URL);
 
     const body = {
-        passenger_id: passenger_id,
-        id_trip: id_trip,
+        "id_trip":id_trip,
+        "passenger_id":passenger_id
     }
 
     const options = {
@@ -46,7 +46,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     };
 
     try {
-        const res = await fetch(`${API_URL}/trip_join`, options);
+        const res = await fetch(`${API_URL}/trip/join`, options);
         if (res.status == 200) {
             const data = await res.json()
             const response: Response = {
