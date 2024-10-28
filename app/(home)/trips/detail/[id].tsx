@@ -36,16 +36,6 @@ export default function DetailTripScreen() {
         }
     }, [loading, trip]);
 
-
-    useEffect(() => {
-        const getSolicitudes = async () => {
-            const solicitudes = await getSolicitudesByID(trip?.id) //?????????🦆🦆🦆🦆🦆?
-            setSolicitudes(solicitudes)
-        }
-        getSolicitudes()
-    }, []);
-
-
     useEffect(() => {
         const getSolicitudes = async () => {
             const solicitudes = await getSolicitudesByID(trip?.id) //?????????🦆🦆🦆🦆🦆?
@@ -78,7 +68,7 @@ export default function DetailTripScreen() {
     }, [])
 
 
-    //COMO HAGO LOGICA PARA QUE ME DEVUELVA LAS SOLICITUDES?
+    // COMO HAGO LOGICA PARA QUE ME DEVUELVA LAS SOLICITUDES?
     const getSolicitudesByID = async () => {
         return ['algo']
     }
@@ -121,10 +111,7 @@ export default function DetailTripScreen() {
 
     if (loading) return (<LoadingScreen />)
 
-    //console.log('devuelve algo');
-
     if (!trip || !driver) return
-    console.log('devuelve algo');
 
     const handlePetition = (desicion: boolean, id_user: number) => {
 

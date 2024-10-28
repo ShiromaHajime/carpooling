@@ -31,7 +31,7 @@ export default function HomeScreen() {
 
         return (
             <View>
-                <Text>pasajeros</Text>
+
             </View>
         )
     }
@@ -46,7 +46,7 @@ export default function HomeScreen() {
 
     return (
         <View className="bg-background flex items-center justify-center h-full pl-5 pr-5">
-            {(contextRole == 'Passenger') && (<RequestPassengers />)}
+            {(contextRole == 'Driver') && (<RequestPassengers />)}
             <Button label={`${contextRole == 'Driver' ? 'Crear nuevo viaje' : 'Buscar nuevo viaje'}`} onPress={handleButtonTrip} className="px-28 py-2" />
             <ActiveTrips />
         </View>

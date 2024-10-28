@@ -56,9 +56,6 @@ export default function TripsScreen() {
           </TouchableOpacity>
         )}
       />
-      {context?.role === 'Driver' && (
-        <Button className="w-52 bg-[#104736] text-stone-50" label="Crear viaje" onPress={() => router.push('/trips/createTrip')} />
-      )}
     </View>
   );
 }
