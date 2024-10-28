@@ -22,33 +22,10 @@ export const unstable_settings = {
 export default function ProfileLayout() {
   const context = useContext(GlobalContext);
   const contextRole = context?.role
-
-  const CurrentRole = () => {
-    const [role, setRole] = useState(contextRole);
-
-    let textRole
-    if (contextRole) {
-      textRole = role == 'Passenger' ? 'Pasajero' : 'Conductor'
-    }
-    const handleChangeRol = () => {
-      const newRole = role == 'Driver' ? 'Passenger' : 'Driver'
-      setRole(newRole)
-      context?.setRole(newRole)
-    }
-
-    return (
-      <View className='flex flex-row justify-center items-center gap-3'>
-        <Text className='text-lg text-white'>Rol: {textRole}</Text>
-        <Switch onCheckedChange={handleChangeRol} checked={role == 'Driver' ? true : false} />
-      </View>
-    )
-  }
-
-
+  const { colorScheme, setColorScheme } = useColorScheme();
 
 
   const HeaderRight = () => {
-    const { colorScheme, setColorScheme } = useColorScheme();
 
     const ToggleDarkMode = () => {
 
@@ -60,7 +37,7 @@ export default function ProfileLayout() {
       }
 
       return (
-        <View>
+        <View className='pr-3'>
           <Toggle
             pressed={isDark}
             onPressedChange={handleToggle}
@@ -68,31 +45,30 @@ export default function ProfileLayout() {
             className='border border-border'
             size={'sm'}
           >
+            {!colorScheme && (<Feather name="sun" size={24} color="white" />)}
             {colorScheme === "light" && (<MaterialIcons name="dark-mode" size={24} color="white" />)}
             {colorScheme === "dark" && (<Feather name="sun" size={24} color="white" />)}
 
           </Toggle>
         </View>
+
       )
     }
 
 
     return (
-      <View className='flex flex-row gap-4 justify-end items-center'>
+      <View className='flex flex-row justify-center'>
         <ToggleDarkMode />
-        <CurrentRole />
       </View>
     )
   }
-
-  const { colorScheme } = useColorScheme()
 
   return (
     <Stack>
       <Stack.Screen name="profile" options={{
         headerShown: true,
         title: 'Perfil',
-        headerRight: () => (<HeaderRight />),
+        headerRight: () => <HeaderRight />,
         headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
         headerTitleStyle: { color: "#fff" }
       }} />

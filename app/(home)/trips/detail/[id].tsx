@@ -54,7 +54,7 @@ export default function DetailTripScreen() {
             console.log("trip getted");
             if (trip) {
                 setTrip(trip)
-                setDriver(trip.vehicle_driver.driver.user) // puede cambiar tipo vehicle_driver en el back?
+                setDriver(trip.vehicle_driver.driver.user)
                 console.log(trip);
                 console.log(trip?.id);
             }
@@ -77,16 +77,18 @@ export default function DetailTripScreen() {
 
     const handleJoinTrip = async () => {
         if (!idPassenger) return
-        toast('Uniendose al viaje', 'info', 2800, 'top')
+        toast('Postulandose al viaje', 'info', 2800, 'top')
         const { data, error } = await joinTrip(idPassenger, parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return
         }
-        toast('Se ha unido al viaje! Puedes hablar con el conductor para coordinar el viaje', 'success', 4000, 'top', false);
+        toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);
 
     }
-
+    const handlePressViewProfile = () => {
+        router.replace({ pathname: "/(home)/(profile)/profile", params: { idDriver: driver?.id } })
+    }
     const handleCancelPetition = async () => {
         if (!trip) return
         const res= await cancelPetition(trip?.id, iduser)
@@ -192,11 +194,19 @@ export default function DetailTripScreen() {
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
-                    <Text className="text-[#64748B]">Ciudad: {trip.arrival_address?.city.name}, calle {trip.arrival_address?.street}</Text>
+                    <Text className="text-[#64748B]">
+                        Ciudad: {trip.arrival_address.locality.name},
+                        calle: {trip.arrival_address.street},
+                        numero: {trip.arrival_address.number}
+                    </Text>
                 </View>
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
-                    <Text className="text-[#64748B]">Cuidad {trip.departure_address?.city.name}, calle {trip.departure_address?.street}</Text>
+                    <Text className="text-[#64748B]">
+                        Ciudad: {trip.departure_address.locality.name},
+                        calle: {trip.departure_address.street},
+                        numero: {trip.departure_address.number}
+                    </Text>
                 </View>
 
                 <View className="mt-3">
@@ -215,9 +225,13 @@ export default function DetailTripScreen() {
                     <Text className="text-[#64748B]">{trip.seat_price} ARS</Text>
                 </View>
 
-                <CardDriverPassanger />
+                <View className="mt-8 w-full">
+                    <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} handlePressViewProfile={handlePressViewProfile} />
+                </View>
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
+                    <Button className="flex-1" label="Postularse al viaje"
+                        onPress={handleJoinTrip} />
                     <Button className="flex-1" label="Chat"
                         onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>

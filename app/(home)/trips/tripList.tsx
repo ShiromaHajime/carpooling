@@ -1,11 +1,14 @@
 import { Trips } from "@/types/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router"; // Importa el hook router para navegación
 import { API_URL } from "@/constants/const";
 import { getAllTrips } from "@/services/trip";
+import { GlobalContext } from "@/utils/Provider";
+import { Button } from "@/components/buttons/Button";
 
 export default function TripsScreen() {
+  const context = useContext(GlobalContext);
   const [trips, setTrips] = useState<Trips>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();  // Inicializa el router
@@ -49,12 +52,15 @@ export default function TripsScreen() {
               </Text>
               <Text className="text-gray-600 text-sm">
                 {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
-                Conductor : {item.vehicle_driver.driver.first_name} {item.vehicle_driver.driver.last_name}
+                Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
               </Text>
             </View>
           </TouchableOpacity>
         )}
       />
+      {context?.role === 'Driver' && (
+        <Button className="w-52 bg-[#104736] text-stone-50" label="Crear viaje" onPress={() => router.push('/trips/createTrip')}  />
+      )}
     </View>
   );
 }
