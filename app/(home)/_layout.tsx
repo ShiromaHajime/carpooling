@@ -95,7 +95,7 @@ export default function HomeLayout() {
         className='flex-1 justify-center items-center mt-2'
       >
         <FontAwesome6 name="user-circle" size={24} color={isFocused ? '#007aff' : 'gray'} />
-        <Text className='text-muted text-xs mt-1'>Perfil</Text>
+        <Text className={`text-muted text-xs mt-1 ${isFocused ? 'text-[#007aff]' : 'text-gray-500'}`}>Perfil</Text>
       </Pressable>
     );
   };
@@ -110,7 +110,8 @@ export default function HomeLayout() {
         options={{
           headerRight: () => (<HeaderHome />),
           title: 'Carpooling',
-          headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+          headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderBottomColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+          tabBarStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderTopColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
           headerTitleStyle: { color: "#fff" },
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
@@ -123,8 +124,10 @@ export default function HomeLayout() {
         options={{
           title: 'Viajes',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name="car-sports" size={38} color={focused ? '#007aff' : ''} />
+            <MaterialCommunityIcons name="car-sports" size={38} color={focused ? '#007aff' : '#808080'} />
           ),
+          headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderBottomColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+          tabBarStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderTopColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
           unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}
       />
@@ -135,6 +138,7 @@ export default function HomeLayout() {
           title: 'Perfil',
           tabBarButton: () => <IconTabProfile />,
           unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
+          tabBarStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderTopColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
         }}
       />
     </Tabs>
