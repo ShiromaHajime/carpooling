@@ -2,6 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
 
 export {
@@ -18,25 +19,30 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function TripsLayout() {
-
-  console.log('render TripsLayout');
+  const { colorScheme } = useColorScheme();
 
   return (
 
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#014e41',
+          backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen name="detail/[id]" options={{ headerShown: true, title: "Detalle viaje", }} />
-      <Stack.Screen name="tripList" options={{ headerShown: true, title: "Viajes", }} />
-      <Stack.Screen name="createTrip" options={{ headerShown: true, title: "Crear viaje", }} />
-      <Stack.Screen name="detail/chat" options={{ headerShown: true, title: "Chat" }} />
+      <Stack.Screen name="detail/[id]" options={{
+        headerShown: true, title: "Detalle viaje",
+      }} />
+      <Stack.Screen name="tripList" options={{
+        headerShown: true, title: "Viajes",
+      }} />
+      <Stack.Screen name="createTrip" options={{ headerShown: false, title: "Crear viaje", }} />
+      <Stack.Screen name="detail/chat" options={{
+        headerShown: true, title: "Chat"
+      }} />
     </Stack>
   );
 }
