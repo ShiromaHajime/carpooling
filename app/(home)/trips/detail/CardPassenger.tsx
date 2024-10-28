@@ -9,7 +9,7 @@ import { Toast } from "@/components/Toast"
 
 interface PropCard {
     passenger: User,
-    isSimple: boolean, 
+    isSimple: boolean,
     title: string,
     handleDecision: (desicion: boolean, id_user: number) => void,
 }
@@ -22,20 +22,20 @@ export const CardPassenger = ({ passenger, isSimple, title, handleDecision }: Pr
             <Card>
                 <CardHeader>
                     <View className="flex flex-row justify-between items-center">
-                        <View> 
-                            <AvatarImage 
-                                source={require('../../assets/images/userlogoblack.png')} 
-                                />
+                        <View>
+                            <AvatarImage
+                                source={require('@/assets/images/userlogoblack.png')}
+                            />
                         </View>
                         <View className="flex flex-row items-center">
                             <CardTitle>{passenger.first_name} {passenger.last_name}</CardTitle>
                         </View>
                         {(!isSimple) && (
                             <View>
-                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={() => handleDecision(true, passenger.id)}/>
-                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="RECHAZAR" onPress={() => handleDecision(false, passenger.id)}/>
-                            </View> 
-                        )}   
+                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="ACEPTAR" onPress={() => handleDecision(true, passenger.id)} />
+                                <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="RECHAZAR" onPress={() => handleDecision(false, passenger.id)} />
+                            </View>
+                        )}
                     </View>
                     <CardDescription></CardDescription>
                 </CardHeader>

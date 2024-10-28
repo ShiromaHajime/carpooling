@@ -19,7 +19,7 @@ export default function DetailTripScreen() {
     const context = useContext(GlobalContext);
     const iduser = context?.user.id?.toString()
     const role = context?.role
-    
+
 
     const [trip, setTrip] = useState<TripById>()
     const [driver, setDriver] = useState<User>()
@@ -103,16 +103,18 @@ export default function DetailTripScreen() {
 
     const handleCancelPetition = async () => {
         if (!trip || !iduser) return
-        const res= await cancelPetition(trip?.id, iduser)
-        if (res) return{
-
+        const res = await cancelPetition(trip?.id, iduser)
+        if (res) {
+            toast('Se ha cancelado el viaje, se cancelaron las solicitudes', 'success', 4000, 'top', false);
+            return
         }
+
     }
 
     const handleCancelTrip = async () => {
-        if(!trip) return
-            toast('Cancelando el viaje', 'default', 2800, 'top')
-            const res = await cancelTrip(trip.id)
+        if (!trip) return
+        toast('Cancelando el viaje', 'default', 2800, 'top')
+        const res = await cancelTrip(trip.id)
         if (res) toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
         toast('Se ha cancelado el viaje con exito', 'info', 4000, 'top', false);
     }
@@ -125,8 +127,8 @@ export default function DetailTripScreen() {
     console.log('devuelve algo');
 
     const handlePetition = (desicion: boolean, id_user: number) => {
-        
-        decisionPetition(parseUrlParams(id),id_user, desicion)
+
+        decisionPetition(parseUrlParams(id), id_user, desicion)
 
     }
 
@@ -136,14 +138,14 @@ export default function DetailTripScreen() {
             return (
                 <View>
                     <View className="mt-8 w-full">
-                        <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} />
+                        <CardDriver driver={driver} vehicle={trip.vehicle_driver.vehicle} handlePressViewProfile={handlePressViewProfile} />
                     </View>
 
                     <View className="self-center mt-8 mb-6">
                         <Button className="w-52" label="Unirse al viaje"
                             onPress={handleJoinTrip} />
-                         <Button className="bg-red-600ed" label="Cancelar Solicitud"
-                            onPress={handleCancelPetition}/>
+                        <Button className="bg-red-600ed" label="Cancelar Solicitud"
+                            onPress={handleCancelPetition} />
                     </View>
                 </View>
             )
@@ -191,8 +193,8 @@ export default function DetailTripScreen() {
                     />
 
                     <View>
-                    <Button className="flex-1 bg-red-600" label="Cancelar viaje"
-                        onPress={handleCancelTrip} />
+                        <Button className="flex-1 bg-red-600" label="Cancelar viaje"
+                            onPress={handleCancelTrip} />
                     </View>
 
                 </>
@@ -202,8 +204,8 @@ export default function DetailTripScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
-            <View> 
+        <ScrollView>
+            <View>
                 <Image source={require('@/assets/images/googleMapsExample.png')}
                     className="h-[230] object-cover"
                 />
