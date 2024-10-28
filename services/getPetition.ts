@@ -10,8 +10,8 @@ export const getSolicitudesByID = async (id_trip: string) => {
             const response: Response = {
                 data: data
             }
-            response.data = response.data.filter((item: any) => item.status === 'pending');
-            return response
+            let solicitudes = response.data.filter((item: any) => item.status === 'pending');
+            return solicitudes
         } else return Response500
 
     } catch (error) {

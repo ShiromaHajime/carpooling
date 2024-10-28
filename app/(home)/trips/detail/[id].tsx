@@ -40,7 +40,6 @@ export default function DetailTripScreen() {
     useEffect(() => {
         const getSolicitudes = async () => {
             let solicitudes = await getSolicitudesByID(parseUrlParams(id) || ''); //?????????🦆🦆🦆🦆🦆?
-            solicitudes = solicitudes.data
             console.log("solicitudes", solicitudes);
             setSolicitudes(solicitudes)
         }
@@ -135,6 +134,14 @@ export default function DetailTripScreen() {
             )
         }
 
+        const user1: User = {
+            id: 1,
+            first_name: "zoe",
+            email: "zoekpa@gmail.com",
+            last_name: 'quiroz',
+            creation_date: "10-10-2024"
+        }
+
 
 
         //la card me tendrua que llevar al User, pero ahora no hace
@@ -148,7 +155,7 @@ export default function DetailTripScreen() {
                     {/* solicitudes */}
 
                     <FlatList data={solicitudes}
-                        renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item} isSimple={false} handleDecision={handlePetition} title='' />}
+                        renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item.passenger} isSimple={false} handleDecision={handlePetition} title='' />}
                         keyExtractor={item => item.id.toString()}
                     />
 

@@ -15,7 +15,7 @@ interface PropCard {
 }
 
 export const CardPassenger = ({ passenger, isSimple, title, handleDecision }: PropCard) => {
-
+    console.log("passenger", passenger);
     return (
         <View className="flex gap-2">
             <Text className="font-semibold text-xl text-foreground">{title}</Text>
