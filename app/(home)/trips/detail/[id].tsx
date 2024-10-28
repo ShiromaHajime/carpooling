@@ -116,9 +116,7 @@ export default function DetailTripScreen() {
     if (!trip || !driver) return
 
     const handlePetition = (desicion: boolean, id_user: number) => {
-
         decisionPetition(parseUrlParams(id), id_user, desicion)
-
     }
 
     const CardDriverPassanger = () => {
