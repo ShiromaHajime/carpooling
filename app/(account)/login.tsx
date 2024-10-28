@@ -54,7 +54,7 @@ export default function LoginScreen() {
           text: "Conductor", onPress: () => {
             context?.setUser(user)
             context?.setRole('Driver')
-            router.replace("/trips/create")
+            router.replace("/trips/tripList")
           }
         },  // Redirigir a crear viaje
         {

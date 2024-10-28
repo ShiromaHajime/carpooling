@@ -57,13 +57,13 @@ export default function DetailTripScreen() {
 
     const handleJoinTrip = async () => {
         if (!idPassenger) return
-        toast('Uniendose al viaje', 'info', 2800, 'top')
+        toast('Postulandose al viaje', 'info', 2800, 'top')
         const { data, error } = await joinTrip(idPassenger, parseUrlParams(id))
         if (error) {
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
             return
         }
-        toast('Se ha unido al viaje! Puedes hablar con el conductor para coordinar el viaje', 'success', 4000, 'top', false);
+        toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);
 
     }
     const handlePressViewProfile = () => {
@@ -124,7 +124,7 @@ export default function DetailTripScreen() {
                 </View>
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-8 mb-6">
-                    <Button className="flex-1" label="Unirse al viaje"
+                    <Button className="flex-1" label="Postularse al viaje"
                         onPress={handleJoinTrip} />
                     <Button className="flex-1" label="Chat"
                         onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
