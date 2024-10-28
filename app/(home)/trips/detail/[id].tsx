@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/Skeleton";
 import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
 import { decisionPetition } from "@/services/petitionPassenger";
+import {getSolicitudesByID} from "@/services/getPetition"
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -38,7 +39,9 @@ export default function DetailTripScreen() {
 
     useEffect(() => {
         const getSolicitudes = async () => {
-            const solicitudes = await getSolicitudesByID(trip?.id) //?????????🦆🦆🦆🦆🦆?
+            let solicitudes = await getSolicitudesByID(parseUrlParams(id) || ''); //?????????🦆🦆🦆🦆🦆?
+            solicitudes = solicitudes.data
+            console.log("solicitudes", solicitudes);
             setSolicitudes(solicitudes)
         }
         getSolicitudes()
@@ -66,12 +69,6 @@ export default function DetailTripScreen() {
         let idParsed = parseUrlParams(id)
         getDetail(idParsed)
     }, [])
-
-
-    // COMO HAGO LOGICA PARA QUE ME DEVUELVA LAS SOLICITUDES?
-    const getSolicitudesByID = async () => {
-        return ['algo']
-    }
 
     const handleJoinTrip = async () => {
         if (!iduser) return
@@ -137,30 +134,6 @@ export default function DetailTripScreen() {
                 </View>
             )
         }
-
-        const user1: User = {
-            id: 1,
-            first_name: "zoe",
-            email: "zoekpa@gmail.com",
-            last_name: 'quiroz',
-            creation_date: "10-10-2024"
-        }
-        const user2: User = {
-            id: 2,
-            first_name: "pepe",
-            email: "pep@gmail.com",
-            last_name: 'quiroz',
-            creation_date: "10-10-2024"
-        }
-        const user3: User = {
-            id: 3,
-            first_name: "zoe",
-            email: "zoekpa@gmail.com",
-            last_name: 'quiroz',
-            creation_date: "10-10-2024"
-        }
-
-        const solicitudes = [user1, user2, user3]
 
 
 
