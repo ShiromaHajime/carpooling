@@ -25,7 +25,7 @@ export default function LoginScreen() {
     const res = await loginUser(username, password);
 
     if (res) {
-      const user = res.user
+      const user = res
       const userParsed: UserContext = {
         id: user.id,
         email: user.email,
@@ -54,7 +54,7 @@ export default function LoginScreen() {
           text: "Conductor", onPress: () => {
             context?.setUser(user)
             context?.setRole('Driver')
-            router.replace("/trips/create")
+            router.replace("/trips/tripList")
           }
         },  // Redirigir a crear viaje
         {

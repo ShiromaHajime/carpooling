@@ -6,14 +6,10 @@ interface PropsCreateVehicle extends Vehicle {
 }
 export const createVehicle = async (props: PropsCreateVehicle) => {
 
-    console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
-
-    const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
     const data = {
         brand: props.brand,
         color: props.color,
-        user_id: props.user_id,
+        driver_id: props.user_id,
         license_plate: props.license_plate,
         model: props.model,
         year: props.year,
@@ -28,7 +24,7 @@ export const createVehicle = async (props: PropsCreateVehicle) => {
     };
 
     try {
-        const res = await fetch(`http://192.168.0.176:5000/vehicles`, options);
+        const res = await fetch(`${API_URL}/vehicles`, options);
         console.log(res);
 
         if (!res.ok) {

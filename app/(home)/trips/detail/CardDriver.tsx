@@ -5,7 +5,12 @@ import { User, Vehicle } from "@/types/types"
 import { Medal } from "lucide-react-native"
 import { Text, View } from "react-native"
 
-export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle }) => {
+interface PropsCardDriver {
+    driver: User,
+    vehicle: Vehicle,
+    handlePressViewProfile: () => void
+}
+export const CardDriver = ({ driver, vehicle, handlePressViewProfile }: PropsCardDriver) => {
 
     return (
         <View className="flex gap-2">
@@ -17,7 +22,10 @@ export const CardDriver = ({ driver, vehicle }: { driver: User, vehicle: Vehicle
                             <CardTitle>{driver.first_name} {driver.last_name}</CardTitle>
                             <View className="ml-3"><Medal size={25} color={'rgb(251,191,36)'} /></View>
                         </View>
-                        <Button className="bg-background border border-secondary" labelClasses="text-foreground" label="Ver perfil" />
+                        <Button className="bg-background border border-secondary"
+                            onPress={handlePressViewProfile}
+                            labelClasses="text-foreground" label="Ver perfil"
+                        />
                     </View>
                     <CardDescription>Automóvil: {vehicle.brand} {vehicle.model} {vehicle.year} {vehicle.color}</CardDescription>
                 </CardHeader>

@@ -1,8 +1,6 @@
 import { API_URL } from "@/constants/const";
-import { Tripc } from "@/types/types";
 
-
-export const createTrip = async (Tripc: Tripc) => {
+export const createTrip = async (Tripc: any) => {
 
     console.log("API_URL de la variable de entorno");
     console.log(API_URL);
