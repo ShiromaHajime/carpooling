@@ -24,6 +24,7 @@ export const CardPassenger = ({ passenger, isSimple, title, handleDecision }: Pr
                     <View className="flex flex-row justify-between items-center">
                         <View>
                             <AvatarImage
+                                className="w-16 h-16"
                                 source={require('@/assets/images/userlogoblack.png')}
                             />
                         </View>

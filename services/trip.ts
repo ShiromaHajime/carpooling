@@ -33,8 +33,8 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     console.log(API_URL);
 
     const body = {
-        "id_trip":id_trip,
-        "passenger_id":passenger_id
+        passenger_id: passenger_id,
+        id_trip: id_trip,
     }
 
     const options = {
@@ -46,7 +46,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     };
 
     try {
-        const res = await fetch(`${API_URL}/trip/join`, options);
+        const res = await fetch(`${API_URL}/trip_join`, options);
         if (res.status == 200) {
             const data = await res.json()
             const response: Response = {
@@ -62,6 +62,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
 }
 
 export const getTripById = async (id_trip: string): Promise<TripById | false> => {
+
 
     try {
         const res = await fetch(`${API_URL}/trips/${id_trip}`);
@@ -82,37 +83,13 @@ export const getTripById = async (id_trip: string): Promise<TripById | false> =>
 
 }
 
-export const cancelTrip = async (id_trip: number) => {
-
-    try {
-        const res = await fetch(`${API_URL}/driver/trips/${id_trip}/cancel`);
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        if (res.status == 200) {
-            // const trip = await res.json()
-            return true
-        }
-
-    } catch (error) {
-        console.log(error);
-        return false
-    }
-    
-}
-
-
-export const cancelPetition = async (id_trip: number, id_user: string) => {
-        
-    console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
+export const cancelTrip = async (id_trip: number, driver_id: any) => {
 
     const body = {
-        id_trip: id_trip,
-        passenger_id: id_user,
+        "driver_id": driver_id
     }
+    console.log("body");
+    console.log(body);
 
     const options = {
         method: 'POST',
@@ -123,13 +100,19 @@ export const cancelPetition = async (id_trip: number, id_user: string) => {
     };
 
     try {
-        const res = await fetch(`${API_URL}/trip_join`, options); //HAY QUE AGREGAR LA RUTA CORRECTA
-        
+        const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/cancel`, options);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
         if (res.status == 200) {
+            // const trip = await res.json()
+            console.log(await res.json());
             return true
-        } else return false
+        }
 
     } catch (error) {
+        console.log(error);
         return false
     }
+
 }
