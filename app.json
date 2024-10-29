@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,7 +26,12 @@
         "googleMaps": {
           "apiKey": "TU_API_KEY_AQUÍ"
         }
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -46,9 +52,7 @@
           "photosPermission": "Carpooling quiere acceder a tus imagenes para que puedas compartir una foto de perfil"
         }
       ]
-      
-    ]
-  ,
+    ],
     "experiments": {
       "typedRoutes": true
     },
@@ -57,8 +61,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "9358dfdf-1c32-41fc-87b2-6bd2b6a1be20"
+        "projectId": "b1d7c086-1ab1-4c49-a6b6-b9272e150262"
       }
-    }
+    },
+    "owner": "carpooling"
   }
 }
