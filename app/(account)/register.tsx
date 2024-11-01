@@ -3,11 +3,14 @@ import { Button } from "@/components/buttons/Button";
 import { useToast } from "@/components/Toast";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { createUser } from "@/services/user";
 import { schemaFormUser } from "@/types/types";
 import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/constants/const";
+import { createUser, loginWithGoogle } from "@/services/userLogin";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 export default function RegisterScreen() {
 
@@ -20,6 +23,32 @@ export default function RegisterScreen() {
 
     const { toast } = useToast();
 
+
+    const handleCreateAccount = async () => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                // Signed up
+                const user = userCredential.user;
+                console.log(user.uid);
+                const token = await user.getIdToken()
+                const token2 = await user.getIdTokenResult()
+
+                console.log("tokenFirebase");
+                console.log(token);
+                console.log("token2");
+                console.log(token2);
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
+    }
+
+    const handleLoginGoogle = () => {
+        loginWithGoogle()
+    }
 
     const handleRegister = async () => {
         const result = schemaFormUser.safeParse({ name, lastname, username, email, password });
@@ -50,8 +79,8 @@ export default function RegisterScreen() {
     }
 
     return (
-        <ScrollView>
-            <View className="bg-gray-200 flex h-max pl-7 pr-7 dark:bg-gray-900 ">
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+            <View className="bg-gray-200 pl-7 pr-7 min-h-full dark:bg-gray-900 ">
                 <View className="self-center mt-8">
                     <Avatar className="w-36 h-36">
                         <AvatarImage
@@ -98,6 +127,12 @@ export default function RegisterScreen() {
 
                 </View>
 
+                <View className="self-center mb-2">
+                    <GoogleSigninButton
+                        onPress={handleLoginGoogle} />
+                </View>
+
+                <Text className="text-md font-medium mb-2 dark:text-slate-100 mt-2 self-center">O creá tu cuenta con email y contraseña</Text>
                 <View className="mt-5">
                     <Text className="text-md font-medium mb-2 dark:text-slate-100"
                     >Email</Text>

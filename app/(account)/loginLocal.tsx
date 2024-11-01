@@ -5,60 +5,46 @@ import { Button } from "@/components/buttons/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useContext, useState } from "react";
-import { loginUser, loginWithGoogle } from "@/services/userLogin";
+import { loginUser } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { UserAccount } from "@/types/types";
 import { useToast } from "@/components/Toast";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  isErrorWithCode,
-  isSuccessResponse,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { GOOGLE_CLIENT_ID, auth } from "@/constants/const";
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
+export default function LoginLocalScreen() {
 
-export default function LoginScreen() {
-
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const context = useContext(GlobalContext);
-  GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, });
 
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-
   const handleLogin = async () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        console.log(user.uid);
-        user.getIdTokenResult()
-        const token = await user.getIdToken()
-        const token2 = await user.getIdTokenResult()
+    setLoading(true)
+    const res = await loginUser(username, password);
+    setLoading(false)
 
-        console.log("tokenFirebase");
-        console.log(token);
-        console.log("token2");
-        console.log(token2);
-        // ...
-      })
-      .catch((error) => {
+    if (res) {
+      const user = res
+      const userParsed: UserContext = {
+        id: user.id,
+        email: user.email,
+        lastname: user.last_name,
+        name: user.first_name,
+        username: user.username,
+        creation_date: user.creation_date
+      }
 
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+      handleShowModal(userParsed);
+    } else toast('Usuario y/o contraseña incorrecta', 'destructive', 3000);
 
-        // ..
-      });
+    if (!username || !password) {
+      toast('Por favor, ingrese usuario y contraseña.', "destructive", 3000); //ARREGLAR PARA MENSAJE
+      return;
+    }
   }
-
   const router = useRouter();  // Para redirección
 
   const handleShowModal = (user: UserContext) => {
@@ -87,12 +73,6 @@ export default function LoginScreen() {
   };
 
 
-
-  const handleLoginGoogle = () => {
-    loginWithGoogle()
-  }
-
-
   return (
     <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900">
 
@@ -107,10 +87,10 @@ export default function LoginScreen() {
       </View>
 
       <View className="mt-5">
-        <Text className="text-md font-medium mb-2 dark:text-slate-100">Correo electrónico</Text>
+        <Text className="text-md font-medium mb-2 dark:text-slate-100">Usuario</Text>
         <InputStyled
-          setValueInput={setEmail}
-          placeholder="Ingrese su email"
+          setValueInput={setUsername}
+          placeholder="Ingrese su nombre de usuario"
         />
       </View>
 
@@ -125,21 +105,15 @@ export default function LoginScreen() {
         />
       </View>
 
-      <View className="items-center mt-3 mb-7">
-        <Button className="w-52 h-11 bg-primary" label="Iniciar sesión"
+      <View className="items-center mt-7 mb-7">
+        <Button className="w-52 h-11 bg-[#104736]" label="Iniciar sesión"
           onPress={handleLogin} />
+        {loading && (<Text>cargando...</Text>)}
       </View>
 
-      <Text className="text-md font-medium mb-2 dark:text-slate-100 mt-2 self-center">O Inicia sesión con Google</Text>
-
-      <View className="self-center mb-2">
-        <GoogleSigninButton
-          onPress={handleLoginGoogle} />
-      </View>
-
-      <View className="flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
-        <Link href='/(account)/register'><Text className="text-foreground">No tienes cuenta? </Text></Link>
-        <Link href='/(account)/register' className="font-medium text-foreground">Registrate!</Link>
+      <View className="bg-slate-400 flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
+        <Text>No tienes cuenta? </Text>
+        <Link href='/(account)/register'>registrate!</Link>
       </View>
 
     </View>

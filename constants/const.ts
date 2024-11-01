@@ -3,7 +3,9 @@
 
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-
+import { getAuth } from "firebase/auth";
+import { initializeAuth } from 'firebase/auth';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 // archivo .env que tiene las variables de entorno
 // EXPO_PUBLIC_API_URL = https://dscarpooling-back.alwaysdata.net
 //
@@ -21,3 +23,5 @@ export const firebaseConfig = {
 };
 export const app = initializeApp(firebaseConfig)
 export const storage = getStorage(app)
+export const auth = initializeAuth(app);
+export const GOOGLE_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID

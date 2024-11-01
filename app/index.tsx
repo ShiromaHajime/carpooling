@@ -26,8 +26,8 @@ export default function WelcomeScreen() {
             </View>
 
             <View className="flex-row justify-evenly">
-                <Button className="color" label="Registrarse" onPress={handleBregistro}></Button>
                 <Button className="color" label="Ingresar" onPress={handleBlogin}></Button>
+                <Button className="color" label="Registrarse" onPress={handleBregistro}></Button>
             </View>
 
         </View>

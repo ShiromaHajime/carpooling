@@ -22,7 +22,8 @@ export default function TestScreen() {
             <ModeToggle />
             <View className="mt-5">
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/register'>Ir a register</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/login'>Ir a login</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/loginLocal'>Ir a login CON NPX EXPO START</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/login'>Ir a login CON GOOGLE, DEVELOPMENT BUILD</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/home'>Ir a home</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/tripList'>Ir a trips</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/createTrip'>Ir a createTrip</Link>
