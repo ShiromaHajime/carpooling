@@ -9,13 +9,21 @@ import { loginUser } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { UserAccount } from "@/types/types";
 import { useToast } from "@/components/Toast";
-
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  isErrorWithCode,
+  isSuccessResponse,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 export default function LoginScreen() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const context = useContext(GlobalContext);
+  GoogleSignin.configure();
+
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -69,6 +77,51 @@ export default function LoginScreen() {
     );
   };
 
+  const loginWithGoogle = async () => {
+
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      if (isSuccessResponse(response)) {
+        console.log("response.data");
+        console.log(response.data);
+        // setState({ userInfo: response.data });
+        Alert.alert(
+          "Datos JSON",
+          JSON.stringify(response.data, null, 2), // Formatea el JSON
+          [{ text: "OK" }]
+        );
+      } else {
+        // sign in was cancelled by user
+      }
+    } catch (error) {
+      Alert.alert(
+        "Datos JSON",
+        JSON.stringify(error, null, 2), // Formatea el JSON
+        [{ text: "OK" }]
+      );
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android only, play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+  }
+
+  const handleLoginGoogle = () => {
+    loginWithGoogle()
+  }
+
+
   return (
     <View className="bg-gray-200 flex h-screen pl-7 pr-7 dark:bg-gray-900">
 
@@ -105,6 +158,8 @@ export default function LoginScreen() {
         <Button className="w-52 h-11 bg-[#104736]" label="Iniciar sesión"
           onPress={handleLogin} />
       </View>
+      <Button className="w-52 h-11 bg-[#104736]" label="Iniciar sesión google"
+        onPress={handleLoginGoogle} />
 
       <View className="bg-slate-400 flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
         <Text>No tienes cuenta? </Text>
