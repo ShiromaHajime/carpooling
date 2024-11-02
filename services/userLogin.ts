@@ -1,79 +1,87 @@
-import { API_URL, GOOGLE_CLIENT_ID } from "@/constants/const";
+import { API_URL, GOOGLE_CLIENT_ID, auth } from "@/constants/const";
 import { UserAccount } from "@/types/types";
+import { UserContext } from "@/utils/Provider";
+import { parseUserContext } from "@/utils/utils";
 import { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } from "@react-native-google-signin/google-signin";
+import { UserCredential, signInWithEmailAndPassword } from "firebase/auth";
 import { Alert } from "react-native";
+interface NewUser {
+    name: string;
+    lastname: string;
+    username: string;
+}
 
+interface UserResponse extends NewUser {
+    id: string;
+}
 
+interface CreateUserResponse {
+    data: UserResponse | null;
+    error: string | null;
+}
 
-export const createUser = async (userAccount: UserAccount) => {
+export const createUser = async (userAccount: NewUser, idToken: string): Promise<CreateUserResponse> => {
 
-    console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
-
-    const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
+    const url = API_URL ?? 'http://192.168.0.176:5000';
     const data = {
-        name: userAccount.name,
-        lastname: userAccount.lastname,
-        email: userAccount.email,
-        password: userAccount.password,
+        first_name: userAccount.name,
+        last_name: userAccount.lastname,
         username: userAccount.username,
-        validacionMail: 0
     };
 
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
         },
-        body: JSON.stringify(data) // Convertir meetingDTO a una cadena JSON
+        body: JSON.stringify(data)
     };
 
     try {
-        console.log('hace fetch');
+        const res = await fetch(`${url}/auth`, options);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-        const res = await fetch(`${url}/users`, options);
-        console.log('tern fetch');
-        console.log(res);
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`); //falta manejo de errores si usuario ya existe
+        if (res.status === 201) {
+            const userData: UserResponse = await res.json();
+            return { data: userData, error: null };
+        } else {
+            return { data: null, error: "Error creando usuario" };
         }
-
-        if (res.status == 201) {
-            return res.json()
-        } else return false
 
     } catch (error) {
         console.log(error);
-        return false;
+        return { data: null, error: "Error creando usuario" };
     }
+};
 
-}
 
-export const loginWithGoogle = async () => {
-    GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, });
+type User = {
+    user: {
+        id: string;
+        name: string | null;
+        email: string;
+        photo: string | null;
+        familyName: string | null;
+        givenName: string | null;
+    };
+    scopes: string[];
+    idToken: string | null;
+    serverAuthCode: string | null;
+};
+
+export const loginWithGoogle = async (): Promise<{ error?: true, userGoogle?: User }> => {
+    GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, }); // TODO: CONFIG TO IOS
 
     try {
         await GoogleSignin.hasPlayServices();
         const response = await GoogleSignin.signIn();
         if (isSuccessResponse(response)) {
-            console.log("response.data");
-            console.log(response.data);
-            // setState({ userInfo: response.data });
-            Alert.alert(
-                "Datos JSON",
-                JSON.stringify(response.data, null, 2), // Formatea el JSON
-                [{ text: "OK" }]
-            );
+            return { userGoogle: response.data }
         } else {
-            // sign in was cancelled by user
+            return { error: true }
         }
     } catch (error) {
-        Alert.alert(
-            "Datos JSON",
-            JSON.stringify(error, null, 2), // Formatea el JSON
-            [{ text: "OK" }]
-        );
         if (isErrorWithCode(error)) {
             switch (error.code) {
                 case statusCodes.IN_PROGRESS:
@@ -83,46 +91,55 @@ export const loginWithGoogle = async () => {
                     // Android only, play services not available or outdated
                     break;
                 default:
-                // some other error happened
+                    return { error: true }
             }
+            return { error: true }
         } else {
-            // an error that's not related to google sign in occurred
+            return { error: true }
         }
     }
 }
-export const loginUser = async (username: string, password: string) => {
 
-    const data = {
-        username,
-        password
-    };
+interface LoginUserResponse {
+    user?: UserContext,
+    errorHttp?: number
+}
 
-    const conver = {
+export const signInUserWithEmailAndPassword = async (email: string, password: string): Promise<{ error?: string, userCredential?: UserCredential }> => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return { userCredential: userCredential };
+    } catch (error: any) {
+        return { error: error.message }
+    }
+};
+
+export const loginUser = async (idToken: string): Promise<LoginUserResponse> => {
+    if (!idToken) return { errorHttp: 401 }
+
+    const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
         },
-        body: JSON.stringify(data) // Convertir data POST a una cadena JSON
     };
 
-
     try {
-
-        const res = await fetch(API_URL + '/auth/login', conver);
+        const res = await fetch(API_URL + '/auth/login', options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
-        // const response = JSON.stringify(res)
-        // console.log(response);
-
+        if (res.status == 401) return { errorHttp: 401 }
+        if (res.status == 404) return { errorHttp: 404 }
+        if (res.status == 403) return { errorHttp: 403 }
         if (res.status == 200) {
-            return res.json()
-        } else return false
+            const user = await res.json()
+            return { user: parseUserContext(user) }
+        } else return { errorHttp: 500 }
 
     } catch (error) {
-        console.log(error);
-
-        return false;
+        return { errorHttp: 500 }
     }
 
 }

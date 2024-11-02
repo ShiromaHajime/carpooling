@@ -1,12 +1,19 @@
-import { Entypo, FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { Car } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
+import { Image } from "react-native";
 
 export const IconEdit = () => {
   const { colorScheme } = useColorScheme()
 
   return (
     <FontAwesome5 name="edit" size={20} color={colorScheme == 'dark' ? "#fff" : "#000"} />
+  )
+}
+
+export const IconGoogle = ({ className }: { className?: string }) => {
+  return (
+    <Image source={require('@/assets/images/icons/icon-google.png')} className={className} />
   )
 }
 

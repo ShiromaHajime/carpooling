@@ -7,10 +7,13 @@ import { schemaFormUser } from "@/types/types";
 import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/constants/const";
 import { createUser, loginWithGoogle } from "@/services/userLogin";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AntDesign } from "@expo/vector-icons";
+import { IconGoogle } from "@/components/icons/Icons";
 
 export default function RegisterScreen() {
 
@@ -46,13 +49,57 @@ export default function RegisterScreen() {
             });
     }
 
-    const handleLoginGoogle = () => {
-        loginWithGoogle()
+    const validateCreateAccountGoogle = (name: string, lastname: string, username: string) => {
+        let newErrors: Record<string, string> = {}
+        if (!name) {
+            newErrors["name"] = "El nombre es requerido"
+        } else {
+            if (name.length > 0 && !isNaN(Number(name))) {
+                newErrors["name"] = "El nombre no puede ser numérico"
+            }
+        }
+
+        if (!lastname) {
+            newErrors["lastname"] = "El apellido es requerido"
+        } else {
+            if (lastname.length > 0 && !isNaN(Number(lastname))) {
+                newErrors["lastname"] = "El apellido no puede ser numérico"
+            }
+        }
+
+        if (!username) {
+            newErrors["username"] = "El nombre de usuario es requerido"
+        } else {
+            if (username.length > 0 && !isNaN(Number(username))) {
+                newErrors["username"] = "El nombre de usuario no puede ser numérico"
+            }
+        }
+        return newErrors
+    }
+
+    const handleRegisterGoogle = async () => {
+        const errors = validateCreateAccountGoogle(name, lastname, username)
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors)
+            console.log(errors);
+            return
+        }
+        const user = await loginWithGoogle()
+        if (!user || !user.idToken) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
+        const idToken = user.idToken // TODO: save and load in local storage with expo-secure
+        // Uso de la función
+        const { data, error } = await createUser({ name, lastname, username }, idToken);
+
+        if (error) {
+            console.log("Error al crear usuario:", error);
+        } else if (data) {
+            console.log("Usuario creado exitosamente:", data);
+        }
+        if (error) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
     }
 
     const handleRegister = async () => {
         const result = schemaFormUser.safeParse({ name, lastname, username, email, password });
-
         if (!result.success) {
             // Manejar errores
             const newErrors: Record<string, string> = {};
@@ -60,21 +107,30 @@ export default function RegisterScreen() {
                 newErrors[error.path[0]] = error.message;
             });
             setErrors(newErrors);
-        } else {
-            // Datos válidos
-            setErrors({})
-            toast('Enviando datos...', 'info', 1200, 'top')
-            const res = await createUser({ name: name, lastname: lastname, email: email, username: username, password: password })
-            if (res) {
-                toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
-                router.replace('/login')
-            } else {
-                toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
-            }
-
+            return
         }
 
 
+        let idToken, newUser;
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            // Signed up
+            const user = userCredential.user;
+            newUser = user
+            idToken = await user.getIdToken(); // TODO: save and load in local storage with expo-secure
+        } catch (error: any) {
+            const errorMessage = error.message;
+            return toast(errorMessage, 'destructive', 3000, 'top', false);
+        }
+        const res = await createUser({ name, lastname, username }, idToken)
+        if (res) {
+            toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
+            sendEmailVerification(newUser)
+            toast(`Se envio un email a "${email}" para confirmar tu correo`, 'success', 5000, 'top', false)
+            router.replace('/login')
+        } else {
+            toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
+        }
 
     }
 
@@ -94,8 +150,8 @@ export default function RegisterScreen() {
                 </View>
 
                 <View className="mt-2">
-                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
-                    >Nombre</Text>
+                    <Text className="font-medium mb-2 dark:text-slate-100"
+                    >Nombre *</Text>
                     <InputStyled
                         className=""
                         setValueInput={setName}
@@ -106,8 +162,8 @@ export default function RegisterScreen() {
 
 
                 <View className="mt-5">
-                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
-                    >Apellido</Text>
+                    <Text className="font-medium mb-2 dark:text-slate-100"
+                    >Apellido *</Text>
                     <InputStyled
                         setValueInput={setLastname}
                         placeholder="Ingrese su apellido"
@@ -116,24 +172,26 @@ export default function RegisterScreen() {
 
                 </View>
 
-                <View className="mt-5">
-                    <Text className="text-md font-medium mb-2 dark:text-slate-100"
-                    >Username</Text>
+                <View className="mt-5 mb-4">
+                    <Text className="font-medium mb-2 dark:text-slate-100"
+                    >Username *</Text>
                     <InputStyled
                         setValueInput={setUsername}
                         placeholder="Ingrese su nombre de usuario"
                     />
                     {errors.username && <Text style={{ color: 'red' }}>{errors.username}</Text>}
-
                 </View>
 
-                <View className="self-center mb-2">
-                    <GoogleSigninButton
-                        onPress={handleLoginGoogle} />
-                </View>
-
+                <TouchableOpacity onPress={handleRegisterGoogle} className="w-72">
+                    <View className="bg-[#4888f4] dark:bg-slate-50 flex flex-row w-72 justify-between self-center items-center rounded-lg border border-border px-1 py-1">
+                        <View className="bg-white p-2 rounded-md"><IconGoogle className="w-8 h-8" /></View>
+                        <Text className="text-white font-medium text-lg">Crear cuenta con Google</Text>
+                        <View />
+                    </View>
+                </TouchableOpacity>
+                <View className="mb-6" />
                 <Text className="text-md font-medium mb-2 dark:text-slate-100 mt-2 self-center">O creá tu cuenta con email y contraseña</Text>
-                <View className="mt-5">
+                <View className="mt-4">
                     <Text className="text-md font-medium mb-2 dark:text-slate-100"
                     >Email</Text>
                     <InputStyled
@@ -141,7 +199,6 @@ export default function RegisterScreen() {
                         placeholder="Ingrese su Email"
                     />
                     {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
-
                 </View>
 
                 <View className="mt-5">
@@ -155,7 +212,6 @@ export default function RegisterScreen() {
                         placeholder="Ingrese su contraseña"
                     />
                     {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
-
                 </View>
 
                 <View className="items-center mt-7 mb-5">

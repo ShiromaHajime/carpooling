@@ -16,19 +16,22 @@ export default function WelcomeScreen() {
     }
 
     return (
-        <View className="bg-background h-full pl-5 pr-5 justify-center">
+        <View className="bg-background h-full justify-center">
 
-
-            <View className="h-28 self-center">
-                <Link href='/test'>
-                    <Text className="text-foreground text-5xl">¡Bienvenido!</Text>
+            <View className="flex-1 justify-center items-center">
+                <Link href='/test' className="self-center">
+                    <Text className="text-foreground text-5xl">¡Bienvenido a Carpooling!</Text>
                 </Link>
+                <Image source={require('@/assets/images/InitCar.png')} className="w-96 h-96 object-cover" />
+                <View className="flex-row justify-evenly gap-8">
+                    <Button label="Ingresar" className="w-28" onPress={handleBlogin}></Button>
+                    <Button label="Registrarse" className="w-28" onPress={handleBregistro}></Button>
+                </View>
             </View>
 
-            <View className="flex-row justify-evenly">
-                <Button className="color" label="Ingresar" onPress={handleBlogin}></Button>
-                <Button className="color" label="Registrarse" onPress={handleBregistro}></Button>
-            </View>
+
+
+
 
         </View>
 

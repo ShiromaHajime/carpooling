@@ -5,61 +5,47 @@ import { Button } from "@/components/buttons/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useContext, useState } from "react";
-import { loginUser, loginWithGoogle } from "@/services/userLogin";
+import { loginUser, loginWithGoogle, signInUserWithEmailAndPassword } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
-import { UserAccount } from "@/types/types";
 import { useToast } from "@/components/Toast";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  isErrorWithCode,
-  isSuccessResponse,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { GOOGLE_CLIENT_ID, auth } from "@/constants/const";
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { GOOGLE_CLIENT_ID } from "@/constants/const";
+import { msgEmailNotVerified, msgError500 } from "@/constants/texts";
 
 export default function LoginScreen() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const context = useContext(GlobalContext);
   GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, });
-
+  const router = useRouter();  // Para redirección
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
 
 
   const handleLogin = async () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        console.log(user.uid);
-        user.getIdTokenResult()
-        const token = await user.getIdToken()
-        const token2 = await user.getIdTokenResult()
+    setLoading(true)
+    const { error, userCredential } = await signInUserWithEmailAndPassword(email, password)
+    if (error || !userCredential) return toast('Hubo un error al iniciar sesión', 'destructive', 2500, 'top', false)
+    const userC = userCredential.user
+    if (!userC.emailVerified) return toast(msgEmailNotVerified, 'info', 4500, 'top', false)
 
-        console.log("tokenFirebase");
-        console.log(token);
-        console.log("token2");
-        console.log(token2);
-        // ...
-      })
-      .catch((error) => {
-
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-
-        // ..
-      });
+    const token = await userCredential.user.getIdToken()
+    const { errorHttp, user } = await loginUser(token)
+    if (errorHttp) {
+      if (errorHttp == 401) return toast('El token es inválido, intentelo de nuevo mas tarde', 'destructive', 3000, 'top', false)
+      if (errorHttp == 403) return toast(msgEmailNotVerified, 'info', 3000, 'top', false)
+      if (errorHttp == 404) return toast('El usuario no está registrado', 'destructive', 3000, 'top', false)
+      if (errorHttp == 500) return toast(msgError500, 'destructive', 3000, 'top', false)
+    }
+    if (!user) return toast(msgError500, 'destructive', 3000, 'top', false)
+    setLoading(false)
+    handleShowModal(user)
   }
 
-  const router = useRouter();  // Para redirección
 
   const handleShowModal = (user: UserContext) => {
     // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
@@ -88,8 +74,20 @@ export default function LoginScreen() {
 
 
 
-  const handleLoginGoogle = () => {
-    loginWithGoogle()
+  const handleLoginGoogle = async () => {
+    setLoading(true)
+    const { error, userGoogle } = await loginWithGoogle()
+    if (error || !userGoogle?.idToken) return toast(msgError500, 'destructive', 3000, 'top', false)
+
+    const { errorHttp, user } = await loginUser(userGoogle.idToken)
+    if (errorHttp) {
+      if (errorHttp == 401) return toast('El token es inválido, intentelo de nuevo mas tarde', 'destructive', 3000, 'top', false)
+      if (errorHttp == 404) return toast('El usuario no está registrado', 'destructive', 3000, 'top', false)
+      if (errorHttp == 500) return toast(msgError500, 'destructive', 3000, 'top', false)
+    }
+    if (!user) return toast(msgError500, 'destructive', 3000, 'top', false)
+    setLoading(false)
+    handleShowModal(user)
   }
 
 

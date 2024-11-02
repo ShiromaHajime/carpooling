@@ -1,6 +1,7 @@
 import { API_URL, storage } from "@/constants/const";
 import { ImageType, User, UserAccount } from "@/types/types";
 import { UserContext } from "@/utils/Provider";
+import { parseUserContext } from "@/utils/utils";
 import { UploadResult, ref, uploadBytes } from "firebase/storage";
 
 export const modifyUserValue = async (idUser: number, field: 'name' | 'lastName' | 'username', value: string) => {
@@ -45,17 +46,7 @@ export const modifyUserValue = async (idUser: number, field: 'name' | 'lastName'
 
 }
 
-const parseUserContext = (user: any): UserContext => {
-    const newUser: UserContext = {
-        id: user.id,
-        email: user.email,
-        creation_date: user.creation_date,
-        lastname: user.last_name,
-        name: user.first_name,
-        username: user.username
-    }
-    return newUser
-}
+
 export const getUserById = async (id: string): Promise<UserContext | false> => {
     try {
         const res = await fetch(`${API_URL}/users/${id}`);
