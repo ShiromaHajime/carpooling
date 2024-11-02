@@ -4,7 +4,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth'; // no dar bola a este error, es error de ts
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 // archivo .env que tiene las variables de entorno
 // EXPO_PUBLIC_API_URL = https://dscarpooling-back.alwaysdata.net

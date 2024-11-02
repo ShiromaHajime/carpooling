@@ -1,10 +1,9 @@
 import { API_URL, GOOGLE_CLIENT_ID, auth } from "@/constants/const";
-import { UserAccount } from "@/types/types";
 import { UserContext } from "@/utils/Provider";
 import { parseUserContext } from "@/utils/utils";
 import { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } from "@react-native-google-signin/google-signin";
+import { getItemAsync, setItemAsync } from "expo-secure-store";
 import { UserCredential, signInWithEmailAndPassword } from "firebase/auth";
-import { Alert } from "react-native";
 interface NewUser {
     name: string;
     lastname: string;
@@ -70,14 +69,38 @@ type User = {
     serverAuthCode: string | null;
 };
 
-export const loginWithGoogle = async (): Promise<{ error?: true, userGoogle?: User }> => {
+export async function saveToken(token: string) {
+    try {
+        await setItemAsync('accessToken', token);
+        console.log('Access token guardado');
+    } catch (error) {
+        console.log('Error al guardar el access token:', error);
+    }
+}
+
+export async function getTokenFromStorage() {
+    try {
+        const token = await getItemAsync('accessToken');
+        if (token) {
+            return token;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log('Error al recuperar el access token:', error);
+        return null;
+    }
+}
+
+
+export const loginWithGoogle = async (): Promise<{ idToken?: string | null; error?: true, userGoogle?: User }> => {
     GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, }); // TODO: CONFIG TO IOS
 
     try {
         await GoogleSignin.hasPlayServices();
         const response = await GoogleSignin.signIn();
         if (isSuccessResponse(response)) {
-            return { userGoogle: response.data }
+            return { userGoogle: response.data, idToken: response.data.idToken }
         } else {
             return { error: true }
         }

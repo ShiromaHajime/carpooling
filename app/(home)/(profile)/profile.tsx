@@ -3,7 +3,7 @@ import { Card } from "@/components/Card";
 import { useToast } from "@/components/Toast";
 import { IconCamera, IconEdit, IconSave } from "@/components/icons/Icons";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { GlobalContext, UserContext } from "@/utils/Provider";
+import { GlobalContext, UserContext, initialState } from "@/utils/Provider";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useContext, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -11,6 +11,7 @@ import { ButtonSave } from "@/components/buttons/ButtonSave";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { getUserById, modifyUserValue } from "@/services/user";
 import { parseUrlParams } from "@/utils/utils";
+import { saveToken } from "@/services/userLogin";
 
 
 export default function ProfileScreen() {
@@ -53,6 +54,12 @@ export default function ProfileScreen() {
       setLoading(false)
     }
   }, [])
+
+  const handleLogOut = () => {
+    saveToken('')
+    context.setUser(initialState)
+    router.replace({ pathname: "/" })
+  }
 
   interface InputLineProps {
     initialvalue: string,
@@ -135,6 +142,8 @@ export default function ProfileScreen() {
             onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
         </View>
       </Card>
+      <View className="my-6" />
+      <Button label="Cerrar sesión" variant={"destructive"} onPress={handleLogOut} />
     </View>
 
   );

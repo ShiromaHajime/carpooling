@@ -9,7 +9,7 @@ import { useState } from "react";
 import { ScrollView, Text, View } from "react-native"
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/constants/const";
-import { createUser, loginWithGoogle } from "@/services/userLogin";
+import { createUser, loginWithGoogle, saveToken } from "@/services/userLogin";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
@@ -25,29 +25,6 @@ export default function RegisterScreen() {
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const { toast } = useToast();
-
-
-    const handleCreateAccount = async () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(async (userCredential) => {
-                // Signed up
-                const user = userCredential.user;
-                console.log(user.uid);
-                const token = await user.getIdToken()
-                const token2 = await user.getIdTokenResult()
-
-                console.log("tokenFirebase");
-                console.log(token);
-                console.log("token2");
-                console.log(token2);
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ..
-            });
-    }
 
     const validateCreateAccountGoogle = (name: string, lastname: string, username: string) => {
         let newErrors: Record<string, string> = {}
@@ -84,18 +61,15 @@ export default function RegisterScreen() {
             console.log(errors);
             return
         }
-        const user = await loginWithGoogle()
-        if (!user || !user.idToken) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
-        const idToken = user.idToken // TODO: save and load in local storage with expo-secure
-        // Uso de la función
-        const { data, error } = await createUser({ name, lastname, username }, idToken);
 
-        if (error) {
-            console.log("Error al crear usuario:", error);
-        } else if (data) {
-            console.log("Usuario creado exitosamente:", data);
-        }
+        const { idToken } = await loginWithGoogle()
+        if (!idToken) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
+
+        const { data, error } = await createUser({ name, lastname, username }, idToken);
         if (error) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
+
+        toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
+        router.push({ pathname: "/(account)/login" })
     }
 
     const handleRegister = async () => {
@@ -110,14 +84,14 @@ export default function RegisterScreen() {
             return
         }
 
-
         let idToken, newUser;
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             // Signed up
             const user = userCredential.user;
             newUser = user
-            idToken = await user.getIdToken(); // TODO: save and load in local storage with expo-secure
+            idToken = await user.getIdToken();
+            saveToken(idToken)
         } catch (error: any) {
             const errorMessage = error.message;
             return toast(errorMessage, 'destructive', 3000, 'top', false);
@@ -127,7 +101,7 @@ export default function RegisterScreen() {
             toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
             sendEmailVerification(newUser)
             toast(`Se envio un email a "${email}" para confirmar tu correo`, 'success', 5000, 'top', false)
-            router.replace('/login')
+            router.push({ pathname: "/(account)/login" })
         } else {
             toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
         }
@@ -183,7 +157,7 @@ export default function RegisterScreen() {
                 </View>
 
                 <TouchableOpacity onPress={handleRegisterGoogle} className="w-72">
-                    <View className="bg-[#4888f4] dark:bg-slate-50 flex flex-row w-72 justify-between self-center items-center rounded-lg border border-border px-1 py-1">
+                    <View className="bg-[#4888f4] flex flex-row w-72 justify-between self-center items-center rounded-lg border border-border px-1 py-1">
                         <View className="bg-white p-2 rounded-md"><IconGoogle className="w-8 h-8" /></View>
                         <Text className="text-white font-medium text-lg">Crear cuenta con Google</Text>
                         <View />

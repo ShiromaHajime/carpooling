@@ -1,16 +1,17 @@
 import { Link, useRouter } from "expo-router";
-import { Text, View, Alert } from "react-native";
+import { Text, View, Alert, TouchableOpacity } from "react-native";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/buttons/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
 import { useContext, useState } from "react";
-import { loginUser, loginWithGoogle, signInUserWithEmailAndPassword } from "@/services/userLogin";
+import { loginUser, loginWithGoogle, saveToken, signInUserWithEmailAndPassword } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { useToast } from "@/components/Toast";
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { GOOGLE_CLIENT_ID } from "@/constants/const";
 import { msgEmailNotVerified, msgError500 } from "@/constants/texts";
+import { IconGoogle } from "@/components/icons/Icons";
 
 export default function LoginScreen() {
 
@@ -87,6 +88,7 @@ export default function LoginScreen() {
     }
     if (!user) return toast(msgError500, 'destructive', 3000, 'top', false)
     setLoading(false)
+    saveToken(userGoogle.idToken)
     handleShowModal(user)
   }
 
@@ -131,8 +133,13 @@ export default function LoginScreen() {
       <Text className="text-md font-medium mb-2 dark:text-slate-100 mt-2 self-center">O Inicia sesión con Google</Text>
 
       <View className="self-center mb-2">
-        <GoogleSigninButton
-          onPress={handleLoginGoogle} />
+        <TouchableOpacity onPress={handleLoginGoogle} className="w-72">
+          <View className="bg-[#4888f4] flex flex-row w-72 justify-between self-center items-center rounded-lg border border-border px-1 py-1">
+            <View className="bg-white p-2 rounded-md"><IconGoogle className="w-8 h-8" /></View>
+            <Text className="text-white font-medium text-lg">Acceder</Text>
+            <View />
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View className="flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
