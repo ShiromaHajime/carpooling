@@ -58,8 +58,6 @@ export const ProfileAvatar = ({ idUser, canChangeProfilePicture }: { idUser: num
             }
             setImage(image);
             toast('Se cambió la foto de perfil con exito!', "success", 3000, 'top', false)
-            console.log("snap");
-            console.log(snap);
         }
 
     };

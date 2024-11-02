@@ -3,6 +3,7 @@
 //
 
 import { SafeParseReturnType } from "zod"
+import { UserContext } from "./Provider"
 
 export const parseUrlParams = (param: string | string[]): string => {
 
@@ -38,3 +39,15 @@ export const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c; // Distancia en km
 };
+
+export const parseUserContext = (user: any): UserContext => {
+    const newUser: UserContext = {
+        id: user.id,
+        email: user.email,
+        creation_date: user.creation_date,
+        lastname: user.last_name,
+        name: user.first_name,
+        username: user.username
+    }
+    return newUser
+}

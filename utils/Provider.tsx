@@ -19,7 +19,7 @@ interface ContextType {
     setRole: (value: Role) => void;
 }
 
-const initialState: UserContext = {
+export const initialState: UserContext = {
     id: 0,
     name: '',
     lastname: '',
