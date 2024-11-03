@@ -3,60 +3,42 @@ import { useToast } from "@/components/Toast";
 import { UserAccount, Vehicle } from "@/types/types";
 import { GlobalContext } from "@/utils/Provider";
 import { useRouter } from "expo-router";
-import { useContext, useState } from "react";
-import { Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 import { CarList } from "./CarList";
 import { Button } from "@/components/buttons/Button";
+import { getVehiclesByUserID } from "@/services/vehicle";
 
 export default function VehiclesScreen() {
 
   const context = useContext(GlobalContext);
   const user = context?.user
-
+  const [vehicles, setVehicles] = useState<Vehicle[]>([])
+  const [loading, setLoading] = useState(false)
   const { toast } = useToast()
+  const router = useRouter();
 
-  const router = useRouter();  // Para redirección
-  const dummyCars: Vehicle[] = [
-    {
-      brand: "Toyota",
-      license_plate: "ABC123",
-      model: "Corolla",
-      year: "2020",
-      color: "Red",
-    },
-    {
-      brand: "Honda",
-      license_plate: "XYZ789",
-      model: "Civic",
-      year: "2019",
-      color: "Blue",
-    },
-    {
-      brand: "Ford",
-      license_plate: "LMN456",
-      model: "Focus",
-      year: "2021",
-      // color está ausente, es opcional
-    },
-    {
-      brand: "Chevrolet",
-      license_plate: "QRS321",
-      model: "Malibu",
-      year: "2018",
-      color: "Black",
-    },
-    {
-      brand: "Nissan",
-      license_plate: "TUV654",
-      model: "Altima",
-      year: "2022",
-      color: "White",
-    },
-  ]
+  useEffect(() => {
+    const getVehicles = async () => {
+      setLoading(true)
+      const { errorHttp, vehicles } = await getVehiclesByUserID(user.id)
+      setLoading(false)
+
+      if (errorHttp) {
+        return toast('Error buscando vehiculos del conductor', 'destructive', 3500, 'top', false)
+      }
+      if (vehicles) {
+        setVehicles(vehicles)
+      }
+    }
+    getVehicles()
+  }, [])
 
   return (
     <View className="bg-background flex-1 pl-7 pr-7 pt-5 pb-5">
-      <CarList cars={dummyCars} />
+      {(vehicles?.length > 0 && !loading) && (<CarList cars={vehicles} />)}
+      {(loading) && ((<ActivityIndicator size='large' />))}
+
       <View className="mt-4" />
       <View className="self-center justify-center mt-4">
         <Button label="Registrar nuevo vehículo"

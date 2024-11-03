@@ -79,12 +79,12 @@ export interface User {
     creation_date: string;
     email: string;
     first_name: string;
-    id: number;
+    id: string;
     last_name: string;
 }
 
 export interface Driver {
-    id: number;
+    id: string;
     user: User;
 }
 

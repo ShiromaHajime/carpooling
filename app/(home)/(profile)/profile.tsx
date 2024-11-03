@@ -12,6 +12,7 @@ import { ProfileAvatar } from "./ProfileAvatar";
 import { getUserById, modifyUserValue } from "@/services/user";
 import { parseUrlParams } from "@/utils/utils";
 import { saveToken } from "@/services/userLogin";
+import { Skeleton } from "@/components/Skeleton";
 
 
 export default function ProfileScreen() {
@@ -127,7 +128,28 @@ export default function ProfileScreen() {
 
   }
 
-  if (!userProfile) return (<Text>Esta cargando</Text>)
+  if (!userProfile) return (
+    <View>
+      <View className="bg-background flex h-screen pl-7 pr-7 pt-4">
+        <Card className="pl-5 pr-5 pt-4 pb-4 bg-secondary rounded-md">
+          <Skeleton className="w-32 h-32 rounded-full self-center" />
+          <Skeleton className="w-full h-8 mt-3" />
+          <Skeleton className="w-full h-8 mt-3" />
+          <Skeleton className="w-full h-8 mt-3" />
+          <View className="mt-4" />
+          <View className="self-center justify-center mt-5">
+            <Button label="Ver mis vehículos"
+              className="rounded bg-primary self-center w-52 h-11"
+              onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
+          </View>
+        </Card>
+        <View className="my-6" />
+        <Button label="Cerrar sesión" variant={"destructive"} onPress={handleLogOut} />
+      </View>
+    </View>
+  )
+
+
   return (
     <View className="bg-background flex h-screen pl-7 pr-7 pt-4">
       <Card className="pl-5 pr-5 pt-4 pb-4 bg-secondary rounded-md">

@@ -4,7 +4,7 @@ import { UserContext } from "@/utils/Provider";
 import { parseUserContext } from "@/utils/utils";
 import { UploadResult, ref, uploadBytes } from "firebase/storage";
 
-export const modifyUserValue = async (idUser: number, field: 'name' | 'lastName' | 'username', value: string) => {
+export const modifyUserValue = async (idUser: string, field: 'name' | 'lastName' | 'username', value: string) => {
 
     let data: any
     if (field == 'name') {
@@ -65,7 +65,7 @@ export const getProfilePicture = () => {
 }
 
 
-export const uploadProfilePicture = async (image: ImageType, idUser: number): Promise<UploadResult | undefined> => {
+export const uploadProfilePicture = async (image: ImageType, idUser: string): Promise<UploadResult | undefined> => {
     if (!idUser || !image) return
     try {
         const response = await fetch(image.uri);

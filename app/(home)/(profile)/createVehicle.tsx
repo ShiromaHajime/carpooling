@@ -1,15 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar"
 import { Button } from "@/components/buttons/Button";
 import { useToast } from "@/components/Toast";
-import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { createUser } from "@/services/user";
 import { createVehicle } from "@/services/vehicle";
-import { Vehicle, schemaFormUser, schemaFormVehicle } from "@/types/types";
+import { schemaFormVehicle } from "@/types/types";
 import { GlobalContext } from "@/utils/Provider";
 import { parseErrors } from "@/utils/utils";
 import { router } from "expo-router";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useState } from "react";
 import { ScrollView, Text, View } from "react-native"
 
 export default function CreateVehicleScreen() {
@@ -39,16 +36,21 @@ export default function CreateVehicleScreen() {
       console.log('datos correctos:');
       setErrors({})
       console.log(result.data);
-      toast('Enviando datos...', 'info', 1200, 'top')
+      toast('Registrando vehículo...', 'info', 1500, 'top')
 
       if (!context?.user.id) return
-      const res = await createVehicle({ license_plate, brand, model, year, color, user_id: context?.user.id })
-      if (res) {
-        toast('Vehiculo creado exitosamente!', 'success', 2300, 'top', false)
-        router.replace('/(home)/(profile)/vehicles')
-      } else {
-        toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
+      const { errorHttp, vehicle } = await createVehicle({ license_plate, brand, model, year, color, user_id: context?.user.id })
+      if (errorHttp) {
+        if (errorHttp == 400) return toast('Faltan campos del vehículo', 'destructive', 3500, 'top', false)
+        if (errorHttp == 409) return toast(`La patente ${license_plate}, ya esta registrada`, 'destructive', 3500, 'top', false)
+        if (errorHttp == 500) return toast('Hubo un error del servidor', 'destructive', 3500, 'top', false)
       }
+      if (vehicle) {
+        toast('Vehiculo creado exitosamente!', 'success', 3000, 'top', false)
+        router.replace('/(home)/(profile)/vehicles')
+        return
+      }
+      return toast('Hubo un error del servidor', 'destructive', 3500, 'top', false)
 
     }
 

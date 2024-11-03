@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { useToast } from "@/components/Toast";
 import { TouchableOpacity, View } from "react-native";
 
-export const ProfileAvatar = ({ idUser, canChangeProfilePicture }: { idUser: number, canChangeProfilePicture: boolean }) => {
+export const ProfileAvatar = ({ idUser, canChangeProfilePicture }: { idUser: string, canChangeProfilePicture: boolean }) => {
     const { toast } = useToast()
 
     const [image, setImage] = useState<ImageType>();

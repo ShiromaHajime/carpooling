@@ -2,7 +2,7 @@ import { UserAccount } from '@/types/types';
 import React, { createContext, useState, ReactNode } from 'react';
 
 export interface UserContext {
-    id: number,
+    id: string,
     name: string,
     lastname: string,
     email: string,
@@ -20,7 +20,7 @@ interface ContextType {
 }
 
 export const initialState: UserContext = {
-    id: 0,
+    id: '',
     name: '',
     lastname: '',
     email: '',

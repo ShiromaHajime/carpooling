@@ -10,9 +10,7 @@ import { ScrollView, Text, View } from "react-native"
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/constants/const";
 import { createUser, loginWithGoogle, saveToken } from "@/services/userLogin";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AntDesign } from "@expo/vector-icons";
 import { IconGoogle } from "@/components/icons/Icons";
 
 export default function RegisterScreen() {

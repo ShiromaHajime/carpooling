@@ -64,14 +64,16 @@ export default function ProfileLayout() {
   }
 
   return (
-    <Stack>
+    <Stack screenOptions={{
+      headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
+      headerTintColor: '#fff'
+    }}>
       <Stack.Screen name="profile" options={{
         headerShown: true,
         title: 'Perfil',
         headerRight: () => <HeaderRight />,
-        headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
-        headerTitleStyle: { color: "#fff" }
       }} />
+
       <Stack.Screen name="createVehicle" options={{ headerShown: true, presentation: 'modal', title: 'Registar vehículo' }} />
       <Stack.Screen name="vehicles" options={{ headerShown: true, presentation: 'modal', title: 'Mis vehículos' }} />
     </Stack>

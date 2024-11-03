@@ -157,6 +157,7 @@ export const loginUser = async (idToken: string): Promise<LoginUserResponse> => 
         if (res.status == 404) return { errorHttp: 404 }
         if (res.status == 403) return { errorHttp: 403 }
         if (res.status == 200) {
+            saveToken(idToken)
             const user = await res.json()
             return { user: parseUserContext(user) }
         } else return { errorHttp: 500 }
