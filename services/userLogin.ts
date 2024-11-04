@@ -150,18 +150,12 @@ export const loginUser = async (idToken: string): Promise<LoginUserResponse> => 
 
     try {
         const res = await fetch(API_URL + '/auth/login', options);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        if (res.status == 401) return { errorHttp: 401 }
-        if (res.status == 404) return { errorHttp: 404 }
-        if (res.status == 403) return { errorHttp: 403 }
         if (res.status == 200) {
             saveToken(idToken)
             const user = await res.json()
             return { user: parseUserContext(user) }
-        } else return { errorHttp: 500 }
-
+        }
+        return { errorHttp: res.status }
     } catch (error) {
         return { errorHttp: 500 }
     }

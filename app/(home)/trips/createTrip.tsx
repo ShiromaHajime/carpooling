@@ -9,7 +9,7 @@ import { HandleHeader } from "@/components/headers/HandleHeader";
 import FormTrip from "./FormTrip";
 import { haversineDistance } from "@/utils/utils";
 import { useLocalPosition } from "@/hooks/useLocalPosition";
-import MapView, { LatLng, MapPressEvent, Marker, Polyline } from "react-native-maps";
+import MapView, { LatLng, MapPressEvent, Marker, PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import * as Location from 'expo-location';
 import { LocationInfo, modeMap } from "@/types/types";
 import { usePointPosition } from "@/hooks/usePointPosition";
@@ -51,6 +51,8 @@ export default function CreateTripScreen() {
         const getUserLocation = async () => {
             const { error, userLocation } = await useLocalPosition()
             setErrorMsg(error)
+            console.log("userLocation");
+            console.log(userLocation);
             setUserLocation(userLocation)
         }
         getUserLocation()
@@ -155,6 +157,7 @@ export default function CreateTripScreen() {
                 {(mode == 'selectingDestination') && (<AlertSelecting title='Marcando punto de destino' description='Para marcar un punto puedes tocar el mapa' />)}
                 <View className='flex-1'>
                     <MapView
+                        provider={PROVIDER_GOOGLE}
                         userInterfaceStyle="dark"
                         className='flex-1 w-auto h-screen bg-background'
                         style={{ flex: 1 }}

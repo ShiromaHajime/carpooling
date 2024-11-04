@@ -110,15 +110,7 @@ export const schemaFormVehicle = z.object({
             }
         }),
     model: z.string()
-        .min(1, { message: "El modelo es requerido" })
-        .superRefine((value, ctx) => {
-            if (value.length > 0 && !isNaN(Number(value))) {
-                ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "El modelo no puede ser numérico",
-                });
-            }
-        }),
+        .min(1, { message: "El modelo es requerido" }),
     year: z.string()
         .min(1, { message: "El año es requerido" }),
 
@@ -136,6 +128,7 @@ export const schemaFormVehicle = z.object({
 });
 
 export type Vehicle = z.infer<typeof schemaFormVehicle>;
+export interface VehicleDB extends Vehicle { id: number }
 
 export interface Vehicle_driver {
     id: number;

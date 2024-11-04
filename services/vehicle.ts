@@ -1,12 +1,12 @@
 import { API_URL } from "@/constants/const";
-import { Vehicle } from "@/types/types";
+import { Vehicle, VehicleDB } from "@/types/types";
 import { getTokenFromStorage } from "./userLogin";
 
 interface PropsCreateVehicle extends Vehicle {
     user_id: string
 }
 
-export const getVehiclesByUserID = async (idUser: string): Promise<{ vehicles?: Vehicle[], errorHttp?: number }> => {
+export const getVehiclesByUserID = async (idUser: string): Promise<{ vehicles?: VehicleDB[], errorHttp?: number }> => {
     const idToken = await getTokenFromStorage()
     const options = {
         method: 'GET',

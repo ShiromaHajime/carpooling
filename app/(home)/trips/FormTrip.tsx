@@ -1,28 +1,29 @@
 import { useToast } from "@/components/Toast";
 import { Button } from "@/components/buttons/Button";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { createTrip } from "@/services/createTrip";
 import { GlobalContext } from "@/utils/Provider";
 import { useRouter } from "expo-router";
-import { ChevronUp, CircleUser, CreditCard, Settings } from "lucide-react-native";
-import { useContext, useRef, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 import { LatLng } from "react-native-maps";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DropDownCar } from "../../../components/DropDownCar";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { Entypo, EvilIcons } from "@expo/vector-icons";
+import { VehicleDB } from "@/types/types";
+import { getVehiclesByUserID } from "@/services/vehicle";
+import { Skeleton } from "@/components/Skeleton";
 
 export default function FormTrip({ origin, destination }: { origin?: LatLng, destination?: LatLng }) {
     const [available_seats, setTripSeat] = useState('');
     const [seat_price, setTripSeatPrice] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [myCars, setMycars] = useState<VehicleDB[]>([]);
+
     const router = useRouter();
     const context = useContext(GlobalContext)
-    const idDriver = context?.user.id
-    const [user, setUser] = useState(context?.user);
+    const idDriver = context.user.id
     const { toast } = useToast();
-    const selectedCarRef = useRef('')
+    const selectedIdCar = useRef<number>()
     const dateInputRef = useRef('')
     const timeInputRef = useRef('')
 
@@ -42,6 +43,21 @@ export default function FormTrip({ origin, destination }: { origin?: LatLng, des
         hideDatePicker();
     };
 
+    useEffect(() => {
+        const getCars = async () => {
+            const { errorHttp, vehicles } = await getVehiclesByUserID(idDriver)
+            if (errorHttp || !vehicles) return toast('No tienes vehículos registrados, registra vehiculos en tu perfil', 'destructive', 5000, 'top', false)
+            if (vehicles.length > 0) {
+                console.log(vehicles);
+                setMycars(vehicles)
+            }
+        }
+
+        if (myCars.length == 0) {
+            getCars()
+        }
+    }, [])
+
     const handleCreateTrip = async () => {
 
         toast('Registrando viaje', 'info', 2000, 'top')
@@ -56,7 +72,7 @@ export default function FormTrip({ origin, destination }: { origin?: LatLng, des
         console.log("timeInputRef");
         console.log(timeInputRef.current);
         console.log("selectedCarRef.current")
-        console.log(selectedCarRef.current);
+        console.log(selectedIdCar.current);
         console.log("available_seats");
         console.log(available_seats);
         console.log("seat_price");
@@ -70,8 +86,8 @@ export default function FormTrip({ origin, destination }: { origin?: LatLng, des
         // }
     }
 
-    const handleSelectCar = (car: string) => {
-        selectedCarRef.current = car
+    const setSelectedIdCar = (idCar: number) => {
+        selectedIdCar.current = idCar
     }
 
     return (
@@ -90,7 +106,7 @@ export default function FormTrip({ origin, destination }: { origin?: LatLng, des
 
                 <View>
                     <Text className="text-md font-medium dark:text-slate-100 mb-2">Vehículo</Text>
-                    <DropDownCar options={['Clio', 'Peugeot', 'Ferrari']} handleSelected={handleSelectCar} />
+                    {myCars.length > 0 ? <DropDownCar options={myCars} handleSelected={setSelectedIdCar} /> : <Skeleton className="w-full h-11" />}
                 </View>
 
                 <View>

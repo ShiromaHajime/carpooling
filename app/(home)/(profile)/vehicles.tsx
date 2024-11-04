@@ -24,6 +24,7 @@ export default function VehiclesScreen() {
       const { errorHttp, vehicles } = await getVehiclesByUserID(user.id)
       setLoading(false)
 
+      if (errorHttp == 404) return
       if (errorHttp) {
         return toast('Error buscando vehiculos del conductor', 'destructive', 3500, 'top', false)
       }
@@ -37,6 +38,7 @@ export default function VehiclesScreen() {
   return (
     <View className="bg-background flex-1 pl-7 pr-7 pt-5 pb-5">
       {(vehicles?.length > 0 && !loading) && (<CarList cars={vehicles} />)}
+      {(vehicles?.length == 0 && !loading) && (<Text className="text-foreground font-medium text-lg self-center ">El conductor no tiene vehículos registrados</Text>)}
       {(loading) && ((<ActivityIndicator size='large' />))}
 
       <View className="mt-4" />

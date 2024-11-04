@@ -1,32 +1,34 @@
 import { DropDown, DropDownContent, DropDownItem, DropDownItemSeparator, DropDownLabel, DropDownTrigger } from "@/components/DropDown"
-import { Button } from "@/components/buttons/Button"
 import { IconCar, IconChevronDown } from "@/components/icons/Icons"
-import { CircleUser, Settings } from "lucide-react-native"
+import { VehicleDB } from "@/types/types"
 import { useState } from "react"
 import { Pressable, Text, TouchableOpacity, View } from "react-native"
 
 interface DropDownProps {
     selected?: string,
-    options: string[],
-    handleSelected: (value: string) => void
+    options: VehicleDB[],
+    handleSelected: (value: number) => void
 }
 
 export const DropDownCar = ({ options, selected, handleSelected }: DropDownProps) => {
+    const firstCar = options[0]
+    const initialSelected = `${firstCar.brand} ${firstCar.model} ${firstCar.color}`
+    const [select, setSelect] = useState(selected ? selected : initialSelected)
 
-    const [select, setSelect] = useState(selected ? selected : options[0])
-
-    const handleSelectOption = (option: string) => {
-        setSelect(option)
-        handleSelected(option)
+    const handleSelectOption = (option: VehicleDB) => {
+        const text = `${option.brand} ${option.model} ${option.color}`
+        setSelect(text)
+        handleSelected(option.id)
     }
 
-    const ItemDropDown = ({ option }: { option: string }) => {
+    const ItemDropDown = ({ option }: { option: VehicleDB }) => {
+        const text = `${option.brand} ${option.model} ${option.color}`
         return (
-            <DropDownItem className={`${(option == select ? 'bg-[#e6e6e6] dark:bg-[#292929]' : '')}`}>
+            <DropDownItem className={`${(text == select ? 'bg-[#e6e6e6] dark:bg-[#292929]' : '')}`}>
                 <TouchableOpacity className={`flex flex-row gap-2 items-center `}
                     onPress={() => handleSelectOption(option)}>
                     <IconCar />
-                    <Text className="text-foreground">{option}</Text>
+                    <Text className="text-foreground">{text}</Text>
                 </TouchableOpacity>
             </DropDownItem>
         )
@@ -46,7 +48,7 @@ export const DropDownCar = ({ options, selected, handleSelected }: DropDownProps
                 <DropDownLabel labelTitle="Mis vehículos" />
                 <DropDownItemSeparator />
                 {(options.map((option) => (
-                    <ItemDropDown key={option} option={option} />
+                    <ItemDropDown key={option.license_plate.toString()} option={option} />
                 )))}
             </DropDownContent>
         </DropDown>
