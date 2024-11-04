@@ -8,16 +8,13 @@ interface TripsFromDB {
 export const getAllTrips = async (): Promise<Trip[] | false> => {
 
     try {
-        const res = await fetch(`${API_URL}/trips`);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
+        const res = await fetch(`${API_URL}/trips/`);
         if (res.status == 200) {
             const trip = await res.json()
             console.log(trip[0]);
             return trip
-        } else return false
+        }
+        return false
 
     } catch (error) {
         console.log(error);
@@ -66,15 +63,13 @@ export const getTripById = async (id_trip: string): Promise<TripById | false> =>
 
     try {
         const res = await fetch(`${API_URL}/trips/${id_trip}`);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
 
         if (res.status == 200) {
             const trip = await res.json()
 
             return trip
-        } else return false
+        }
+        return false
 
     } catch (error) {
         console.log(error);
@@ -101,14 +96,13 @@ export const cancelTrip = async (id_trip: number, driver_id: any) => {
 
     try {
         const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/cancel`, options);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
+
         if (res.status == 200) {
             // const trip = await res.json()
             console.log(await res.json());
             return true
         }
+        return false
 
     } catch (error) {
         console.log(error);

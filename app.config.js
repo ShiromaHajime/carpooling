@@ -25,7 +25,7 @@ export default {
       package: "com.fedevalle.carpooling",
       config: {
         googleMaps: {
-          apiKey: "TU_API_KEY_AQUÍ"
+          apiKey: process.env.EXPO_PUBLIC_GOOGLE_API_KEY
         }
       },
       permissions: [

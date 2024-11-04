@@ -92,8 +92,10 @@ export default function CreateTripScreen() {
 
     const SelectPoints = () => {
 
-        const strDestination = destinationLocation ? destinationLocation.locality + ', ' + destinationLocation.principalSubdivision + ', ' + destinationLocation.countryName : ''
         const strOrigin = originLocation ? originLocation.locality + ', ' + originLocation.principalSubdivision + ', ' + originLocation.countryName : 'Tu ubicación '
+        const truncatedTextOrigin = strOrigin.length > 20 ? strOrigin.substring(0, 20) + '...' : strOrigin;
+        const strDestination = destinationLocation ? destinationLocation.locality + ', ' + destinationLocation.principalSubdivision + ', ' + destinationLocation.countryName : ''
+        const truncatedTextDestination = strDestination.length > 20 ? strDestination.substring(0, 20) + '...' : strDestination;
 
         return (
             <View className="flex h-full px-5">
@@ -105,7 +107,7 @@ export default function CreateTripScreen() {
 
                         <InputStyled
                             className="max-w-[190px] overflow-hidden whitespace-nowrap text-ellipsis self-start bg-slate-50 dark:bg-background"
-                            valueInput={strOrigin}
+                            valueInput={truncatedTextOrigin}
                             setValueInput={setDeparture}
                             placeholder="A dónde queres ir?"
                         />
@@ -121,7 +123,7 @@ export default function CreateTripScreen() {
                         >Lugar de finalización del viaje</Text>
                         <InputStyled
                             className="max-w-[190px] overflow-hidden whitespace-nowrap text-ellipsis self-start bg-slate-50 dark:bg-background "
-                            valueInput={strDestination}
+                            valueInput={truncatedTextDestination}
                             setValueInput={setArrival}
                             placeholder="A dónde queres ir?"
                         />
