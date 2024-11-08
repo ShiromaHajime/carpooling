@@ -11,6 +11,26 @@ export const IconEdit = () => {
   )
 }
 
+export const IconMarker = ({ color }: { color?: string }) => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <FontAwesome5 name="map-marked" size={26} color={color ? color : colorScheme == 'dark' ? "#fff" : "#000"} />
+  )
+}
+
+export const IconMarkerPin = ({ color }: { color?: string }) => {
+  const { colorScheme } = useColorScheme()
+
+  return (
+    <FontAwesome5 name="map-marker-alt" size={24} color={color ? color : colorScheme == 'dark' ? "#fff" : "#000"} />
+
+  )
+}
+
+
+
+
 export const IconGoogle = ({ className }: { className?: string }) => {
   return (
     <Image source={require('@/assets/images/icons/icon-google.png')} className={className} />

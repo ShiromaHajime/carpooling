@@ -5,15 +5,15 @@ import { GlobalContext } from "@/utils/Provider";
 import { useRouter } from "expo-router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { LatLng } from "react-native-maps";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DropDownCar } from "../../../components/DropDownCar";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { VehicleDB } from "@/types/types";
 import { getVehiclesByUserID } from "@/services/vehicle";
 import { Skeleton } from "@/components/Skeleton";
+import { PlaceJsonv2 } from "@/types/addressNominatim";
 
-export default function FormTrip({ origin, destination }: { origin?: LatLng, destination?: LatLng }) {
+export default function FormTrip({ origin, destination }: { origin?: PlaceJsonv2, destination?: PlaceJsonv2 }) {
     const [available_seats, setTripSeat] = useState('');
     const [seat_price, setTripSeatPrice] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
