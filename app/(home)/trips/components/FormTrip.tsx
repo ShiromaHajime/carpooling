@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { DropDownCar } from "../../../components/DropDownCar";
+import { DropDownCar } from "@/components/DropDownCar";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { VehicleDB } from "@/types/types";
 import { getVehiclesByUserID } from "@/services/vehicle";

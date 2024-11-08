@@ -1,23 +1,19 @@
-import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { Button } from "@/components/buttons/Button";
-import { GlobalContext } from "@/utils/Provider";
+import { ScrollView, Text, View } from "react-native"
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { InputStyled } from "@/components/inputs/InputStyled";
 import { useToast } from "@/components/Toast";
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { HandleHeader } from "@/components/headers/HandleHeader";
-import FormTrip from "./FormTrip";
+import FormTrip from "./components/FormTrip";
 import { haversineDistance } from "@/utils/utils";
 import { useLocalPosition } from "@/hooks/useLocalPosition";
 import MapView, { Callout, LatLng, MapPressEvent, Marker, PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import * as ExpoLocation from 'expo-location';
 import { LocationInfo, modeMap } from "@/types/types";
 import { AlertSelecting } from "@/components/alerts/AlertSelecting";
-import { Feature, Location, PlaceJsonv2 } from "@/types/addressNominatim";
-import { InputAddress } from "@/components/inputs/InputAddress";
-import { IconMarker, IconMarkerPin } from "@/components/icons/Icons";
-import { getAddressByCoors, searchAddressNominatim } from "@/services/geoposition";
-
+import { PlaceJsonv2 } from "@/types/addressNominatim";
+import { IconMarkerPin } from "@/components/icons/Icons";
+import { getAddressByCoors } from "@/services/geoposition";
+import { SelectPoints } from "./components/Search";
 
 export default function CreateTripScreen() {
 
@@ -72,6 +68,7 @@ export default function CreateTripScreen() {
             }
             if (address) {
                 setOriginLocation(address)
+                originRef.current = address
             }
 
         };
@@ -88,6 +85,7 @@ export default function CreateTripScreen() {
             }
             if (address) {
                 setDestinationLocation(address)
+                destinationRef.current = address
             }
         };
         fetchLocationInfo();
@@ -104,137 +102,6 @@ export default function CreateTripScreen() {
 
 
 
-    const SearchInputAddress = ({ initialInput, isOrigin, placeholder }: { initialInput: string, isOrigin: boolean, placeholder: string }) => {
-
-        const [isFocus, setIsFocus] = useState(false);
-        const [searchText, setSearchText] = useState('');
-        const [debouncedText, setDebouncedText] = useState('');
-        const [addressList, setAddressList] = useState<PlaceJsonv2[]>([]);
-        const [addressSelected, setAddressSelected] = useState('');
-
-        console.log("searchText");
-        console.log(searchText);
-
-
-
-        useEffect(() => {
-            // Crear un temporizador que actualice el valor debounced después de 350ms
-            const timerId = setTimeout(() => {
-                if (searchText != initialInput && searchText != addressSelected) { // avoid innecesary requests
-                    setDebouncedText(searchText);
-                    setAddressSelected('')
-                }
-            }, 350);
-
-            // Limpiar el temporizador si el texto cambia antes de los 350ms
-            return () => {
-                clearTimeout(timerId);
-            };
-        }, [searchText]);
-
-        useEffect(() => {
-            const searchAddress = async () => {
-                const { address, error } = await searchAddressNominatim(debouncedText, 5)
-                if (error) return
-                if (address) {
-                    console.log(JSON.stringify(address));
-                    setAddressList(address)
-                }
-            }
-
-            if (debouncedText) {
-                console.log("Realizar búsqueda con:", debouncedText);
-                searchAddress()
-            }
-        }, [debouncedText]);
-
-        const handleOnFocus = () => {
-            setIsFocus(true)
-        }
-        const handleOnBlur = () => {
-            if (addressSelected) {
-                setIsFocus(false);
-            }
-        }
-
-        const handleSelectAddress = (address: PlaceJsonv2) => {
-            if (isOrigin) {
-                originRef.current = address
-                setOrigin({ latitude: parseFloat(address.lat), longitude: parseFloat(address.lon) })
-            } else {
-                destinationRef.current = address
-                setDestination({ latitude: parseFloat(address.lat), longitude: parseFloat(address.lon) })
-            }
-            setSearchText(address.display_name)
-            setAddressSelected(address.display_name)
-        }
-
-        return (
-            <View className="mr-12">
-                <InputAddress
-                    className="min-w-[250px] self-startbg-slate-50 dark:bg-background"
-                    valueInput={searchText}
-                    setValueInput={setSearchText}
-                    handleOnFocus={handleOnFocus}
-                    handleOnBlur={handleOnBlur}
-                    placeholder={placeholder}
-                />
-
-                {(!addressSelected && isFocus) &&
-                    (addressList.length > 0) && (
-                        <View className="bg-card p-2 flex flex-col gap-2 border border-border mt-2">
-                            {addressList.map((address) => (
-                                <TouchableOpacity onPress={() => handleSelectAddress(address)} className="z-50">
-                                    <Text numberOfLines={2} className="text-foreground">{address.display_name}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    )
-                }
-            </View>
-
-        )
-    }
-
-    const SelectPoints = () => {
-
-        const strOrigin = originLocation ? originLocation.display_name : ''
-        const truncatedTextOrigin = strOrigin.length > 35 ? strOrigin.substring(0, 40) + '...' : strOrigin;
-        const strDestination = destinationLocation ? destinationLocation.display_name : ''
-        const truncatedTextDestination = strDestination.length > 35 ? strDestination.substring(0, 40) + '...' : strDestination;
-
-        return (
-            <View className="flex h-full px-1">
-                <View className="mt-4 mb-6 flex-row justify-between items-center relative" >
-                    <View className="flex-1">
-                        <Text className="text-md font-medium text-foreground mb-2">
-                            Lugar de inicio del viaje
-                        </Text>
-                        <SearchInputAddress initialInput={truncatedTextOrigin} isOrigin={true} placeholder='Desde dónde queres viajar?' />
-                    </View>
-                    <View className="mt-7 absolute top-2 right-[-2]">
-                        <TouchableOpacity onPress={() => setMode('selectingOrigin')}>
-                            <IconMarker />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View className="mt-3 mb-6 flex-row justify-between items-center relative px-3" >
-                    <View>
-                        <Text className="text-md font-medium mb-2 dark:text-slate-100"
-                        >Lugar de finalización del viaje</Text>
-                        <SearchInputAddress initialInput={truncatedTextDestination} isOrigin={false} placeholder='A dónde queres ir?' />
-                    </View>
-                    <View className="mt-7 absolute top-2 right-[-2]">
-                        <TouchableOpacity onPress={() => setMode('selectingDestination')}>
-                            <IconMarker />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
 
     const handleClickMap = (e: MapPressEvent) => {
         const coordPressed = e.nativeEvent.coordinate
@@ -248,7 +115,6 @@ export default function CreateTripScreen() {
         }
         bottomSheetRef.current?.snapToIndex(1)
         setMode('end')
-
     }
 
     return (
@@ -257,6 +123,7 @@ export default function CreateTripScreen() {
                 {(mode == 'selectingOrigin') && (<AlertSelecting title='Marcando punto de origen' description='Para marcar un punto puedes tocar el mapa' />)}
                 {(mode == 'selectingDestination') && (<AlertSelecting title='Marcando punto de destino' description='Para marcar un punto puedes tocar el mapa' />)}
                 <View className='flex-1'>
+
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         userInterfaceStyle="dark"
@@ -319,9 +186,15 @@ export default function CreateTripScreen() {
                 >
                     <BottomSheetView style={{ flex: 1, height: 700, alignItems: "center" }}
                         className="bg-[#f8f8f8] dark:bg-background">
-                        <View>
-                            {(indexSheet == 0 || indexSheet == 1) && (<SelectPoints />)}
-                            {(indexSheet > 1 && (<FormTrip origin={destinationRef.current} destination={destinationRef.current} />))}
+                        <View className="px-4">
+                            {(indexSheet == 0 || indexSheet == 1 || (!originLocation || !destinationLocation)) && (
+                                <SelectPoints destinationLocation={destinationLocation} destinationRef={destinationRef}
+                                    originLocation={originLocation} originRef={originRef}
+                                    setDestination={setDestination} setMode={setMode}
+                                    setOrigin={setOrigin}
+                                />)
+                            }
+                            {((indexSheet > 1 && (originLocation && destinationLocation)) && (<FormTrip origin={originRef.current} destination={destinationRef.current} />))}
                         </View>
                     </BottomSheetView>
                 </BottomSheet>
