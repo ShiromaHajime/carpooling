@@ -82,12 +82,12 @@ export async function getTokenFromStorage() {
     try {
         const token = await getItemAsync('accessToken');
         if (token) {
+            console.log('recupera token');
             return token;
         } else {
             return null;
         }
     } catch (error) {
-        console.log('Error al recuperar el access token:', error);
         return null;
     }
 }

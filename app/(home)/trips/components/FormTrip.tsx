@@ -12,6 +12,7 @@ import { VehicleDB } from "@/types/types";
 import { getVehiclesByUserID } from "@/services/vehicle";
 import { Skeleton } from "@/components/Skeleton";
 import { PlaceJsonv2 } from "@/types/addressNominatim";
+import { createTrip } from "@/services/createTrip";
 
 export default function FormTrip({ origin, destination }: { origin?: PlaceJsonv2, destination?: PlaceJsonv2 }) {
     const [available_seats, setTripSeat] = useState('');
@@ -36,7 +37,7 @@ export default function FormTrip({ origin, destination }: { origin?: PlaceJsonv2
     };
 
     const handleConfirm = (datetime: Date) => {
-        const date = datetime.toLocaleDateString()
+        const date = datetime.toLocaleDateString('en-CA')
         const time = datetime.toLocaleTimeString()
         dateInputRef.current = date
         timeInputRef.current = time
@@ -61,29 +62,34 @@ export default function FormTrip({ origin, destination }: { origin?: PlaceJsonv2
     const handleCreateTrip = async () => {
 
         toast('Registrando viaje', 'info', 2000, 'top')
+        // console.log('values: ', 'origin', origin, 'destination', destination, 'dateInputRef', dateInputRef.current, 'timeInputRef', timeInputRef.current, 'selectedCarRef.current', selectedIdCar.current, 'available_seats', available_seats, 'seat_price', seat_price);
+        if (!origin) return
+        if (!destination) return
+        if (!dateInputRef.current || !timeInputRef.current) return toast('No hay fecha seleccionada', 'destructive', 3500, 'top', false)
+        if (!selectedIdCar.current) return toast('No hay vehículo seleccionado', 'destructive', 3500, 'top', false)
+        if (!available_seats) return toast('Ingrese cantidad de asientos disponibles', 'destructive', 4200, 'top', false)
+        if (!seat_price) return toast('Ingrese precio por asiento disponible', 'destructive', 4200, 'top', false)
 
-        console.log('values: ');
-        console.log("origin");
-        console.log(origin);
-        console.log("destination");
-        console.log(destination);
-        console.log("dateInputRef");
-        console.log(dateInputRef.current);
-        console.log("timeInputRef");
-        console.log(timeInputRef.current);
-        console.log("selectedCarRef.current")
-        console.log(selectedIdCar.current);
-        console.log("available_seats");
-        console.log(available_seats);
-        console.log("seat_price");
-        console.log(seat_price);
+        const { error, trip } = await createTrip({
+            idDriver,
+            idVehicle: selectedIdCar.current,
+            origin, destination,
+            departure_date: dateInputRef.current,
+            departure_time: timeInputRef.current,
+            available_seats: parseInt(available_seats),
+            seat_price: parseFloat(seat_price)
+        })
 
-        // const res = await createTrip({ idDriver, origin, destination, departure_date, departure_time, available_seats, seat_price, vehicle_driver })
-        // if (res) {
-        //     toast(res.message ?? 'Viaje creado exitosamente!', 'success', 3400, 'top', false)
-        // } else {
-        //     toast('Hubo un error al registrar el viaje', 'destructive', 3400, 'top', false)
-        // }
+        if (error) {
+            if (error.httpCode == 500) return toast(error.message, 'destructive', 4500, 'top', false)
+            if (error.httpCode == 400) return toast(error.message, 'destructive', 4500, 'top', false)
+            if (error.httpCode == 404) return toast(error.message, 'destructive', 4500, 'top', false)
+            return toast('Hubo un error inesperado del servidor', 'destructive', 4500, 'top', false)
+        }
+        if (trip) {
+            router.replace({ pathname: "/(home)" })
+            return toast('Viaje creado exitosamente!', 'success', 3400, 'top', false)
+        }
     }
 
     const setSelectedIdCar = (idCar: number) => {

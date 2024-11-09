@@ -1,7 +1,7 @@
 import { DropDown, DropDownContent, DropDownItem, DropDownItemSeparator, DropDownLabel, DropDownTrigger } from "@/components/DropDown"
 import { IconCar, IconChevronDown } from "@/components/icons/Icons"
 import { VehicleDB } from "@/types/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Pressable, Text, TouchableOpacity, View } from "react-native"
 
 interface DropDownProps {
@@ -14,6 +14,10 @@ export const DropDownCar = ({ options, selected, handleSelected }: DropDownProps
     const firstCar = options[0]
     const initialSelected = `${firstCar.brand} ${firstCar.model} ${firstCar.color}`
     const [select, setSelect] = useState(selected ? selected : initialSelected)
+
+    useEffect(() => {
+        handleSelected(firstCar.id)
+    }, [])
 
     const handleSelectOption = (option: VehicleDB) => {
         const text = `${option.brand} ${option.model} ${option.color}`

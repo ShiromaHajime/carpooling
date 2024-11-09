@@ -43,10 +43,11 @@ export type Geocoding = {
 };
 
 export interface Address {
-    house_number: string;
-    road: string;
-    neighbourhood: string;
-    town: string;
+    city?: string,
+    house_number?: string;
+    road?: string;
+    neighbourhood?: string;
+    town?: string;
     state_district: string;
     state: string;
     ISO3166_2_lvl4: string;

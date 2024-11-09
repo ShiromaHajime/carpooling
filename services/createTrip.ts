@@ -1,32 +1,65 @@
 import { API_URL } from "@/constants/const";
+import { PlaceJsonv2 } from "@/types/addressNominatim";
+import { TripById } from "@/types/types";
 
-export const createTrip = async (Tripc: any) => {
+interface ParamsCreateTrip {
+    idDriver: string,
+    idVehicle: number,
+    origin: PlaceJsonv2,
+    destination: PlaceJsonv2,
+    departure_date: string,
+    departure_time: string,
+    available_seats: number,
+    seat_price: number
+}
 
-    console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
+interface AddressApi {
+    street?: string,
+    number?: string,
+    latitude: string,
+    longitude: string,
+    locality_name: string,
+    principal_subdivision: string,
+    country: string,
+}
 
-    const url = API_URL ?? 'http://192.168.0.176:5000'; //IP DE API REST LOCAL
+const parseAddress = (address: PlaceJsonv2): AddressApi => {
 
-    // const bodyExample = {
-    //     departure_date: "2023-25-30",
-    //     departure_time: "10:05",
-    //     available_seats: "3",
-    //     seat_price: "150.5",
-    //     departure_address: "Buenos Aires, La Plata, Calle 58, 607",  // FORMATO "STRING", "STRING", "STRING"
-    //     arrival_address: "Buenos Aires, La Plata, Calle 58, 843", // FORMATO "STRING", "STRING", "STRING"
-    //     vehicle_driver_id: 1
-    // }
+    const parsedAddress: AddressApi = {
+        latitude: address.lat,
+        longitude: address.lon,
+        number: address.address.house_number,
+        street: address.address.road,
+        locality_name: address.address.city ?? address.address.town ?? '',
+        principal_subdivision: address.address.state,
+        country: address.address.country
+    }
+    return parsedAddress
+}
 
+export const createTrip = async (
+    {
+        idDriver,
+        idVehicle,
+        origin,
+        destination,
+        available_seats,
+        departure_date,
+        departure_time,
+        seat_price
+    }: ParamsCreateTrip): Promise<{ error?: { httpCode: number, message: string }, trip?: TripById }> => {
 
+    const url = API_URL ?? 'http://192.168.0.176:5000';
 
     const data = {
-        departure_date: Tripc.departure_date,
-        departure_time: Tripc.departure_time,
-        available_seats: Tripc.available_seats,
-        seat_price: Tripc.seat_price,
-        departure_address: Tripc.deaparture_address,
-        arrival_address: Tripc.arrival_address,
-        vehicle_driver_id: Tripc.idDriver
+        driver_id: idDriver,
+        vehicle_id: idVehicle,
+        departure_address: parseAddress(origin),
+        arrival_address: parseAddress(destination),
+        departure_date: departure_date, // must be %Y-%m-%d
+        departure_time, // must be hh:mm:ss
+        available_seats,
+        seat_price
     };
 
     const options = {
@@ -38,20 +71,15 @@ export const createTrip = async (Tripc: any) => {
     };
 
     try {
-
-        const res = await fetch(`${url}/trip`, options);
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`)
-        }
-
-        if (res.status == 200) {
-            return await res.json()
-        } else return false
-
+        const res = await fetch(`${url}/trips/`, options);
+        const reponse = await res.json()
+        console.log("reponse ", reponse);
+        if (res.status == 201) return { trip: reponse }
+        if (res.status == 500) return { error: { httpCode: res.status, message: 'Error de servidor' } }
+        if (res.status == 400) return { error: { httpCode: res.status, message: reponse.message } }
+        return { error: { httpCode: res.status, message: reponse.message } }
     } catch (error) {
-        console.log(error);
-        return false;
+        return { error: { httpCode: 500, message: 'Error desconocido de servidor' } };
     }
 
 }

@@ -180,7 +180,7 @@ export interface AlertProp { title: string, description: string }
 
 
 export interface RoomMessage {
-    id_user: number,
+    id_user: string,
     username: string,
     room: string,
     message: string,

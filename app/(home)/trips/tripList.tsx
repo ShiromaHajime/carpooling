@@ -47,7 +47,7 @@ export default function TripsScreen() {
               Hasta: {item.arrival_address.locality.principal_subdivision.name} - {item.arrival_address.locality.name} - {item.arrival_address.street} {item.arrival_address.number}
             </Text>
             <Text className="text-foreground text-sm">
-              Hora de salida: {item.departure_time}
+              Fecha y Hora de salida: <Text className="text-foreground text-sm italic">{item.departure_date} {item.departure_time}</Text>
             </Text>
             <Text className="text-foreground text-sm">
               {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}

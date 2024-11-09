@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/Skeleton";
 import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
 import { decisionPetition } from "@/services/petitionPassenger";
-import {getSolicitudesByID} from "@/services/getPetition"
+import { getSolicitudesByID } from "@/services/getPetition"
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -73,11 +73,11 @@ export default function DetailTripScreen() {
         if (!iduser) return
         toast('Postulandose al viaje', 'info', 2800, 'top')
         let trip_id = parseUrlParams(id)
-        console.log('idPassenger', idPassenger, trip_id);
-        const { data, error } = await joinTrip(idPassenger, trip_id)
+        console.log('idPassenger', iduser, trip_id);
+        const { data, error } = await joinTrip(iduser, trip_id)
         if (error) {
+            console.log(error);
             toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
-            console.log('idPassenger', idPassenger, trip_id);
             return
         }
         toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);
@@ -134,16 +134,6 @@ export default function DetailTripScreen() {
             )
         }
 
-        const user1: User = {
-            id: 1,
-            first_name: "zoe",
-            email: "zoekpa@gmail.com",
-            last_name: 'quiroz',
-            creation_date: "10-10-2024"
-        }
-
-
-
         //la card me tendrua que llevar al User, pero ahora no hace
         if (role == 'Driver') {
             const cantsolicitudes = solicitudes.length
@@ -169,7 +159,10 @@ export default function DetailTripScreen() {
         }
 
     }
-
+    const departureAddress = trip.departure_address
+    const arrivalAddress = trip.arrival_address
+    const textDeparture = `${departureAddress.street}, ${departureAddress.number ? 'Número: ' + departureAddress.number + ', ' : ''} ${departureAddress.locality.name}${(departureAddress.locality.principal_subdivision ? ', ' + departureAddress.locality.principal_subdivision.name : '')}`
+    const textArrival = `${arrivalAddress.street}, ${arrivalAddress.number ? 'Número: ' + arrivalAddress.number + ', ' : ''} ${arrivalAddress.locality.name}${(arrivalAddress.locality.principal_subdivision ? ', ' + arrivalAddress.locality.principal_subdivision.name : '')}`
     return (
         <ScrollView>
             <View>
@@ -181,19 +174,11 @@ export default function DetailTripScreen() {
 
                 <View className="mt-7 " >
                     <Text className="font-semibold dark:color-slate-200 ">Lugar de inicio de viaje</Text>
-                    <Text className="text-[#64748B]">
-                        Ciudad: {trip.arrival_address.locality.name},
-                        calle: {trip.arrival_address.street},
-                        numero: {trip.arrival_address.number}
-                    </Text>
+                    <Text className="text-[#64748B]">{textDeparture}</Text>
                 </View>
                 <View className="mt-3">
                     <Text className="font-semibold dark:color-slate-200">Lugar de finalizacion del viaje</Text>
-                    <Text className="text-[#64748B]">
-                        Ciudad: {trip.departure_address.locality.name},
-                        calle: {trip.departure_address.street},
-                        numero: {trip.departure_address.number}
-                    </Text>
+                    <Text className="text-[#64748B]">{textArrival}</Text>
                 </View>
 
                 <View className="mt-3">
