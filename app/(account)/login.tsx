@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/buttons/Button";
 import { Input } from "@/components/inputs/Input";
 import { InputStyled } from "@/components/inputs/InputStyled";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { loginUser, loginWithGoogle, saveToken, signInUserWithEmailAndPassword } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
 import { useToast } from "@/components/Toast";
@@ -12,6 +12,18 @@ import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/go
 import { GOOGLE_CLIENT_ID } from "@/constants/const";
 import { msgEmailNotVerified, msgError500 } from "@/constants/texts";
 import { IconGoogle } from "@/components/icons/Icons";
+import { registerForPushNotificationsAsync, saveExpoPushToken } from "@/services/user";
+import * as Notifications from 'expo-notifications';
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 
 export default function LoginScreen() {
 
@@ -22,9 +34,36 @@ export default function LoginScreen() {
   const context = useContext(GlobalContext);
   GoogleSignin.configure({ webClientId: GOOGLE_CLIENT_ID, });
   const router = useRouter();  // Para redirección
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
 
   const { toast } = useToast()
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState<Notifications.Notification | undefined>(undefined)
+
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then(token => {
+        setExpoPushToken(token ?? '')
+      })
+      .catch((error: any) => setExpoPushToken(`${error}`))
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(notificationListener.current);
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
 
   const handleLogin = async () => {
@@ -43,6 +82,7 @@ export default function LoginScreen() {
       if (errorHttp == 500) return toast(msgError500, 'destructive', 3000, 'top', false)
     }
     if (!user) return toast(msgError500, 'destructive', 3000, 'top', false)
+    saveExpoPushToken(expoPushToken, token)
     setLoading(false)
     handleShowModal(user)
   }
@@ -89,6 +129,7 @@ export default function LoginScreen() {
     if (!user) return toast(msgError500, 'destructive', 3000, 'top', false)
     setLoading(false)
     saveToken(userGoogle.idToken)
+    saveExpoPushToken(expoPushToken, userGoogle.idToken)
     handleShowModal(user)
   }
 
