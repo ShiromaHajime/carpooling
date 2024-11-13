@@ -1,15 +1,81 @@
 import { Link } from "expo-router"
 import { Text, View, Image, Alert } from "react-native"
-import { ThemedText } from '@/components/ThemedText';
 import { Button } from "@/components/buttons/Button";
 import { router } from "expo-router";
 import { useContext, useEffect } from "react";
-import { getItemAsync, setItemAsync } from "expo-secure-store";
 import { getTokenFromStorage, loginUser } from "@/services/userLogin";
 import { GlobalContext, UserContext } from "@/utils/Provider";
+import { useState, useRef } from 'react';
+import * as Notifications from 'expo-notifications';
+import { registerForPushNotificationsAsync, saveExpoPushToken } from "@/services/user";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 export default function WelcomeScreen() {
 
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState<Notifications.Notification | undefined>(
+        undefined
+    );
+    const notificationListener = useRef<Notifications.Subscription>();
+    const responseListener = useRef<Notifications.Subscription>();
+    const context = useContext(GlobalContext);
+
+    useEffect(() => {
+        // const start = performance.now()
+        console.log('register expoToken');
+        registerForPushNotificationsAsync()
+            .then(token => {
+                saveExpoPushToken(token ?? '')
+                setExpoPushToken(token ?? '')
+            })
+            .catch((error: any) => setExpoPushToken(`${error}`))
+        // .finally(() => {
+        //     const end = performance.now()
+        //     const time = start - end;  // Diferencia en milisegundos
+        //     console.log(`La función registerForPushNotificationsAsync tardó ${time.toFixed(3)} ms`);
+        // })
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            notificationListener.current &&
+                Notifications.removeNotificationSubscription(notificationListener.current);
+            responseListener.current &&
+                Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleAccessToken = async () => {
+            // console.log('get access token');
+            // const start = performance.now()
+            const token = await getTokenFromStorage();
+            // const end = performance.now()
+            // const time = start - end;  // Diferencia en milisegundos
+            // console.log(`La función getTokenFromStorage tardó ${time.toFixed(3)} ms`);
+            if (token) {
+                const { user } = await loginUser(token)
+                if (user) {
+                    handleShowModal(user)
+                }
+            }
+        }
+        handleAccessToken()
+    }, [])
 
     const handleShowModal = (user: UserContext) => {
         // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
@@ -36,23 +102,6 @@ export default function WelcomeScreen() {
         );
     };
 
-
-    const context = useContext(GlobalContext);
-
-
-    useEffect(() => {
-        const handleAccessToken = async () => {
-            const token = await getTokenFromStorage();
-            if (token) {
-                const { user } = await loginUser(token)
-                if (user) {
-                    handleShowModal(user)
-                }
-            }
-        }
-        handleAccessToken()
-    }, [])
-
     const handleBlogin = () => {
         router.navigate("/(account)/login");
     }
@@ -74,10 +123,6 @@ export default function WelcomeScreen() {
                     <Button label="Registrarse" className="w-28" onPress={handleBregistro}></Button>
                 </View>
             </View>
-
-
-
-
 
         </View>
 
