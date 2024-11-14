@@ -6,6 +6,7 @@ import { API_URL } from "@/constants/const";
 import { getAllTrips } from "@/services/trip";
 import { GlobalContext } from "@/utils/Provider";
 import { Button } from "@/components/buttons/Button";
+import MapView, { Marker } from 'react-native-maps';
 
 export default function TripsScreen() {
   const context = useContext(GlobalContext);
@@ -15,13 +16,22 @@ export default function TripsScreen() {
 
   useEffect(() => {
     const getTrips = async () => {
-      const trips = await getAllTrips()
+      const trips = await getAllTrips();
       setLoading(false)
       if (trips) setTrips(trips)
     }
     setLoading(true)
     getTrips()
   }, []);
+
+
+  const InitialRegion = {
+    latitude: -34.95541540632269,
+    longitude: -57.95246359267004,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+}
+
 
   if (loading) {
     return (
@@ -30,13 +40,37 @@ export default function TripsScreen() {
       </View>
     );
   }
-
-  return (
-    <View className="bg-background flex items-center justify-center h-full p-5">
+  if (context.role === 'Passenger') {
+    let filtredTrips = trips.filter(trip => trip.available_seats > 0 && trip.status === 'active')
+    return (
+      <MapView
+        style={{ flex: 1, width: '100%' }}
+        initialRegion={InitialRegion}
+      >
+        {filtredTrips.map((trip) => (
+          <Marker
+            key={trip.id}
+            coordinate={{
+              latitude: trip.departure_address.latitude,
+              longitude: trip.departure_address.longitude
+            }}
+            title={`Desde: ${trip.departure_address.locality.name}`}
+            description={`Hasta: ${trip.arrival_address.locality.name}`}
+            onCalloutPress={() => router.push(`/trips/detail/${trip.id}`)}
+          />
+        ))}
+      </MapView>
+    );
+  }
+  if (context.role === 'Driver') {
+    let activeTrips = trips.filter(trip => trip.vehicle_driver.driver.user.id === context.user.id && trip.status === 'active')
+    // activeTrips = activeTrips.filter(trip => trip.)
+    return (
+      <View className="bg-background flex items-center justify-center h-full p-5">
       <Text className="text-foreground font-semibold text-2xl mb-4">Lista de viajes</Text>
       <FlatList
         className="w-full"
-        data={trips}
+        data={activeTrips}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => router.push(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
@@ -57,5 +91,6 @@ export default function TripsScreen() {
         )}
       />
     </View>
-  );
+    );
+  }
 }

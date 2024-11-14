@@ -153,7 +153,6 @@ export default function DetailTripScreen() {
                         <Button className="flex-1 bg-red-600" label="Cancelar viaje"
                             onPress={handleCancelTrip} />
                     </View>
-
                 </>
             )
         }
