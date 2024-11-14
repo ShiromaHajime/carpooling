@@ -110,3 +110,36 @@ export const cancelTrip = async (id_trip: number, driver_id: any) => {
     }
 
 }
+
+export const endTrip = async (id_trip: number, driver_id: any) => {
+
+    const body = {
+        "driver_id": driver_id
+    }
+    console.log("body");
+    console.log(body);
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
+
+    try {
+        const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/end`, options);
+
+        if (res.status == 200) {
+            // const trip = await res.json()
+            console.log(await res.json());
+            return true
+        }
+        return false
+
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+
+}
