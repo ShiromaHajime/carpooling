@@ -146,6 +146,7 @@ export interface Trip {    // las peticiones de /trips devuelven en este formato
     id: number;
     seat_price: number;
     vehicle_driver: Vehicle_driver;
+    status: string;
 }
 
 export type Trips = Trip[]
@@ -155,7 +156,8 @@ export interface Address {
     locality: Locality,
     number: number,
     street: string,
-    coords: LatLng
+    longitude: number,
+    latitude: number
 }
 
 export interface Locality {

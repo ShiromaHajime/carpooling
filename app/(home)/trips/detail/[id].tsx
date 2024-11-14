@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { Select } from "@/components/Select";
 import { useToast } from "@/components/Toast";
-import { getTripById, joinTrip, cancelTrip, endTrip cancelPetition } from "@/services/trip";
+import { getTripById, joinTrip, cancelTrip, endTrip, cancelPetition} from "@/services/trip";
 import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
@@ -117,6 +117,20 @@ export default function DetailTripScreen() {
         if (res){
             toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
         }else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+
+        //CALIFICAR A LOS PASAJEROS modal previo
+        router.push ({ pathname: "/(home)/trips/tripList"});
+    }
+
+    const handleEndTrip = async () => {
+        if (!trip) return
+        console.log("trip?.id, iduser");
+        console.log(trip?.id, iduser);
+
+        const res = await endTrip(trip.id, iduser)
+        if (res){
+            toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
+        }else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
         //CALIFICAR A LOS PASAJEROS modal previo
         router.push ({ pathname: "/(home)/trips/tripList"});
     }
@@ -151,7 +165,6 @@ export default function DetailTripScreen() {
         //la card me tendrua que llevar al User, pero ahora no hace
         if (role == 'Driver') {
             const cantsolicitudes = solicitudes.length
-
                 return (
                     <>
                         <View>
@@ -178,7 +191,6 @@ export default function DetailTripScreen() {
             }
         }
 
-    }
     const departureAddress = trip.departure_address
     const arrivalAddress = trip.arrival_address
     const textDeparture = `${departureAddress.street}, ${departureAddress.number ? 'Número: ' + departureAddress.number + ', ' : ''} ${departureAddress.locality.name}${(departureAddress.locality.principal_subdivision ? ', ' + departureAddress.locality.principal_subdivision.name : '')}`
