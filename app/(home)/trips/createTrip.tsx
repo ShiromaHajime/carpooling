@@ -84,7 +84,7 @@ export default function CreateTripScreen() {
             const { error, address } = await getAddressByCoors(origin)
             if (error) {
                 setErrorMsg('hubo un error')
-                return
+                return toast('Hubo un error buscando la direccion de origen', 'destructive', 4500, 'top', false)
             }
             if (address) {
                 setOriginLocation(address)
@@ -104,7 +104,7 @@ export default function CreateTripScreen() {
             const { error, address } = await getAddressByCoors(destination)
             if (error) {
                 setErrorMsg('hubo un error')
-                return
+                return toast('Hubo un error buscando la direccion de destino', 'destructive', 4500, 'top', false)
             }
             if (address) {
                 setDestinationLocation(address)
