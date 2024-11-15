@@ -2,10 +2,8 @@ import { Trips } from "@/types/types";
 import React, { useEffect, useState, useContext } from "react";
 import { Text, View, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router"; // Importa el hook router para navegación
-import { API_URL } from "@/constants/const";
 import { getAllTrips } from "@/services/trip";
 import { GlobalContext } from "@/utils/Provider";
-import { Button } from "@/components/buttons/Button";
 import MapView, { Marker } from 'react-native-maps';
 
 export default function TripsScreen() {
@@ -33,7 +31,7 @@ export default function TripsScreen() {
   }
 
 
-  if (loading) {
+  if (loading && context.role === 'Passenger') {
     return (
       <View className="bg-background flex items-center justify-center h-full pl-5 pr-5">
         <ActivityIndicator size="large" />
@@ -89,6 +87,13 @@ export default function TripsScreen() {
             </TouchableOpacity>
           )}
         />
+        {(loading) &&
+          (
+            <View className="bg-background flex items-center justify-center h-full pl-5 pr-5">
+              <ActivityIndicator size="large" />
+            </View>
+          )
+        }
       </View>
     );
   }

@@ -56,6 +56,8 @@ export default function HomeLayout() {
       }
       const handleChangeRol = () => {
         const newRole = role == 'Driver' ? 'Passenger' : 'Driver'
+        router.dismissAll()
+        router.replace("/home")
         setRole(newRole)
         context?.setRole(newRole)
       }

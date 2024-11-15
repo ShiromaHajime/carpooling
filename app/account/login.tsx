@@ -98,18 +98,16 @@ export default function LoginScreen() {
           text: "Conductor", onPress: () => {
             context?.setUser(user)
             context?.setRole('Driver')
-            router.dismissAll()
-            router.replace("/home/index")
+            router.replace("/home")
           }
-        },
+        },  // Redirigir a crear viaje
         {
           text: "Pasajero", onPress: () => {
             context?.setUser(user)
             context?.setRole('Passenger')
-            router.dismissAll()
-            router.replace("/home/index")
+            router.replace("/home")
           }
-        },
+        },  // Redirigir a lista de viajes
       ],
       { cancelable: true }
     );

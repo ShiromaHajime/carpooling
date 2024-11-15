@@ -87,7 +87,7 @@ export default function FormTrip({ origin, destination }: { origin?: PlaceJsonv2
             return toast('Hubo un error inesperado del servidor', 'destructive', 4500, 'top', false)
         }
         if (trip) {
-            router.replace({ pathname: "/(home)" })
+            router.replace("/home")
             return toast('Viaje creado exitosamente!', 'success', 3400, 'top', false)
         }
     }

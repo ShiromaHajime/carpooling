@@ -45,7 +45,7 @@ export default function ProfileScreen() {
         setUserProfile(user)
       } else {
         toast('Error al buscar perfil del usuario', 'destructive', 3000, 'top', false)
-        router.replace("/home/index")
+        router.replace("../home/index")
       }
     }
     if (idDriver) {

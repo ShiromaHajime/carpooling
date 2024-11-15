@@ -47,11 +47,11 @@ export default function TripsLayout() {
             fontWeight: 'bold',
           },
         }}>
-        <Stack.Screen name="detail/[id]" options={{
-          headerShown: true, title: "Detalle viaje",
-        }} />
         <Stack.Screen name="tripList" options={{
           headerShown: true, title: "Viajes",
+        }} />
+        <Stack.Screen name="detail/[id]" options={{
+          headerShown: true, title: "Detalle viaje",
         }} />
         <Stack.Screen name="createTrip" options={{ headerShown: false, title: "Crear viaje", }} />
         <Stack.Screen name="detail/chat" options={{

@@ -87,14 +87,14 @@ export default function WelcomeScreen() {
                     text: "Conductor", onPress: () => {
                         context?.setUser(user)
                         context?.setRole('Driver')
-                        router.replace("/home/trips/tripList")
+                        router.replace("/home")
                     }
                 },  // Redirigir a crear viaje
                 {
                     text: "Pasajero", onPress: () => {
                         context?.setUser(user)
                         context?.setRole('Passenger')
-                        router.replace("/home/trips/tripList")
+                        router.replace("/home")
                     }
                 },  // Redirigir a lista de viajes
             ],
