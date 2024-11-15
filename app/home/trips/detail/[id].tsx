@@ -170,7 +170,7 @@ export default function DetailTripScreen() {
                     </View>
 
                     <View className="mt-6">
-                        <Button className="flex-1 bg-grey" label="Finalizar viaje"
+                        <Button className="flex-1 bg-gray-700" label="Finalizar viaje"
                             onPress={handleEndTrip} />
                     </View>
                 </>
