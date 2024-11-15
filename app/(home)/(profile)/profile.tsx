@@ -158,14 +158,26 @@ export default function ProfileScreen() {
         <InputLine initialvalue={userProfile.lastname} field="lastName" canEdit={canEdit} />
         <InputLine initialvalue={userProfile.username} field="username" canEdit={canEdit} />
         <View className="mt-4" />
-        <View className="self-center justify-center mt-5">
-          <Button label="Ver mis vehículos"
-            className="rounded bg-primary self-center w-52 h-11"
-            onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
-        </View>
+
+        {
+          canEdit ?
+            <View className="self-center justify-center mt-5">
+              <Button label="Ver mis vehículos"
+                className="rounded bg-primary self-center w-52 h-11"
+                onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
+            </View>
+            :
+            <View className="self-center justify-center mt-5">
+              <Button label="Ver vehículos"
+                className="rounded bg-primary self-center w-52 h-11"
+                onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles", params: { idDriver: idDriver } })}
+              />
+            </View>
+        }
+
       </Card>
       <View className="my-6" />
-      <Button label="Cerrar sesión" variant={"destructive"} onPress={handleLogOut} />
+      {canEdit && (<Button label="Cerrar sesión" variant={"destructive"} onPress={handleLogOut} />)}
     </View>
 
   );
