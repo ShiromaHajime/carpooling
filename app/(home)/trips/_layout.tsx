@@ -1,9 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useFocusEffect } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from 'nativewind';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -20,6 +21,18 @@ SplashScreen.preventAutoHideAsync();
 
 export default function TripsLayout() {
   const { colorScheme } = useColorScheme();
+
+  useFocusEffect(
+    useCallback(() => {
+      // Función que se ejecuta cuando la tab gana foco
+      console.log('Tab Viajes ganada');
+      router.replace("/trips/tripList")
+      // Función de limpieza cuando la tab pierde el foco
+      return () => {
+        console.log('Tab Viajes perdida');
+      };
+    }, [])
+  );
 
   return (
 
