@@ -128,7 +128,7 @@ export const endTrip = async (id_trip: number, driver_id: any) => {
     };
 
     try {
-        const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/end`, options);
+        const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/complete`, options);
 
         if (res.status == 200) {
             // const trip = await res.json()

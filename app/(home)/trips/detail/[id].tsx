@@ -117,20 +117,6 @@ export default function DetailTripScreen() {
         if (res){
             toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
         }else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
-
-        //CALIFICAR A LOS PASAJEROS modal previo
-        router.push ({ pathname: "/(home)/trips/tripList"});
-    }
-
-    const handleEndTrip = async () => {
-        if (!trip) return
-        console.log("trip?.id, iduser");
-        console.log(trip?.id, iduser);
-
-        const res = await endTrip(trip.id, iduser)
-        if (res){
-            toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
-        }else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
         //CALIFICAR A LOS PASAJEROS modal previo
         router.push ({ pathname: "/(home)/trips/tripList"});
     }
