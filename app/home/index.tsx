@@ -35,11 +35,11 @@ export default function HomeScreen() {
 
     const handleButtonTrip = (role: String) => {
         if (role == 'Driver') {
-            router.replace("/trips/createTrip")
+            router.replace("/home/trips/createTrip")
             return
         }
         if (contextRole == 'Passenger') {
-            router.replace("/trips/tripList") //ir a buscar viaje
+            router.replace("/home/trips/tripList") //ir a buscar viaje
             return
         }
 
@@ -67,7 +67,7 @@ export default function HomeScreen() {
                     data={trips}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => router.navigate(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
+                        <TouchableOpacity onPress={() => router.navigate(`/home/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
                             <Text className="text-foreground text-lg">
                                 Desde: {item.departure_address.locality.principal_subdivision.name} - {item.departure_address.locality.name}
                             </Text>

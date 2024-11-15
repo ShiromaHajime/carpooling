@@ -90,7 +90,7 @@ export default function HomeLayout() {
     return (
       <Pressable
         onPress={() => {
-          router.navigate({ pathname: "/(home)/(profile)", params: { idDriver: undefined } });
+          router.navigate({ pathname: "/home/profile", params: { idDriver: undefined } });
         }}
         className='flex-1 justify-center items-center mt-2'
       >
@@ -101,12 +101,13 @@ export default function HomeLayout() {
   };
   return (
     <Tabs
+      initialRouteName='index'
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           headerRight: () => (<HeaderHome />),
           title: 'Carpooling',
@@ -131,12 +132,11 @@ export default function HomeLayout() {
         }}
       />
       <Tabs.Screen
-        name="(profile)"
+        name="profile"
         initialParams={{}}
         options={{
           title: 'Perfil',
           tabBarButton: () => <IconTabProfile />,
-          unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
           tabBarStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderTopColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
         }}
       />

@@ -45,7 +45,7 @@ export default function ProfileScreen() {
         setUserProfile(user)
       } else {
         toast('Error al buscar perfil del usuario', 'destructive', 3000, 'top', false)
-        router.replace({ pathname: "/(home)/home" })
+        router.replace("/home/index")
       }
     }
     if (idDriver) {
@@ -140,7 +140,7 @@ export default function ProfileScreen() {
           <View className="self-center justify-center mt-5">
             <Button label="Ver mis vehículos"
               className="rounded bg-primary self-center w-52 h-11"
-              onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
+              onPress={() => router.navigate({ pathname: "/home/profile/vehicles" })} />
           </View>
         </Card>
         <View className="my-6" />
@@ -164,13 +164,13 @@ export default function ProfileScreen() {
             <View className="self-center justify-center mt-5">
               <Button label="Ver mis vehículos"
                 className="rounded bg-primary self-center w-52 h-11"
-                onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles" })} />
+                onPress={() => router.navigate("/home/profile/vehicles")} />
             </View>
             :
             <View className="self-center justify-center mt-5">
               <Button label="Ver vehículos"
                 className="rounded bg-primary self-center w-52 h-11"
-                onPress={() => router.navigate({ pathname: "/(home)/(profile)/vehicles", params: { idDriver: idDriver } })}
+                onPress={() => router.navigate({ pathname: "/home/profile/vehicles", params: { idDriver: idDriver } })}
               />
             </View>
         }

@@ -53,7 +53,7 @@ export default function VehiclesScreen() {
         <View className="self-center justify-center mt-4">
           <Button label="Registrar nuevo vehículo"
             className="rounded bg-primary self-center h-11"
-            onPress={() => router.navigate({ pathname: "/(home)/(profile)/createVehicle" })} />
+            onPress={() => router.navigate("/home/profile/createVehicle")} />
         </View>
       )}
 

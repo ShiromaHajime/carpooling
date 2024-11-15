@@ -34,7 +34,7 @@ export default function DetailTripScreen() {
     useEffect(() => {
         if (!loading && !trip) {
             toast('Hubo un error al cargar el detalle del viaje', 'destructive', 2500, 'top', false);
-            router.replace('/(home)/trips/tripList');
+            router.replace('/home/trips/tripList');
         }
     }, [loading, trip]);
 
@@ -63,7 +63,7 @@ export default function DetailTripScreen() {
         }
 
         if (!id) {
-            router.navigate('/(home)/trips/tripList')
+            router.navigate('/home/trips/tripList')
             return
         }
         let idParsed = parseUrlParams(id)
@@ -84,7 +84,7 @@ export default function DetailTripScreen() {
         toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);
     }
     const handlePressViewProfile = () => {
-        router.replace({ pathname: "/(home)/(profile)/profile", params: { idDriver: driver?.id } })
+        router.replace({ pathname: "/home/profile/index", params: { idDriver: driver?.id } })
     }
 
     const handleCancelPetition = async () => {
@@ -119,7 +119,7 @@ export default function DetailTripScreen() {
         } else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
 
         //CALIFICAR A LOS PASAJEROS modal previo
-        router.navigate({ pathname: "/(home)/trips/tripList" });
+        router.navigate({ pathname: "/home/trips/tripList" });
     }
 
     if (loading) return (<LoadingScreen />)
@@ -222,7 +222,7 @@ export default function DetailTripScreen() {
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-6 mb-6">
                     <Button className="flex-1" label="Chat"
-                        onPress={() => router.navigate({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
+                        onPress={() => router.navigate({ pathname: "/home/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>
             </View>
         </ScrollView >

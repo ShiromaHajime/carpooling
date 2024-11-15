@@ -99,7 +99,7 @@ export default function LoginScreen() {
             context?.setUser(user)
             context?.setRole('Driver')
             router.dismissAll()
-            router.replace("/home")
+            router.replace("/home/index")
           }
         },
         {
@@ -107,7 +107,7 @@ export default function LoginScreen() {
             context?.setUser(user)
             context?.setRole('Passenger')
             router.dismissAll()
-            router.replace("/home")
+            router.replace("/home/index")
           }
         },
       ],
@@ -186,8 +186,8 @@ export default function LoginScreen() {
       </View>
 
       <View className="flex-row items-center justify-center pt-5 pb-6 pl-5 pr-5 rounded">
-        <Link href='/(account)/register'><Text className="text-foreground">No tienes cuenta? </Text></Link>
-        <Link href='/(account)/register' className="font-medium text-foreground">Registrate!</Link>
+        <Link href='/account/register'><Text className="text-foreground">No tienes cuenta? </Text></Link>
+        <Link href='/account/register' className="font-medium text-foreground">Registrate!</Link>
       </View>
 
     </View>

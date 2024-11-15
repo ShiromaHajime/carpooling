@@ -47,7 +47,7 @@ export default function CreateVehicleScreen() {
       }
       if (vehicle) {
         toast('Vehiculo creado exitosamente!', 'success', 3000, 'top', false)
-        router.replace('/(home)/(profile)/vehicles')
+        router.replace('/home/profile/vehicles')
         return
       }
       return toast('Hubo un error del servidor', 'destructive', 3500, 'top', false)

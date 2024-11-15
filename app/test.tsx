@@ -21,13 +21,13 @@ export default function TestScreen() {
             <Text className="text-sm text-foreground mb-7">Esta pantalla en un futuro se borra, es el index para ir a todas las pantallas</Text>
             <ModeToggle />
             <View className="mt-5">
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/register'>Ir a register</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/loginLocal'>Ir a login CON NPX EXPO START</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(account)/login'>Ir a login CON GOOGLE, DEVELOPMENT BUILD</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/home'>Ir a home</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/tripList'>Ir a trips</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/createTrip'>Ir a createTrip</Link>
-                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/(home)/trips/detail/1'>Ir a detail trip 1</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/account/register'>Ir a register</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/account/loginLocal'>Ir a login CON NPX EXPO START</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/account/login'>Ir a login CON GOOGLE, DEVELOPMENT BUILD</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/home/index'>Ir a home</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/home/trips/tripList'>Ir a trips</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/home/trips/createTrip'>Ir a createTrip</Link>
+                <Link className="mb-2 bg-slate-500 p-1 rounded" href='/home/trips/detail/1'>Ir a detail trip 1</Link>
                 <Link className="mb-2 bg-slate-500 p-1 rounded" href='/map'>Pantalla map test</Link>
             </View>
         </View>
