@@ -132,8 +132,10 @@ export interface VehicleDB extends Vehicle { id: number }
 
 export interface Vehicle_driver {
     id: number;
+    driver_id: string,
     driver: Driver;
     vehicle: Vehicle;
+    vehicle_id: number;
 }
 
 export interface Trip {    // las peticiones de /trips devuelven en este formato
