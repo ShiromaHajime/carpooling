@@ -6,7 +6,7 @@ import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useContext, useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, Text, View } from "react-native"
+import { FlatList, Image, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
 import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
@@ -14,7 +14,7 @@ import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
 import { decisionPetition } from "@/services/petitionPassenger";
 import { getSolicitudesByID } from "@/services/getPetition"
-import { date } from "zod";
+import { ScrollView } from "react-native-virtualized-view";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -63,7 +63,7 @@ export default function DetailTripScreen() {
         }
 
         if (!id) {
-            router.push('/(home)/trips/tripList')
+            router.navigate('/(home)/trips/tripList')
             return
         }
         let idParsed = parseUrlParams(id)
@@ -114,18 +114,19 @@ export default function DetailTripScreen() {
         console.log(trip?.id, iduser);
 
         const res = await endTrip(trip.id, iduser)
-        if (res){
+        if (res) {
             toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
-        }else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+        } else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
+
         //CALIFICAR A LOS PASAJEROS modal previo
-        router.push ({ pathname: "/(home)/trips/tripList"});
+        router.navigate({ pathname: "/(home)/trips/tripList" });
     }
 
     if (loading) return (<LoadingScreen />)
 
     if (!trip || !driver) return
 
-    const handlePetition = (desicion: boolean, id_user: number) => {
+    const handlePetition = (desicion: boolean, id_user: string) => {
         decisionPetition(parseUrlParams(id), id_user, desicion)
     }
 
@@ -151,31 +152,31 @@ export default function DetailTripScreen() {
         //la card me tendrua que llevar al User, pero ahora no hace
         if (role == 'Driver') {
             const cantsolicitudes = solicitudes.length
-                return (
-                    <>
-                        <View>
-                            <Text className="font-semibold dark:color-slate-200">La cantidad de solicitudes es: {cantsolicitudes} </Text>
-                        </View>
-                        {/* solicitudes */}
+            return (
+                <>
+                    <View>
+                        <Text className="font-semibold dark:color-slate-200">La cantidad de solicitudes es: {cantsolicitudes} </Text>
+                    </View>
+                    {/* solicitudes */}
 
-                        <FlatList data={solicitudes}
-                            renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item.passenger} isSimple={false} handleDecision={handlePetition} title='' />}
-                            keyExtractor={item => item.id.toString()}
-                        />
+                    <FlatList data={solicitudes}
+                        renderItem={({ item }) => <CardPassenger key={item.id.toString()} passenger={item.passenger} isSimple={false} handleDecision={handlePetition} title='' />}
+                        keyExtractor={item => item.id.toString()}
+                    />
 
-                        <View className="mt-6">
-                            <Button className="flex-1 bg-red-600" label="Cancelar viaje"
-                                onPress={handleCancelTrip} />
-                        </View>
+                    <View className="mt-6">
+                        <Button className="flex-1 bg-red-600" label="Cancelar viaje"
+                            onPress={handleCancelTrip} />
+                    </View>
 
-                        <View className="mt-6">
-                            <Button className="flex-1 bg-grey" label="Finalizar viaje"
-                                onPress={handleEndTrip} />
-                        </View>
-                    </>
-                )
-            }
+                    <View className="mt-6">
+                        <Button className="flex-1 bg-grey" label="Finalizar viaje"
+                            onPress={handleEndTrip} />
+                    </View>
+                </>
+            )
         }
+    }
 
     const departureAddress = trip.departure_address
     const arrivalAddress = trip.arrival_address
@@ -221,7 +222,7 @@ export default function DetailTripScreen() {
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-6 mb-6">
                     <Button className="flex-1" label="Chat"
-                        onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
+                        onPress={() => router.navigate({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>
             </View>
         </ScrollView >

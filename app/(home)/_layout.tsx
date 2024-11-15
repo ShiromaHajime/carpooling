@@ -128,7 +128,6 @@ export default function HomeLayout() {
           ),
           headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderBottomColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
           tabBarStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e', borderTopColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
-          unmountOnBlur: true, // Vacía el stack cuando se cambia de pestaña
         }}
       />
       <Tabs.Screen

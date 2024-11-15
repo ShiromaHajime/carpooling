@@ -23,6 +23,21 @@ export const getAllTrips = async (): Promise<Trip[] | false> => {
 
 }
 
+export const getHistoryTrips = async (id_user: string): Promise<[] | false> => {
+        try {
+            const res = await fetch(`${API_URL}/trips/${id_user}/user`);
+            if (res.status == 200) {
+                const trip = await res.json()
+                return trip
+            }
+            return false
+    
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+}
+
 
 export const joinTrip = async (passenger_id: string, id_trip: string): Promise<Response> => {
 
@@ -43,7 +58,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     };
 
     try {
-        const res = await fetch(`${API_URL}/trip_join`, options);
+        const res = await fetch(`${API_URL}/trip_join/`, options);
         if (res.status == 200) {
             const data = await res.json()
             const response: Response = {

@@ -1,4 +1,3 @@
-import { UserAccount } from '@/types/types';
 import React, { createContext, useState, ReactNode } from 'react';
 
 export interface UserContext {

@@ -1,27 +1,22 @@
 import { API_URL } from "@/constants/const";
 import { Response, Response500 } from "@/types/errors";
-import { Trip, TripById } from "@/types/types";
 
-
-export const decisionPetition= async (id_trip: string, solicitud_id: number, decision: boolean) => {
-    
-    console.log("API_URL de la variable de entorno");
-    console.log(API_URL);
+export const decisionPetition = async (id_trip: string, id_user: string, decision: boolean) => {
 
     const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
     };
+
     let path
-    if (decision){
-        path = `${API_URL}/drivers/trips/${id_trip}/requests/${solicitud_id}/reject`
-    }else {
-        path = `${API_URL}/drivers/trips/${id_trip}/requests/${solicitud_id}/reject`;
+    if (decision) {
+        path = `${API_URL}/drivers/trips/${id_trip}/requests/${id_user}/accept`
+    } else {
+        path = `${API_URL}/drivers/trips/${id_trip}/requests/${id_user}/reject`;
     }
     try {
-        if (!path) return Response500
         const res = await fetch(path, options);
         if (res.status == 200) {
             const data = await res.json()
@@ -32,8 +27,7 @@ export const decisionPetition= async (id_trip: string, solicitud_id: number, dec
         } else return Response500
 
     } catch (error) {
-
+        console.log(error);
         return Response500;
     }
-    return true
 }

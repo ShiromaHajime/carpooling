@@ -36,12 +36,6 @@ export const LoadingScreen = () => {
 
                 </View>
 
-                <View className="mt-8 w-full">
-                    <Text className="font-semibold text-xl text-primary">Acerca del conductor</Text>
-
-                    <Skeleton className="w-fit h-32 mt-2" />
-                </View>
-
             </View>
 
             <Skeleton className="w-fit h-4" />

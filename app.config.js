@@ -9,7 +9,7 @@ export default {
     scheme: "myapp",
     userInterfaceStyle: "automatic",
     splash: {
-      image: "./assets/images/splash.png",
+      image: "./assets/images/splash-carpooling.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -19,7 +19,7 @@ export default {
     android: {
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
+        foregroundImage: "./assets/images/icon.png",
         backgroundColor: "#ffffff"
       },
       package: "com.fedevalle.carpooling",

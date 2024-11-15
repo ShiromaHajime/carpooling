@@ -103,11 +103,11 @@ export default function WelcomeScreen() {
     };
 
     const handleBlogin = () => {
-        router.navigate("/(account)/login");
+        router.push("/login");
     }
 
     const handleBregistro = () => {
-        router.navigate("/(account)/register");
+        router.navigate("/register");
     }
 
     return (

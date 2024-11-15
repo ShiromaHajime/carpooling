@@ -43,7 +43,7 @@ export const sendMessage = async (message: RoomMessage): Promise<Success | Fail>
         message: message.message
     }
     try {
-        const response = await axios.post(`${API_URL}/messages`, body);
+        const response = await axios.post(`${API_URL}/messages/`, body);
         return { error: '', res: response.data }
     } catch (error) {
         return { error: 'api error', res: undefined }

@@ -30,7 +30,7 @@ export default function TripsScreen() {
     longitude: -57.95246359267004,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-}
+  }
 
 
   if (loading) {
@@ -56,41 +56,40 @@ export default function TripsScreen() {
             }}
             title={`Desde: ${trip.departure_address.locality.name}`}
             description={`Hasta: ${trip.arrival_address.locality.name}`}
-            onCalloutPress={() => router.push(`/trips/detail/${trip.id}`)}
+            onCalloutPress={() => router.navigate(`/trips/detail/${trip.id}`)}
           />
         ))}
       </MapView>
     );
   }
   if (context.role === 'Driver') {
-    let activeTrips = trips.filter(trip => trip.vehicle_driver.driver.user.id === context.user.id && trip.status === 'active')
-    // activeTrips = activeTrips.filter(trip => trip.)
+    const activeTrips = trips.length > 0 ? trips.filter(trip => trip.vehicle_driver.driver_id === context.user.id && trip.status === 'active') : []
     return (
       <View className="bg-background flex items-center justify-center h-full p-5">
-      <Text className="text-foreground font-semibold text-2xl mb-4">Lista de viajes</Text>
-      <FlatList
-        className="w-full"
-        data={activeTrips}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => router.push(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
-            <Text className="text-foreground text-lg font-bold">
-              Desde: {item.departure_address.locality.principal_subdivision.name} - {item.departure_address.locality.name} - {item.departure_address.street} {item.departure_address.number}
-            </Text>
-            <Text className="text-foreground text-lg font-bold">
-              Hasta: {item.arrival_address.locality.principal_subdivision.name} - {item.arrival_address.locality.name} - {item.arrival_address.street} {item.arrival_address.number}
-            </Text>
-            <Text className="text-foreground text-sm">
-              Fecha y Hora de salida: <Text className="text-foreground text-sm italic">{item.departure_date} {item.departure_time}</Text>
-            </Text>
-            <Text className="text-foreground text-sm">
-              {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
-              Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+        <Text className="text-foreground font-semibold text-2xl mb-4">Lista de mis viajes</Text>
+        <FlatList
+          className="w-full"
+          data={activeTrips}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => router.navigate(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
+              <Text className="text-foreground text-lg font-bold">
+                Desde: {item.departure_address.locality.principal_subdivision.name} - {item.departure_address.locality.name} - {item.departure_address.street} {item.departure_address.number}
+              </Text>
+              <Text className="text-foreground text-lg font-bold">
+                Hasta: {item.arrival_address.locality.principal_subdivision.name} - {item.arrival_address.locality.name} - {item.arrival_address.street} {item.arrival_address.number}
+              </Text>
+              <Text className="text-foreground text-sm">
+                Fecha y Hora de salida: <Text className="text-foreground text-sm italic">{item.departure_date} {item.departure_time}</Text>
+              </Text>
+              <Text className="text-foreground text-sm">
+                {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
+                Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   }
 }
