@@ -34,9 +34,10 @@ export const GlobalContext = createContext<ContextType>(undefined);
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<UserContext>(initialState);
     const [role, setRole] = useState<Role>("Passenger");
+    const [trip_id, setTripId] = useState<Number>(0);
 
     return (
-        <GlobalContext.Provider value={{ user, role, setUser, setRole }}>
+        <GlobalContext.Provider value={{ user, role, trip_id, setUser, setRole, setTripId }}>
             {children}
         </GlobalContext.Provider>
     );

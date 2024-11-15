@@ -1,6 +1,6 @@
 import { API_URL } from "@/constants/const";
 import { Response, Response500 } from "@/types/errors";
-import { Trip, TripById } from "@/types/types";
+import { Trip, TripById, User } from "@/types/types";
 
 interface TripsFromDB {
 
@@ -157,4 +157,19 @@ export const endTrip = async (id_trip: number, driver_id: any) => {
         return false
     }
 
+}
+
+export const getPassengers = async (id_trip: string): Promise<Passeger[] | false> => {
+        try {
+            const res = await fetch(`${API_URL}/drivers/trips/${id_trip}/requests`);
+            if (res.status == 200) {
+                const passengers = await res.json()
+                return passengers
+            }
+            return false
+    
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
 }

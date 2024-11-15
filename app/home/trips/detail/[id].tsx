@@ -6,7 +6,7 @@ import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useContext, useEffect, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native"
+import { FlatList, Image, Text, View, Alert, Modal } from "react-native"
 import { CardDriver } from "./CardDriver";
 import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
@@ -15,6 +15,8 @@ import { CardPassenger } from "./CardPassenger";
 import { decisionPetition } from "@/services/petitionPassenger";
 import { getSolicitudesByID } from "@/services/getPetition"
 import { ScrollView } from "react-native-virtualized-view";
+import { Rating } from '@kolking/react-native-rating';
+import { Navigation } from "lucide-react-native";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -115,11 +117,36 @@ export default function DetailTripScreen() {
 
         const res = await endTrip(trip.id, iduser)
         if (res) {
+                // Mostrar modal donde pueda calificar a los pasajeros que estuvieron en ese viaje
+                
+                    // Mostrar modal de elección de conductor/pasajero y redirigir a la pantalla correspondiente
+                    Alert.alert(
+                      "Queremos saber tu experiencia",
+                      "Califica a los pasajeros con los que compartiste el viaje",
+                      [
+                        {
+                          text: "En otro momento", onPress: () => {
+                            router.dismissAll()
+                            router.replace("../../")
+                          }
+                        },
+                        {
+                          text: "Calificar", onPress: () => {
+                            
+                            const [idTriP] = useLocalParams()
+
+                            router.dismissAll()
+                            router.replace({pathname:"/(home)/trips/detail/passengerRate", params: {idTrip: trip.id}})
+                          }
+                        },
+                      ],
+                      { cancelable: true }
+                    );
             toast('se ha finalizado el viaje con éxito', 'info', 4000, 'top', false)
         } else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
 
         //CALIFICAR A LOS PASAJEROS modal previo
-        router.navigate({ pathname: "/home/trips/tripList" });
+        router.navigate({  pathname: "/home/trips/tripList" });
     }
 
     if (loading) return (<LoadingScreen />)
@@ -166,12 +193,12 @@ export default function DetailTripScreen() {
 
                     <View className="mt-6">
                         <Button className="flex-1 bg-red-600" label="Cancelar viaje"
-                            onPress={handleCancelTrip} />
+                            onPress={handleCancelTrip()} />
                     </View>
 
                     <View className="mt-6">
-                        <Button className="flex-1 bg-grey" label="Finalizar viaje"
-                            onPress={handleEndTrip} />
+                        <Button className="flex-1 bg-blue-900" label="Finalizar viaje"
+                            onPress={handleEndTrip()} />
                     </View>
                 </>
             )
