@@ -95,19 +95,21 @@ export default function LoginScreen() {
       "¿Eres conductor o pasajero?",
       [
         {
-          text: "Conductor", onPress: () => {
+          text: "Conductorrrr", onPress: () => {
             context?.setUser(user)
             context?.setRole('Driver')
-            router.replace("/trips/tripList")
+            router.dismissAll()
+            router.replace("/home")
           }
-        },  // Redirigir a crear viaje
+        },
         {
-          text: "Pasajero", onPress: () => {
+          text: "Pasajeroooo", onPress: () => {
             context?.setUser(user)
             context?.setRole('Passenger')
-            router.replace("/trips/tripList")
+            router.dismissAll()
+            router.replace("/home")
           }
-        },  // Redirigir a lista de viajes
+        },
       ],
       { cancelable: true }
     );
