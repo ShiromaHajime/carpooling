@@ -15,15 +15,15 @@ export default function TripsScreen() {
   const router = useRouter();  // Inicializa el router
 
   useEffect(() => {
-    const getTrips = async () => {
-      const trips = await getAllTrips();
-      setLoading(false)
-      if (trips) setTrips(trips)
-    }
-    setLoading(true)
     getTrips()
   }, []);
 
+  const getTrips = async () => {
+    setLoading(true)
+    const trips = await getAllTrips();
+    setLoading(false)
+    if (trips) setTrips(trips)
+  }
 
   const InitialRegion = {
     latitude: -34.95541540632269,
@@ -67,6 +67,7 @@ export default function TripsScreen() {
     return (
       <View className="bg-background flex items-center justify-center h-full p-5">
         <Text className="text-foreground font-semibold text-2xl mb-4">Lista de mis viajes</Text>
+        <Button className="mb-2" label="Obtener Viajes" onPress={() => getTrips()} />
         <FlatList
           className="w-full"
           data={activeTrips}
@@ -81,10 +82,6 @@ export default function TripsScreen() {
               </Text>
               <Text className="text-foreground text-sm">
                 Fecha y Hora de salida: <Text className="text-foreground text-sm italic">{item.departure_date} {item.departure_time}</Text>
-              </Text>
-              <Text className="text-foreground text-sm">
-                {/* da error pero funciona, hay que arreglar los tipos una vez que este definido vehicle_driver */}
-                Conductor : {item.vehicle_driver.driver.user.first_name} {item.vehicle_driver.driver.user.last_name}
               </Text>
             </TouchableOpacity>
           )}

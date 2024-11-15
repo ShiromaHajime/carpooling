@@ -68,7 +68,7 @@ export default function ProfileLayout() {
       headerStyle: { backgroundColor: colorScheme == 'dark' ? '#010101' : '#002e2e' },
       headerTintColor: '#fff'
     }}>
-      <Stack.Screen name="profile" options={{
+      <Stack.Screen name="index" options={{
         headerShown: true,
         title: 'Perfil',
         headerRight: () => <HeaderRight />,

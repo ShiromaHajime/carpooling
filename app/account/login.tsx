@@ -99,7 +99,7 @@ export default function LoginScreen() {
             context?.setUser(user)
             context?.setRole('Driver')
             router.dismissAll()
-            router.replace("/home/index")
+            router.replace("../home/index")
           }
         },
         {
@@ -107,7 +107,7 @@ export default function LoginScreen() {
             context?.setUser(user)
             context?.setRole('Passenger')
             router.dismissAll()
-            router.replace("/home/index")
+            router.replace("../home/index")
           }
         },
       ],
