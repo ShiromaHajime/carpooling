@@ -56,7 +56,7 @@ export default function TripsScreen() {
             }}
             title={`Desde: ${trip.departure_address.locality.name}`}
             description={`Hasta: ${trip.arrival_address.locality.name}`}
-            onCalloutPress={() => router.push(`/trips/detail/${trip.id}`)}
+            onCalloutPress={() => router.navigate(`/trips/detail/${trip.id}`)}
           />
         ))}
       </MapView>
@@ -73,7 +73,7 @@ export default function TripsScreen() {
         data={activeTrips}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => router.push(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
+          <TouchableOpacity onPress={() => router.navigate(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
             <Text className="text-foreground text-lg font-bold">
               Desde: {item.departure_address.locality.principal_subdivision.name} - {item.departure_address.locality.name} - {item.departure_address.street} {item.departure_address.number}
             </Text>

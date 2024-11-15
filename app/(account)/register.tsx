@@ -67,7 +67,7 @@ export default function RegisterScreen() {
         if (error) return toast('Hubo un error iniciando sesión con google', 'destructive', 3000, 'top', false)
 
         toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
-        router.push({ pathname: "/(account)/login" })
+        router.back()
     }
 
     const handleRegister = async () => {
@@ -99,7 +99,7 @@ export default function RegisterScreen() {
             toast('Usuario creado exitosamente!', 'success', 2300, 'top', false)
             sendEmailVerification(newUser)
             toast(`Se envio un email a "${email}" para confirmar tu correo`, 'success', 5000, 'top', false)
-            router.push({ pathname: "/(account)/login" })
+            router.navigate({ pathname: "/(account)/login" })
         } else {
             toast('Hubo un error al registrar al usuario', 'destructive', 2500, 'top', false)
         }

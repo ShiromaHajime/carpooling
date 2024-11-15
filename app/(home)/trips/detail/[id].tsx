@@ -63,7 +63,7 @@ export default function DetailTripScreen() {
         }
 
         if (!id) {
-            router.push('/(home)/trips/tripList')
+            router.navigate('/(home)/trips/tripList')
             return
         }
         let idParsed = parseUrlParams(id)
@@ -119,7 +119,7 @@ export default function DetailTripScreen() {
         } else toast('Hubo un error en la conexion con el servidor', 'destructive', 2800, 'top', false);
 
         //CALIFICAR A LOS PASAJEROS modal previo
-        router.push({ pathname: "/(home)/trips/tripList" });
+        router.navigate({ pathname: "/(home)/trips/tripList" });
     }
 
     if (loading) return (<LoadingScreen />)
@@ -222,7 +222,7 @@ export default function DetailTripScreen() {
 
                 <View className="flex flex-row justify-center items-center gap-4 mt-6 mb-6">
                     <Button className="flex-1" label="Chat"
-                        onPress={() => router.push({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
+                        onPress={() => router.navigate({ pathname: "/(home)/trips/detail/chat", params: { idTrip: trip.id } })} />
                 </View>
             </View>
         </ScrollView >
