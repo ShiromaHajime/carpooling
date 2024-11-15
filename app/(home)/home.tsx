@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react
 import { Button } from "@/components/buttons/Button";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "@/utils/Provider";
-import { getAllTrips } from "@/services/trip";
+import { getHistoryTrips } from "@/services/trip";
 import { Trips } from "@/types/types";
 
 
@@ -16,13 +16,22 @@ export default function HomeScreen() {
 
     useEffect(() => {
         const getTrips = async () => {
-          const trips = await getAllTrips();
-          if (trips != false && trips.length != 0) setLoading(false)
-          if (trips) setTrips(trips)
+        const tripsData = await getHistoryTrips(user.id);
+        setLoading(false);
+        if (tripsData) {
+            const tripsJson = JSON.stringify(tripsData);
+            const tripsObj = JSON.parse(tripsJson);
+            if (contextRole === 'Driver') {
+                setTrips(tripsObj.trips_as_driver);
+            } else if (contextRole === 'Passenger') {
+                setTrips(tripsObj.trips_as_passenger);
+            }
         }
-        setLoading(true)
-        getTrips()
-      }, []);
+        }
+        setLoading(true);
+        getTrips();
+    }, [contextRole]);
+
 
     const handleButtonTrip = (role:String) => {
         if (role == 'Driver') {
@@ -44,19 +53,18 @@ export default function HomeScreen() {
     }
 
     const HistoryTrips = () => {
-        let historyTrips = trips.filter(trip => trip.status !== 'active')
         if (loading) {
             return (
               <View className="bg-background flex items-center h-full pl-5 pr-5">
                 <ActivityIndicator size="large" />
               </View>
             );
-          }
+        }
         return (
             <View>
                 <FlatList
                 className="w-full"
-                data={historyTrips}
+                data={trips}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => router.push(`/trips/detail/${item.id}`)} className="p-4 bg-card mb-6 w-full rounded-lg shadow-lg">
@@ -69,13 +77,12 @@ export default function HomeScreen() {
                     <Text className="text-foreground text-bold text-lg">
                     Fecha de salida: <Text className="text-foreground text-lg text-bold">{item.departure_date}</Text>
                     </Text>
-                </TouchableOpacity>
+                    </TouchableOpacity>
                 )}
             />
             </View>
         )
     }
-
     return (
         <View className="bg-background flex items-center h-full p-5 py-7 pr-5">
             {(contextRole == 'Driver') && (<RequestPassengers />)}
