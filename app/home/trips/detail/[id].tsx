@@ -133,7 +133,7 @@ export default function DetailTripScreen() {
                         {
                           text: "Calificar", onPress: () => {
                             
-                            const [idTriP] = useLocalParams()
+                            
 
                             router.dismissAll()
                             router.replace({pathname:"/(home)/trips/detail/passengerRate", params: {idTrip: trip.id}})
