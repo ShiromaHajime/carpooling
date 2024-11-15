@@ -27,7 +27,7 @@ export default function TripsLayout() {
     useCallback(() => {
       // Función que se ejecuta cuando la tab gana foco
       console.log('Tab Viajes ganada');
-      router.replace("/trips/tripList")
+      // router.replace("/trips/tripList") HACE RE RENDER INFINITOOO 🔥🔥
       // Función de limpieza cuando la tab pierde el foco
       return () => {
         console.log('Tab Viajes perdida');

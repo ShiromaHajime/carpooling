@@ -5,11 +5,11 @@ export default {
     slug: "carpooling",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/images/logo-carpooling.png",
     scheme: "myapp",
     userInterfaceStyle: "automatic",
     splash: {
-      image: "./assets/images/splash.png",
+      image: "./assets/images/splash-carpooling.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -19,7 +19,7 @@ export default {
     android: {
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
+        foregroundImage: "./assets/images/logo-carpooling",
         backgroundColor: "#ffffff"
       },
       package: "com.fedevalle.carpooling",
