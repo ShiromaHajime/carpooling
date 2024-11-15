@@ -70,6 +70,11 @@ export default function CreateTripScreen() {
                         latitude: parseFloat(address.lat),
                         longitude: parseFloat(address.lon),
                     })
+                    setCurrentRegion((prevRegion) => ({
+                        ...prevRegion,
+                        latitude: parseFloat(address.lat),
+                        longitude: parseFloat(address.lon)
+                    }));
                     setUserLocation(address)
                 }
             }
@@ -101,6 +106,11 @@ export default function CreateTripScreen() {
             }
             if (address) {
                 console.log('setOriginLocation origin');
+                setCurrentRegion((prevRegion) => ({
+                    ...prevRegion,
+                    latitude: parseFloat(address.lat),
+                    longitude: parseFloat(address.lon)
+                }));
                 setOriginLocation(address)
                 originRef.current = address
             }
@@ -122,6 +132,11 @@ export default function CreateTripScreen() {
             }
             if (address) {
                 console.log('setOriginLocation destination');
+                setCurrentRegion((prevRegion) => ({
+                    ...prevRegion,
+                    latitude: parseFloat(address.lat),
+                    longitude: parseFloat(address.lon)
+                }));
                 setDestinationLocation(address)
                 destinationRef.current = address
             }

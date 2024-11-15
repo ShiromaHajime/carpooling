@@ -87,14 +87,14 @@ export default function WelcomeScreen() {
                     text: "Conductor", onPress: () => {
                         context?.setUser(user)
                         context?.setRole('Driver')
-                        router.replace("/trips/tripList")
+                        router.replace("/home/trips/tripList")
                     }
                 },  // Redirigir a crear viaje
                 {
                     text: "Pasajero", onPress: () => {
                         context?.setUser(user)
                         context?.setRole('Passenger')
-                        router.replace("/trips/tripList")
+                        router.replace("/home/trips/tripList")
                     }
                 },  // Redirigir a lista de viajes
             ],
@@ -103,11 +103,11 @@ export default function WelcomeScreen() {
     };
 
     const handleBlogin = () => {
-        router.push("/login");
+        router.push("/account/login");
     }
 
     const handleBregistro = () => {
-        router.navigate("/register");
+        router.navigate("/account/register");
     }
 
     return (

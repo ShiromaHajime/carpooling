@@ -101,7 +101,7 @@ export const SearchInputAddress = ({ initialInput, isOrigin, placeholder, setOri
                             contentContainerStyle={{ gap: 4 }}
                             keyExtractor={(item) => item.osm_id.toString()}
                             renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => handleSelectAddress(item)} className="z-50" key={item.osm_id}>
+                                <TouchableOpacity onPress={() => handleSelectAddress(item)} className="z-50, pt-1" key={item.osm_id}>
                                     <Text numberOfLines={2} className="text-foreground">{item.display_name}</Text>
                                 </TouchableOpacity>
                             )}
