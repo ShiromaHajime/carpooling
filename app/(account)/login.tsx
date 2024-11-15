@@ -95,7 +95,7 @@ export default function LoginScreen() {
       "¿Eres conductor o pasajero?",
       [
         {
-          text: "Conductorrrr", onPress: () => {
+          text: "Conductor", onPress: () => {
             context?.setUser(user)
             context?.setRole('Driver')
             router.dismissAll()
@@ -103,7 +103,7 @@ export default function LoginScreen() {
           }
         },
         {
-          text: "Pasajeroooo", onPress: () => {
+          text: "Pasajero", onPress: () => {
             context?.setUser(user)
             context?.setRole('Passenger')
             router.dismissAll()
