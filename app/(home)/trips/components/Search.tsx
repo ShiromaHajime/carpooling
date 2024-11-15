@@ -1,13 +1,13 @@
 import { FlatList, Text, TouchableOpacity, View } from "react-native"
 
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useContext, useEffect, useState } from "react";
 
 import { PlaceJsonv2 } from "@/types/addressNominatim";
 import { InputAddress } from "@/components/inputs/InputAddress";
 import { IconMarker } from "@/components/icons/Icons";
 import { searchAddressNominatim } from "@/services/geoposition";
 import { LatLng } from "react-native-maps";
-import { modeMap } from "@/types/types";
+import { TripContext } from "../TripProvider";
 
 interface SearchInputAddressProps {
     initialInput: string;
@@ -120,7 +120,6 @@ export const SearchInputAddress = ({ initialInput, isOrigin, placeholder, setOri
 
 
 interface PropSelectPoints {
-    setMode: (mode: modeMap) => void,
     originLocation: PlaceJsonv2 | undefined,
     destinationLocation: PlaceJsonv2 | undefined,
     setOrigin: (cood: LatLng | undefined) => void,
@@ -129,7 +128,7 @@ interface PropSelectPoints {
     destinationRef: MutableRefObject<PlaceJsonv2 | undefined>,
 }
 
-export const SelectPoints = ({ setMode, originLocation, destinationLocation, setOrigin, setDestination, destinationRef, originRef }: PropSelectPoints) => {
+export const SelectPoints = ({ originLocation, destinationLocation, setOrigin, setDestination, destinationRef, originRef }: PropSelectPoints) => {
 
     const strOrigin = originLocation ? originLocation.display_name : ''
     const strDestination = destinationLocation ? destinationLocation.display_name : ''
@@ -146,6 +145,9 @@ export const SelectPoints = ({ setMode, originLocation, destinationLocation, set
         setTruncatedTextDestination(strDestination.length > 35 ? strDestination.substring(0, 40) + '...' : strDestination)
     }, [destinationLocation])
 
+    const context = useContext(TripContext);
+
+
     return (
         <View className="flex h-full px-1">
             <View className="mt-4 mb-6 flex-row justify-between items-center relative" >
@@ -156,7 +158,11 @@ export const SelectPoints = ({ setMode, originLocation, destinationLocation, set
                     <SearchInputAddress initialInput={truncatedTextOrigin} isOrigin={true} placeholder='Desde dónde queres viajar?' setOrigin={setOrigin} destinationRef={destinationRef} originRef={originRef} setDestination={setDestination} />
                 </View>
                 <View className="mt-7 absolute top-2 right-[-2]">
-                    <TouchableOpacity onPress={() => setMode('selectingOrigin')}>
+                    <TouchableOpacity onPress={() => {
+                        if (context.selectingMode) {
+                            context.setSelectingMode('selectingOrigin')
+                        }
+                    }}>
                         <IconMarker />
                     </TouchableOpacity>
                 </View>
@@ -169,7 +175,11 @@ export const SelectPoints = ({ setMode, originLocation, destinationLocation, set
                     <SearchInputAddress initialInput={truncatedTextDestination} isOrigin={false} placeholder='A dónde queres ir?' setDestination={setDestination} setOrigin={setOrigin} originRef={originRef} destinationRef={destinationRef} />
                 </View>
                 <View className="mt-7 absolute top-2 right-[-2]">
-                    <TouchableOpacity onPress={() => setMode('selectingDestination')}>
+                    <TouchableOpacity onPress={() => {
+                        if (context.selectingMode) {
+                            context.setSelectingMode('selectingDestination')
+                        }
+                    }}>
                         <IconMarker />
                     </TouchableOpacity>
                 </View>

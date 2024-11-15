@@ -15,6 +15,11 @@ import { PlaceJsonv2 } from "@/types/addressNominatim";
 import { IconMarkerPin } from "@/components/icons/Icons";
 import { getAddressByCoors } from "@/services/geoposition";
 import { SelectPoints } from "./components/Search";
+import { TripContext } from "./TripProvider";
+import { SectionAlertSelecting } from "./components/SectionAlertSelect";
+
+
+
 
 export default function CreateTripScreen() {
 
@@ -28,7 +33,6 @@ export default function CreateTripScreen() {
 
     const [origin, setOrigin] = useState<LatLng | undefined>(undefined);
     const [destination, setDestination] = useState<LatLng | undefined>(undefined);
-    const [mode, setMode] = useState<modeMap>('iddle');
     const [userLocation, setUserLocation] = useState<PlaceJsonv2 | undefined>();
     const [originLocation, setOriginLocation] = useState<PlaceJsonv2 | undefined>();
     const [destinationLocation, setDestinationLocation] = useState<PlaceJsonv2 | undefined>();
@@ -41,10 +45,16 @@ export default function CreateTripScreen() {
     const snapPoints = ["20%", "37%", "90%"]
     const { toast } = useToast()
 
-    // console.log('render MapView');
+    const context = useContext(TripContext);
+    const mode = context.selectingMode
+
+    console.log("contextTrip");
+    console.log(context);
+
+    console.log('render MapView');
 
     useEffect(() => {
-        // console.log('useEffect getUserLocation');
+        console.log('useEffect getUserLocation');
 
         const getUserLocation = async () => {
             const { error, userLocation } = await useLocalPosition()
@@ -54,6 +64,7 @@ export default function CreateTripScreen() {
                 if (error) return toast('Hubo un error al obtener la direccion de tu ubicación', 'destructive', 4500, 'top', false)
                 if (address) {
                     originRef.current = address
+                    console.log('setOriginLocation');
                     setOriginLocation(address)
                     setOrigin({
                         latitude: parseFloat(address.lat),
@@ -69,6 +80,7 @@ export default function CreateTripScreen() {
 
     useEffect(() => {
         const fetchLocationInfo = async () => {
+            console.log('fetchLocationInfo origin');
             if (!origin) return
             if (userLocation) {
                 const lat = parseFloat(userLocation.lat)
@@ -83,10 +95,12 @@ export default function CreateTripScreen() {
 
             const { error, address } = await getAddressByCoors(origin)
             if (error) {
+                console.log(error);
                 setErrorMsg('hubo un error')
                 return toast('Hubo un error buscando la direccion de origen', 'destructive', 4500, 'top', false)
             }
             if (address) {
+                console.log('setOriginLocation origin');
                 setOriginLocation(address)
                 originRef.current = address
             }
@@ -97,7 +111,7 @@ export default function CreateTripScreen() {
     }, [origin]);
 
     useEffect(() => {
-        // console.log('useEffect fetchLocationInfo destination');
+        console.log('useEffect fetchLocationInfo destination');
 
         const fetchLocationInfo = async () => {
             if (!destination) return
@@ -107,6 +121,7 @@ export default function CreateTripScreen() {
                 return toast('Hubo un error buscando la direccion de destino', 'destructive', 4500, 'top', false)
             }
             if (address) {
+                console.log('setOriginLocation destination');
                 setDestinationLocation(address)
                 destinationRef.current = address
             }
@@ -120,9 +135,6 @@ export default function CreateTripScreen() {
         setIndexSheet(index)
     }, []);
 
-
-
-
     const handleClickMap = (e: MapPressEvent) => {
         const coordPressed = e.nativeEvent.coordinate
         if (mode == 'selectingOrigin') setOrigin(coordPressed)
@@ -132,21 +144,13 @@ export default function CreateTripScreen() {
                 bottomSheetRef.current?.snapToPosition("90%")
             }, 3500);
         }
-        setMode('end')
+        context.setSelectingMode('end')
     }
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}>
             <View className="bg-background flex h-full dark:bg-gray-900 ">
-                {(mode == 'selectingOrigin') && (
-                    <View className="pt-6 bg-background">
-                        <AlertSelecting title='Marcando punto de origen' description='Para marcar un punto puedes tocar el mapa' />
-                    </View>)}
-                {(mode == 'selectingDestination') && (
-                    <View className="pt-6 bg-background">
-                        <AlertSelecting title='Marcando punto de destino' description='Para marcar un punto puedes tocar el mapa' />
-                    </View>
-                )}
+                <SectionAlertSelecting />
                 <View className='flex-1'>
 
                     <MapView
@@ -207,7 +211,7 @@ export default function CreateTripScreen() {
                             {(indexSheet == 0 || indexSheet == 1 || (!originLocation || !destinationLocation)) && (
                                 <SelectPoints destinationLocation={destinationLocation} destinationRef={destinationRef}
                                     originLocation={originLocation} originRef={originRef}
-                                    setDestination={setDestination} setMode={setMode}
+                                    setDestination={setDestination}
                                     setOrigin={setOrigin}
                                 />)
                             }

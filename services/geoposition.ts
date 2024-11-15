@@ -8,9 +8,14 @@ export const getAddressByCoors = async (coord: LatLng): Promise<{ error?: string
     const longitude = coord.longitude
 
     try {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?addressdetails=1&format=jsonv2&lat=${latitude}&lon=${longitude}`);
+        const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?addressdetails=1&format=jsonv2&lat=${latitude}&lon=${longitude}`, {
+            headers: {
+                'User-Agent': 'carpooling75@gmail.com'
+            }
+        });
         return { address: response.data }
     } catch (error) {
+        console.log(error);
         return { error: 'api error' }
 
     }
@@ -20,7 +25,11 @@ export const searchAddressNominatim = async (inputSearch: string, limit?: number
 
     try { // country ar for best results
         const encodedSearch = encodeURIComponent(inputSearch);
-        const response = await axios.get(`https://nominatim.openstreetmap.org/search?addressdetails=1&q=${encodedSearch}&format=jsonv2&countrycodes=ar${limit ? '&limit=' + limit : ''}`);
+        const response = await axios.get(`https://nominatim.openstreetmap.org/search?addressdetails=1&q=${encodedSearch}&format=jsonv2&countrycodes=ar${limit ? '&limit=' + limit : ''}`, {
+            headers: {
+                'User-Agent': 'carpooling75@gmail.com'
+            }
+        })
         return { address: response.data }
     } catch (error) {
         console.log(error);
