@@ -11,7 +11,7 @@ interface PropCard {
     passenger: User,
     isSimple: boolean,
     title: string,
-    handleDecision: (desicion: boolean, id_user: number) => void,
+    handleDecision: (desicion: boolean, id_user: string) => void,
 }
 
 export const CardPassenger = ({ passenger, isSimple, title, handleDecision }: PropCard) => {

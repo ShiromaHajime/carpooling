@@ -6,7 +6,7 @@ import { User, TripById } from "@/types/types";
 import { parseUrlParams } from "@/utils/utils";
 import { Link, router, useLocalSearchParams } from "expo-router"
 import { useContext, useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, Text, View } from "react-native"
+import { FlatList, Image, Text, View } from "react-native"
 import { CardDriver } from "./CardDriver";
 import { GlobalContext } from "@/utils/Provider";
 import { Skeleton } from "@/components/Skeleton";
@@ -14,6 +14,7 @@ import { LoadingScreen } from "./LoadingScreen";
 import { CardPassenger } from "./CardPassenger";
 import { decisionPetition } from "@/services/petitionPassenger";
 import { getSolicitudesByID } from "@/services/getPetition"
+import { ScrollView } from "react-native-virtualized-view";
 
 export default function DetailTripScreen() {
     const { id } = useLocalSearchParams();
@@ -111,7 +112,7 @@ export default function DetailTripScreen() {
 
     if (!trip || !driver) return
 
-    const handlePetition = (desicion: boolean, id_user: number) => {
+    const handlePetition = (desicion: boolean, id_user: string) => {
         decisionPetition(parseUrlParams(id), id_user, desicion)
     }
 

@@ -43,7 +43,7 @@ export const joinTrip = async (passenger_id: string, id_trip: string): Promise<R
     };
 
     try {
-        const res = await fetch(`${API_URL}/trip_join`, options);
+        const res = await fetch(`${API_URL}/trip_join/`, options);
         if (res.status == 200) {
             const data = await res.json()
             const response: Response = {
