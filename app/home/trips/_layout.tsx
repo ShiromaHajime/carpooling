@@ -46,17 +46,14 @@ export default function TripsLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-        }}>
-        <Stack.Screen name="tripList" options={{
           headerShown: true, title: "Viajes",
-        }} />
-        <Stack.Screen name="detail/[id]" options={{
-          headerShown: true, title: "Detalle viaje",
-        }} />
+        }}>
+        <Stack.Screen name="tripList" />
+        <Stack.Screen name="searchTrip" />
+        <Stack.Screen name="detail/[id]" options={{ title: "Detalle viaje" }} />
+        <Stack.Screen name="driverTripList" />
         <Stack.Screen name="createTrip" options={{ headerShown: false, title: "Crear viaje", }} />
-        <Stack.Screen name="detail/chat" options={{
-          headerShown: true, title: "Chat"
-        }} />
+        <Stack.Screen name="detail/chat" options={{ title: "Chat" }} />
       </Stack>
     </TripProvider>
   );

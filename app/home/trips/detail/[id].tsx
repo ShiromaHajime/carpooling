@@ -84,7 +84,7 @@ export default function DetailTripScreen() {
         toast('Se ha postulado al viaje! Puedes hablar con el conductor una vez este haya aceptado su candidatura', 'success', 4000, 'top', false);
     }
     const handlePressViewProfile = () => {
-        router.replace({ pathname: "/home/profile/index", params: { idDriver: driver?.id } })
+        router.replace({ pathname: "/home/profile", params: { idDriver: driver?.id } })
     }
 
     const handleCancelPetition = async () => {

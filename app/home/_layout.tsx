@@ -97,7 +97,7 @@ export default function HomeLayout() {
         className='flex-1 justify-center items-center mt-2'
       >
         <FontAwesome6 name="user-circle" size={24} color={isFocused ? '#007aff' : 'gray'} />
-        <Text className={`text-xs mt-1 ${isFocused ? 'text-[#007aff]' : 'text-muted text-gray-500'}`}>Perfil</Text>
+        <Text className={`text-xs mt-1 ${isFocused ? 'text-[#007aff]' : 'text-[#6b6b6b]'}`}>Perfil</Text>
       </Pressable>
     );
   };
